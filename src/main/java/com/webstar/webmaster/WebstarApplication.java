@@ -15,8 +15,8 @@ import org.springframework.web.servlet.view.tiles3.TilesView;
 
 @SpringBootApplication
 @ComponentScan( basePackages = "com.webstar" ) //tell springboot to where to start scanning for files
-@EntityScan(basePackages = "com.webstar.models" )
-@EnableJpaRepositories(basePackages = "com.webstar.repository") 
+@EntityScan( basePackages = "com.webstar.models" )
+@EnableJpaRepositories( basePackages = "com.webstar.repository" )
 @EnableAutoConfiguration
 public class WebstarApplication extends SpringBootServletInitializer
 {
@@ -45,7 +45,7 @@ public class WebstarApplication extends SpringBootServletInitializer
     public TilesConfigurer tilesConfigurer()
     {
         TilesConfigurer tilesConfigurer = new TilesConfigurer();
-        String[] defs = {"/WEB-INF/tiles.xml"};
+        String[] defs = { "/WEB-INF/tiles.xml" };
         tilesConfigurer.setDefinitions(defs);
         return tilesConfigurer;
     }
