@@ -1,0 +1,3 @@
+Files: architecture-homepage-img-1.jpg to architecture-homepage-img-2.jpg: 
+Source: https://www.pixabay.com
+License: Free for commercial use

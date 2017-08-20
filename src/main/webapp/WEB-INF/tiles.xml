@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+
+<tiles-definitions>
+    <definition name="webstar.default" template="/WEB-INF/layouts/layout.jsp">
+        <put-attribute name="title" value="Webstar" />
+        <put-attribute name="nav-nonloggedin" value="/WEB-INF/layouts/nav-nonloggedin.jsp" />
+        <put-attribute name="footer-nonloggedin" value="/WEB-INF/tiles/footer.jsp" />
+    </definition>
+
+    <definition name="webstar.home" extends="webstar.default">
+        <put-attribute name="content" value="/WEB-INF/tiles/home.jsp" />
+    </definition>
+
+    <definition name="webstar.about" extends="webstar.default">
+        <put-attribute name="content" value="/WEB-INF/tiles/about.jsp" />
+    </definition>
+    
+    <definition name="webstar.register" extends="webstar.default">
+        <put-attribute name="title" value="User Registration" />
+        <put-attribute name="content" value="/WEB-INF/tiles/register.jsp" />
+    </definition>
+    
+</tiles-definitions>
