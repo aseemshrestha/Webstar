@@ -73,7 +73,7 @@
 										<label class="control-label">*Password</label> 
 										<small><form:errors path="password" style="color:red"/>
 										<c:if test="${not empty passwordMismatch}">
-    							    	   <small><c:out value="${passwordMismatch}" style="color:red"/></small>
+    							    	   <small><span style="color:red"><c:out value="${passwordMismatch}"/></span></small>
 								        </c:if>
 								</small>
 										<form:input path="password" type="password" class="form-control form-control-lg" />
