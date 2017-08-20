@@ -17,6 +17,7 @@ import com.webstar.models.UserDetails;
 import com.webstar.services.IUserService;
 import com.webstar.util.Constants;
 import com.webstar.util.Utils;
+import com.webstar.util.Views;
 
 @Controller
 public class UserController
@@ -27,15 +28,13 @@ public class UserController
     @RequestMapping( "/" )
     public String home()
     {
-
-        return "webstar.home";
-
+        return Views.HOME_PAGE;
     }
 
     @RequestMapping( "/about" )
     public String about()
     {
-        return "webstar.about";
+        return Views.ABOUT_PAGE;
 
     }
 
@@ -43,7 +42,7 @@ public class UserController
     public ModelAndView register(ModelAndView modelAndView, @ModelAttribute( "userDetails" ) UserDetails userDetails,
         HttpServletRequest request)
     {
-        modelAndView.setViewName("webstar.register");
+        modelAndView.setViewName(Views.REGISTRATION_PAGE);
         modelAndView.getModel().put("ipAddress", Utils.getClientIp(request));
         return modelAndView;
 
@@ -55,6 +54,8 @@ public class UserController
         BindingResult result)
     {
         boolean isValidPassword = true;
+        boolean isEmailValid = true;
+        boolean isPhoneValid = true;
         userDetails.setFirstName(userDetails.getFirstName());
         userDetails.setLastName(userDetails.getLastName());
         userDetails.setEmail(userDetails.getEmail());
@@ -69,12 +70,23 @@ public class UserController
             modelAndView.getModel().put("passwordMismatch", "Password mismatch");
             isValidPassword = false;
         }
-        if (!result.hasErrors() && isValidPassword) { // custom validator required but for now
+        if (!Utils.emailValidator(userDetails.getEmail())) {
+            modelAndView.getModel().put("invalidEmail", "Invalid email");
+            isEmailValid = false;
+        }
+        if (userDetails.getPhone().length() >= 1) {
+            if (!Utils.validatePhoneNumber(userDetails.getPhone())) {
+                modelAndView.getModel().put("invalidPhone", "Invalid Phone number");
+                isPhoneValid = false;
+            }
+
+        }
+        if (!result.hasErrors() && isValidPassword && isEmailValid && isPhoneValid) { // custom validator required but for now
             userService.save(userDetails);
             modelAndView.getModel().put("userDetails", new UserDetails());//empty the form
             modelAndView.getModel().put("registrationSuccess", Constants.REGISTRATION_SUCCESS_MSG);
         }
-        modelAndView.setViewName("webstar.register");
+        modelAndView.setViewName(Views.REGISTRATION_PAGE);
 
         return modelAndView;
 

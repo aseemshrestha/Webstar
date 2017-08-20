@@ -56,12 +56,18 @@
 									<div class="form-group">
 										<label class="control-label">*Email</label>
 										 <small><form:errors path="email" style="color:red"/></small>
+										 <c:if test="${not empty invalidEmail}">
+    							    	   <medium><span style="color:red"><c:out value="${invalidEmail}"/></span></medium>
+								        </c:if>
 										 <form:input path="email" type="email" class="form-control form-control-lg" />
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label class="control-label">Phone</label> 
+										<c:if test="${not empty invalidPhone}">
+    							    	   <medium><span style="color:red"><c:out value="${invalidPhone}"/></span></medium>
+								        </c:if>
 										<form:input path="phone" type="text" class="form-control form-control-lg" />
 									</div>
 								</div>
@@ -73,9 +79,9 @@
 										<label class="control-label">*Password</label> 
 										<small><form:errors path="password" style="color:red"/>
 										<c:if test="${not empty passwordMismatch}">
-    							    	   <small><span style="color:red"><c:out value="${passwordMismatch}"/></span></small>
+    							    	   <medium><span style="color:red"><c:out value="${passwordMismatch}"/></span></medium>
 								        </c:if>
-								</small>
+								      </small>
 										<form:input path="password" type="password" class="form-control form-control-lg" />
 									</div>
 								</div>
