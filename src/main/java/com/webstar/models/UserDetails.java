@@ -35,6 +35,7 @@ public class UserDetails
     @Temporal( TemporalType.TIMESTAMP )
     private Date lastLoggedIn;
     private String ipAddress;
+    private String role;
 
     public UserDetails()
     {}
@@ -168,6 +169,16 @@ public class UserDetails
     public void setPasswordConfirm(String passwordconfirm)
     {
         this.passwordConfirm = passwordconfirm;
+    }
+
+    public String getRole()
+    {
+        return role;
+    }
+
+    public void setRole(String role)
+    {
+        this.role = role;
     }
 
     @Override

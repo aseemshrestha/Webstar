@@ -10,29 +10,42 @@
 <c:set var="contextRoot" value="${pageContext.request.contextPath}" />
 <script src="${contextRoot}/js/jquery.min.js"></script>
 <script src="${contextRoot}/js/pace.min.js"></script>
-<link rel="stylesheet" href="${contextRoot}/css/pace-minimal.css" type="text/css">
+<link rel="stylesheet" href="${contextRoot}/css/pace-minimal.css"
+	type="text/css">
 
 <!-- Bootstrap -->
-<link rel="stylesheet" href="${contextRoot}/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="${contextRoot}/css/bootstrap.min.css"
+	type="text/css">
 
 <!-- Fonts -->
-<link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,700" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Quicksand:400,500,700"
+	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed"
+	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Slabo+27px"
+	rel="stylesheet">
 
 <!-- Plugins -->
 <link rel="stylesheet" href="${contextRoot}/css/swiper.min.css">
-<link rel="stylesheet" href="${contextRoot}/css/animate.min.css" type="text/css">
+<link rel="stylesheet" href="${contextRoot}/css/animate.min.css"
+	type="text/css">
 <link rel="stylesheet" href="${contextRoot}/css/lightgallery.min.css">
 
 <!-- Icons -->
-<link rel="stylesheet" href="${contextRoot}/css/font-awesome.min.css" type="text/css">
-<link rel="stylesheet" href="${contextRoot}/css/ionicons.min.css" type="text/css">
-<link rel="stylesheet" href="${contextRoot}/css/line-icons.css" type="text/css">
-<link rel="stylesheet" href="${contextRoot}/css/line-icons-pro.css" type="text/css">
+<link rel="stylesheet" href="${contextRoot}/css/font-awesome.min.css"
+	type="text/css">
+<link rel="stylesheet" href="${contextRoot}/css/ionicons.min.css"
+	type="text/css">
+<link rel="stylesheet" href="${contextRoot}/css/line-icons.css"
+	type="text/css">
+<link rel="stylesheet" href="${contextRoot}/css/line-icons-pro.css"
+	type="text/css">
 
 <!-- Global style (main) -->
-<link id="stylesheet" type="text/css" href="${contextRoot}/css/global-style.css" rel="stylesheet" media="screen">
+<link id="stylesheet" type="text/css"
+	href="${contextRoot}/css/global-style.css" rel="stylesheet"
+	media="screen">
 <!-- Favicon -->
 <link href="${contextRoot}/img/favicon.png" rel="icon" type="image/png">
 
@@ -46,16 +59,17 @@
 			<div class="st-pusher">
 				<div class="st-content">
 					<div class="st-content-inner">
-						<tiles:insertAttribute name="nav" />
-                        <tiles:insertAttribute name="content" />
-                      	<tiles:insertAttribute name="footer-nonloggedin" />
+						<tiles:insertAttribute name="nav-loggedin" />
+						<tiles:insertAttribute name="content" />
+						<tiles:insertAttribute name="footer-nonloggedin" />
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
 </body>
+
+
 
 <!-- SCRIPTS -->
 <a href="#" class="back-to-top btn-back-to-top"></a>

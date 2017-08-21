@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <section class="sct-color-1">
 <div class="container-fluid no-padding">
 	<div class="row row-no-padding">
@@ -12,13 +13,15 @@
 					<h4 class="heading heading-sm strong-400 text-normal c-gray-light">Sign
 						in</h4>
 
-
-					<form class="form-inverse mt-4" data-toggle="validator" role="form">
+                   <c:if test="${not empty loginError}">
+    								<div class="alert alert-warning"><c:out value="${loginError}"/> </div>
+					</c:if>
+					<form class="form-inverse mt-4" data-toggle="validator" role="form" method="post" action="/myhome">
 						<div class="row">
 							<div class="col-sm-12">
 								<div class="form-group has-feedback">
 									<label class="text-uppercase">Email</label> <input
-										class="form-control form-control-lg" type="text"
+										class="form-control form-control-lg" type="text" name="email"
 										placeholder="Email"> <span
 										class="help-block with-errors"></span>
 								</div>
@@ -28,7 +31,7 @@
 							<div class="col-sm-12">
 								<div class="form-group has-feedback">
 									<label class="text-uppercase">Password</label> <input
-										class="form-control form-control-lg" type="text"
+										class="form-control form-control-lg" type="password" name="password"
 										placeholder="Password"> <span
 										class="help-block with-errors"></span>
 								</div>

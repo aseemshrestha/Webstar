@@ -54,4 +54,12 @@ public class Utils
 
     }
 
+    public static boolean checkIfStringIsNullOrEmpty(String input)
+    {
+        if (input == "" || input == null) {
+            return true;
+        }
+        return false;
+    }
+
 }
