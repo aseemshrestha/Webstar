@@ -22,7 +22,6 @@ import org.springframework.web.servlet.view.tiles3.TilesView;
 @ComponentScan( basePackages = "com.webstar" ) //tell springboot to where to start scanning for files
 @EntityScan( basePackages = "com.webstar.models" )
 @EnableJpaRepositories( basePackages = "com.webstar.repository" )
-@EnableAutoConfiguration
 public class WebstarApplication extends SpringBootServletInitializer
 {
 
@@ -54,7 +53,7 @@ public class WebstarApplication extends SpringBootServletInitializer
         tilesConfigurer.setDefinitions(defs);
         return tilesConfigurer;
     }
-   
+
     /* @Bean
     public PasswordEncoder getEncoder(){
         return new BCryptPasswordEncoder();

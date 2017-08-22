@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +28,8 @@ import com.webstar.util.Views;
 @Controller
 public class UserController
 {
+    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+    
     @Autowired
     private IUserService userService;
 
@@ -45,12 +49,16 @@ public class UserController
     @RequestMapping( value = "/myhome", method = RequestMethod.POST )
     public String myhome(String email, String password, Model model, HttpServletResponse response)
     {
-        if (userService.isUserAuthenticated(email, password)) {
-            response.addCookie(new Cookie(Constants.WEBSTAR_COOKIE_AUTH, email));
-            return Views.MY_HOME_PAGE;
-        } else {
+        UserDetails user = userService.isUserAuthenticated(email, password);
+        if (user == null) {
             model.addAttribute("loginError", Constants.LOGIN_FAIL_MSG);
             return Views.HOME_PAGE;
+        } else {
+            //should be encrypted
+            response.addCookie(new Cookie(Constants.WEBSTAR_COOKIE_AUTH, email + "_" + user.getFirstName()));
+            // if cookie is disabled, hidden form to maintain session
+            model.addAttribute("nameEmail", email + "_" + user.getFirstName());
+            return Views.MY_HOME_PAGE;
         }
     }
 
@@ -66,8 +74,7 @@ public class UserController
 
     @RequestMapping( value = "/register", method = RequestMethod.POST )
     public ModelAndView register(ModelAndView modelAndView,
-        @ModelAttribute( "userDetails" ) @Valid UserDetails userDetails,
-        BindingResult result)
+        @ModelAttribute( "userDetails" ) @Valid UserDetails userDetails, BindingResult result)
     {
 
         boolean isValidPassword = true;
@@ -105,10 +112,14 @@ public class UserController
                 }
 
             }
-            if (!result.hasErrors() && isValidPassword && isEmailValid && isPhoneValid) { // custom validator required but for nowe
-                userService.save(userDetails);
-                modelAndView.getModel().put("userDetails", new UserDetails());//empty the form
-                modelAndView.getModel().put("registrationSuccess", Constants.REGISTRATION_SUCCESS_MSG);
+            if (!result.hasErrors() && isValidPassword && isEmailValid && isPhoneValid) {
+                try {
+                    userService.save(userDetails);
+                    modelAndView.getModel().put("userDetails", new UserDetails());
+                    modelAndView.getModel().put("registrationSuccess", Constants.REGISTRATION_SUCCESS_MSG);
+                } catch (Exception ex) {
+                    LOG.debug("[UserController-Register] Error while saving to db", ex);
+                }
             }
 
         }

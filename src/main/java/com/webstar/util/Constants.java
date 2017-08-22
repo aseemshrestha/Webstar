@@ -11,7 +11,9 @@ public class Constants
     public static final String LOGIN_FAIL_MSG = "Either username or password is wrong.";
     public static final String WEBSTAR_COOKIE_AUTH = "Webstar_cookie";
     public static final String EMAIL_EXISTS = "Email already exists.";
+    public static final String HIDDEN_FORM_ATTRIBUTE_SESSION = "nameEmail";
     
-    
+    //email
+    public static final String FROM_EMAIL = "support@webstar.com";
     
 }

@@ -21,16 +21,16 @@
 			<ul class="navbar-nav" data-hover="dropdown"
 				data-animations="zoomIn zoomIn zoomIn zoomIn">
 				<li class="nav-item"><a class="nav-link"
-					href="/" data-toggle="dropdown" aria-haspopup="true"
+					href="/" aria-haspopup="true"
 					aria-expanded="false"> Home </a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="/myAccount" aria-haspopup="true"
 					aria-expanded="false"> My Account </a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="#" data-toggle="dropdown" aria-haspopup="true"
+					href="#" aria-haspopup="true"
 					aria-expanded="false"> My Posts </a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="#" data-toggle="dropdown" aria-haspopup="true"
+					href="#" aria-haspopup="true"
 					aria-expanded="false"> Contact Us </a></li>
 			</ul>
 

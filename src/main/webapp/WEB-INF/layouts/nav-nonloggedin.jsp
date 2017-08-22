@@ -20,13 +20,13 @@
 			id="navbar_default_base_1">
 			<ul class="navbar-nav" data-hover="dropdown"
 				data-animations="zoomIn zoomIn zoomIn zoomIn">
-				<li class="nav-item dropdown megamenu"><a class="nav-link"
-					href="/" data-toggle="dropdown" aria-haspopup="true"
+				<li class="nav-item"><a class="nav-link"
+					href="/"  aria-haspopup="true"
 					aria-expanded="false"> Home </a></li>
-				<li class="nav-item dropdown megamenu"><a class="nav-link"
-					href="/about" data-toggle="dropdown" aria-haspopup="true"
+				<li class="nav-item"><a class="nav-link"
+					href="/about" aria-haspopup="true"
 					aria-expanded="false"> About Us </a></li>
-				<li class="nav-item dropdown megamenu"><a class="nav-link"
+				<li class="nav-item"><a class="nav-link"
 					href="#" data-toggle="dropdown" aria-haspopup="true"
 					aria-expanded="false"> Contact Us </a></li>
 			</ul>

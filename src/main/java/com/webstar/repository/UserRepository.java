@@ -9,6 +9,7 @@ import com.webstar.models.UserDetails;
 public interface UserRepository extends JpaRepository<UserDetails, Long>
 {
     UserDetails findByEmail(String email);
+
     UserDetails findByEmailAndPassword(String email, String password);
-    
+
 }

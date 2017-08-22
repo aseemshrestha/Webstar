@@ -8,7 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import com.webstar.services.IUserService;
 import com.webstar.util.Constants;
@@ -19,9 +22,11 @@ public class AccountController
 {
     @Autowired
     private IUserService service;
+  //  @Autowired
+  //  private RequestMappingHandlerAdapter rmha;
 
-    @RequestMapping( "/myAccount" )
-    public String myAccount(HttpServletRequest request, HttpServletResponse response) throws IOException
+    @RequestMapping( value = "/myAccount", method = RequestMethod.GET )
+    public String myAccount(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException
     {
         String email = service.readEmailFromCookie(request);
         if (email.isEmpty()) {
@@ -33,16 +38,14 @@ public class AccountController
     }
 
     @RequestMapping( "/logout" )
-    public String logout(HttpServletRequest request,HttpServletResponse response)
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         Cookie cookie = new Cookie(Constants.WEBSTAR_COOKIE_AUTH, null);
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
         //for browser back button
-        response.setHeader(request.getHeader("referrer"), "no-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0);
-        return Views.HOME_PAGE;
+       // rmha.setCacheSeconds(0);
+        response.sendRedirect("/");
     }
 }
