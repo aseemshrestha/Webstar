@@ -23,6 +23,17 @@ public class Utils
         return remoteAddr;
     }
 
+    public static String upperCaseFirst(String input)
+    {
+        if (!checkIfStringIsNullOrEmpty(input)) {
+            char[] chars = input.toCharArray();
+            chars[0] = Character.toUpperCase(chars[0]);
+            return new String(chars);
+        }
+        return input;
+
+    }
+
     public static boolean emailValidator(String email)
     {
         String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";

@@ -1,5 +1,7 @@
 package com.webstar.controllers;
 
+import java.io.UnsupportedEncodingException;
+
 import java.util.Date;
 
 import javax.servlet.http.Cookie;
@@ -7,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.webstar.models.UserDetails;
+import com.webstar.services.IEmailService;
 import com.webstar.services.IUserService;
 import com.webstar.util.Constants;
 import com.webstar.util.Roles;
@@ -29,9 +33,12 @@ import com.webstar.util.Views;
 public class UserController
 {
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
-    
+    public static final String CHARSET = "ISO-8859-1";
+
     @Autowired
     private IUserService userService;
+    @Autowired
+    private IEmailService emailService;
 
     @RequestMapping( "/" )
     public String home()
@@ -54,8 +61,12 @@ public class UserController
             model.addAttribute("loginError", Constants.LOGIN_FAIL_MSG);
             return Views.HOME_PAGE;
         } else {
-            //should be encrypted
-            response.addCookie(new Cookie(Constants.WEBSTAR_COOKIE_AUTH, email + "_" + user.getFirstName()));
+            String cookieValue = email + "_" + user.getFirstName();
+            String encodedCookie = "";
+            try {
+                encodedCookie = new String(Base64.encodeBase64(cookieValue.getBytes(CHARSET)));
+            } catch (UnsupportedEncodingException e) {}
+            response.addCookie(new Cookie(Constants.WEBSTAR_COOKIE_AUTH, encodedCookie));
             // if cookie is disabled, hidden form to maintain session
             model.addAttribute("nameEmail", email + "_" + user.getFirstName());
             return Views.MY_HOME_PAGE;
@@ -117,6 +128,10 @@ public class UserController
                     userService.save(userDetails);
                     modelAndView.getModel().put("userDetails", new UserDetails());
                     modelAndView.getModel().put("registrationSuccess", Constants.REGISTRATION_SUCCESS_MSG);
+                    emailService.sendMail(userDetails.getEmail(), "Registration Confirmation with Webstar",
+                                          "Dear " + Utils.upperCaseFirst(userDetails.getFirstName()) + " ,\n"
+                                              + Constants.REGISTRATION_MESSAGE,
+                                          "support@webstar.com");
                 } catch (Exception ex) {
                     LOG.debug("[UserController-Register] Error while saving to db", ex);
                 }

@@ -1,8 +1,11 @@
 package com.webstar.services;
 
+import java.io.UnsupportedEncodingException;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,24 +13,30 @@ import org.springframework.transaction.annotation.Transactional;
 import com.webstar.models.UserDetails;
 import com.webstar.repository.UserRepository;
 import com.webstar.util.Constants;
+import com.webstar.util.Security;
 
 @Service
 public class UserService implements IUserService
 {
     @Autowired
     private UserRepository userRepo;
+    public static final String CHARSET = "ISO-8859-1";
 
     @Override
     @Transactional
     public void save(UserDetails userDetails)
     {
-        userDetails.setPasswordConfirm(userDetails.getPassword());
+        //use hash because of its one way - no decryption
+        String passwordHash = Security.generateHash(Security.SALT.concat(userDetails.getPassword()));
+        userDetails.setPassword(passwordHash);
+        userDetails.setPasswordConfirm(passwordHash);
         userRepo.save(userDetails);
     }
 
     public UserDetails isUserAuthenticated(String email, String password)
     {
-        return userRepo.findByEmailAndPassword(email, password);
+        String hashedPassword = Security.generateHash(Security.SALT.concat(password));
+        return userRepo.findByEmailAndPassword(email, hashedPassword);
 
     }
 
@@ -38,20 +47,22 @@ public class UserService implements IUserService
     }
 
     /* if user is loggedIn user - email shoud be returned */
-    public String readEmailFromCookie(HttpServletRequest request)
+    public String readNameEmailFromCookie(HttpServletRequest request)
     {
-        String email = "";
+        String nameEmail = "";
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (Constants.WEBSTAR_COOKIE_AUTH.equals(cookie.getName())) {
-                    email = cookie.getValue();
+                    try {
+                        nameEmail = new String(Base64.decodeBase64(cookie.getValue().getBytes(CHARSET)));
+                    } catch (UnsupportedEncodingException e) {}
                     break;
                 }
 
             }
         }
-        return email;
+        return nameEmail;
     }
 
 }

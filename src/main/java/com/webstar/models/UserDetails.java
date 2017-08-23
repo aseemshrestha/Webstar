@@ -6,16 +6,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.PrePersist;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
 @Entity
+@Table( indexes = { @Index( name = "IDX_USER_DETAILS", columnList = "email" ) } )
 public class UserDetails
 {
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO )
+
     private Long Id;
     @Size( min = 1, max = 100, message = "required." )
     private String firstName;
