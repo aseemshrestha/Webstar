@@ -44,7 +44,7 @@
 							Me In</button>
 						<br />
 						<h4 class="heading heading-sm strong-400 text-normal c-gray-light">
-							<a href="javascript:void(0)">Forgot Password?</a>
+							<a href="/forgotpassword">Forgot Password?</a>
 						</h4>
 						<h4 class="heading heading-sm strong-400 text-normal c-gray-light">
 							<a href="/register">Open Account?</a>
@@ -85,7 +85,7 @@
 											<div class="col-12 col-md-7 col-lg-7">
 											  <h2 class="heading heading-2 strong-500 c-white">
 													 Webstar for:
-				                                        <span id="type_1" class="type-this c-base-5" data-type-this="network, fun, connection, knowledge"></span></h2>
+				                                        <span id="type_1" class="type-this c-base-5" data-type-this="entertainment, fun, connection, knowledge"></span></h2>
 												<p class="mt-3 c-white">Experience the please of Webstar</p>
 											</div>
 										</div>
@@ -110,7 +110,6 @@
 													 Webstar for:
 				                                        <span id="type_2" class="type-this c-base-5" data-type-this="sharing, community, knowledge and many more"></span></h2>
 												<p class="mt-3 c-white">Enjoy surfing the Webstar</p>
-
 												<a href="/register"
 													class="btn btn-styled btn-sm btn-base-1 btn-circle mt-4">Register
 													Now</a>

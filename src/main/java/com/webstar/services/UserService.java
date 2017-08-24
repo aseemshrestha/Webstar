@@ -1,6 +1,8 @@
 package com.webstar.services;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.util.Optional;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -20,35 +22,41 @@ public class UserService implements IUserService
 {
     @Autowired
     private UserRepository userRepo;
+
     public static final String CHARSET = "ISO-8859-1";
 
     @Override
     @Transactional
     public void save(UserDetails userDetails)
     {
+
         //use hash because of its one way - no decryption
+        // String hashedPassword = Security.generateHash(Security.SALT.concat(password));
         String passwordHash = Security.generateHash(Security.SALT.concat(userDetails.getPassword()));
         userDetails.setPassword(passwordHash);
         userDetails.setPasswordConfirm(passwordHash);
         userRepo.save(userDetails);
     }
 
-    public UserDetails isUserAuthenticated(String email, String password)
+    @Override
+    public Optional<UserDetails> isUserAuthenticated(String email, String password)
     {
-        String hashedPassword = Security.generateHash(Security.SALT.concat(password));
-        return userRepo.findByEmailAndPassword(email, hashedPassword);
 
+        String passwordH = Security.generateHash(Security.SALT.concat(password));
+        return userRepo.findByEmailAndPassword(email, passwordH);
     }
 
-    public UserDetails findUserbyEmail(String email)
+    @Override
+    public Optional<UserDetails> findUserbyEmail(String email)
     {
-        return userRepo.findByEmail(email);
 
+        return userRepo.findByEmail(email);
     }
 
     /* if user is loggedIn user - email shoud be returned */
     public String readNameEmailFromCookie(HttpServletRequest request)
     {
+
         String nameEmail = "";
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -59,10 +67,22 @@ public class UserService implements IUserService
                     } catch (UnsupportedEncodingException e) {}
                     break;
                 }
-
             }
         }
         return nameEmail;
     }
 
+    @Override
+    public Optional<UserDetails> findUserbyToken(String token)
+    {
+
+        return userRepo.findByResetToken(token);
+    }
+
+    @Transactional
+    public void updateLastLoggedTime(Date loggedin, String email)
+    {
+
+        userRepo.updateLastLoggedIn(loggedin, email);
+    }
 }

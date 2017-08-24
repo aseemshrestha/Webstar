@@ -47,4 +47,5 @@ public class AccountController
         reqMappingHandler.setCacheSeconds(0);
         response.sendRedirect("/");
     }
+    
 }

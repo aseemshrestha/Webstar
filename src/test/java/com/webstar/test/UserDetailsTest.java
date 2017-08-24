@@ -8,6 +8,8 @@ import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.webstar.util.Security;
+
 @RunWith( SpringJUnit4ClassRunner.class )
 @WebAppConfiguration
 @SpringBootConfiguration
@@ -20,6 +22,9 @@ public class UserDetailsTest
     {
         int i = 10;
         assertEquals(10, i);
+        String pass = Security.SALT.concat(Security.generateHash("aseem"));
+        String pass1 = Security.SALT.concat(Security.generateHash("aseem"));
+        assertEquals(pass,pass1);
     }
 
 }

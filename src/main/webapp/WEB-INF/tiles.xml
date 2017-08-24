@@ -5,44 +5,51 @@
 
 
 <tiles-definitions>
-    <definition name="webstar.default" template="/WEB-INF/layouts/layout.jsp">
-        <put-attribute name="title" value="Webstar" />
-        <put-attribute name="nav"
-            value="/WEB-INF/layouts/nav-nonloggedin.jsp" />
-        <put-attribute name="footer-nonloggedin" value="/WEB-INF/tiles/footer.jsp" />
-    </definition>
+	<definition name="webstar.default" template="/WEB-INF/layouts/layout.jsp">
+		<put-attribute name="title" value="Webstar" />
+		<put-attribute name="nav"
+			value="/WEB-INF/layouts/nav-nonloggedin.jsp" />
+		<put-attribute name="footer-nonloggedin" value="/WEB-INF/tiles/footer.jsp" />
+	</definition>
 
-    <definition name="webstar.defaultloggedin" template="/WEB-INF/layouts/layout-loggedin.jsp">
-        <put-attribute name="title" value="Webstar" />
-        <put-attribute name="navloggedin"
-            value="/WEB-INF/layouts/nav-loggedin.jsp" />
-        <put-attribute name="footer-nonloggedin" value="/WEB-INF/tiles/footer.jsp" />
-    </definition>
+	<definition name="webstar.defaultloggedin" template="/WEB-INF/layouts/layout-loggedin.jsp">
+		<put-attribute name="title" value="Webstar" />
+		<put-attribute name="navloggedin" value="/WEB-INF/layouts/nav-loggedin.jsp" />
+		<put-attribute name="footer-nonloggedin" value="/WEB-INF/tiles/footer.jsp" />
+	</definition>
 
-    <definition name="webstar.home" extends="webstar.default">
-        <put-attribute name="content" value="/WEB-INF/tiles/home.jsp" />
-    </definition>
+	<definition name="webstar.home" extends="webstar.default">
+		<put-attribute name="content" value="/WEB-INF/tiles/home.jsp" />
+	</definition>
 
-    <definition name="webstar.about" extends="webstar.default">
-        <put-attribute name="content" value="/WEB-INF/tiles/about.jsp" />
-    </definition>
+	<definition name="webstar.about" extends="webstar.default">
+		<put-attribute name="content" value="/WEB-INF/tiles/about.jsp" />
+	</definition>
 
-    <definition name="webstar.register" extends="webstar.default">
-        <put-attribute name="title" value="User Registration" />
-        <put-attribute name="content" value="/WEB-INF/tiles/register.jsp" />
-    </definition>
+	<definition name="webstar.forgotpassword" extends="webstar.default">
+		<put-attribute name="title" value="Forgot Password" />
+		<put-attribute name="content" value="/WEB-INF/tiles/forgotpassword.jsp" />
+	</definition>
+	
+	<definition name="webstar.resetpassword" extends="webstar.default">
+		<put-attribute name="title" value="Reset Password" />
+		<put-attribute name="content" value="/WEB-INF/tiles/resetpassword.jsp" />
+	</definition>
 
-    <definition name="webstar.myhome" extends="webstar.defaultloggedin">
-        <put-attribute name="nav-loggedin"
-            value="/WEB-INF/layouts/nav-loggedin.jsp" />
-        <put-attribute name="title" value="My Home" />
-        <put-attribute name="content" value="/WEB-INF/tiles/myhome.jsp" />
-    </definition>
-    
-    <definition name="webstar.myaccount" extends="webstar.defaultloggedin">
-        <put-attribute name="nav-loggedin"
-            value="/WEB-INF/layouts/nav-loggedin.jsp" />
-        <put-attribute name="title" value="My Home" />
-        <put-attribute name="content" value="/WEB-INF/tiles/myaccount.jsp" />
-    </definition>
+	<definition name="webstar.register" extends="webstar.default">
+		<put-attribute name="title" value="User Registration" />
+		<put-attribute name="content" value="/WEB-INF/tiles/register.jsp" />
+	</definition>
+
+	<definition name="webstar.myhome" extends="webstar.defaultloggedin">
+		<put-attribute name="nav-loggedin" value="/WEB-INF/layouts/nav-loggedin.jsp" />
+		<put-attribute name="title" value="My Home" />
+		<put-attribute name="content" value="/WEB-INF/tiles/myhome.jsp" />
+	</definition>
+
+	<definition name="webstar.myaccount" extends="webstar.defaultloggedin">
+		<put-attribute name="nav-loggedin" value="/WEB-INF/layouts/nav-loggedin.jsp" />
+		<put-attribute name="title" value="My Home" />
+		<put-attribute name="content" value="/WEB-INF/tiles/myaccount.jsp" />
+	</definition>
 </tiles-definitions>
