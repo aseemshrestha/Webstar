@@ -24,7 +24,7 @@ public class EmailService implements IEmailService
         mailMessage.setText(message);
         mailMessage.setFrom(fromEmail);
         try {
-            javaMailSender.send(mailMessage);
+           // javaMailSender.send(mailMessage);
         } catch (Exception ex) {
             LOG.debug("[EmailService][sendmail]Exception sending the mail", ex);
         }

@@ -6,10 +6,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
 <c:set var="contextRoot" value="${pageContext.request.contextPath}" />
 <script src="${contextRoot}/js/jquery.min.js"></script>
 <script src="${contextRoot}/js/pace.min.js"></script>
+
 <link rel="stylesheet" href="${contextRoot}/css/pace-minimal.css"
 	type="text/css">
 
@@ -42,13 +45,17 @@
 <link rel="stylesheet" href="${contextRoot}/css/line-icons-pro.css"
 	type="text/css">
 
+<link rel="stylesheet" href="${contextRoot}/css/jquery-ui.css"
+	type="text/css">
+
+
+
 <!-- Global style (main) -->
 <link id="stylesheet" type="text/css"
 	href="${contextRoot}/css/global-style.css" rel="stylesheet"
 	media="screen">
 <!-- Favicon -->
 <link href="${contextRoot}/img/favicon.png" rel="icon" type="image/png">
-
 
 <title><tiles:insertAttribute name="title" /></title>
 
@@ -112,7 +119,11 @@
 
 
 <!-- App JS -->
+<script src="${contextRoot}/js/jquery-ui.js"></script>
 <script src="${contextRoot}/js/wpx.app.js"></script>
+<script src="${contextRoot}/js/webstar.posts.js"></script>
+<script src="${contextRoot}/js/webstar.global.js"></script>
+<script src="${contextRoot}/js/webstar.imageUpload.js"></script>
 
 
 </html>

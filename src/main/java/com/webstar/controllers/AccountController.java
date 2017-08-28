@@ -20,8 +20,8 @@ public class AccountController
 {
     @Autowired
     private IUserService service;
-    @Autowired
-    private RequestMappingHandlerAdapter reqMappingHandler;
+    //@Autowired
+  //  private RequestMappingHandlerAdapter reqMappingHandler;
 
     @RequestMapping( value = "/myAccount", method = RequestMethod.GET )
     public String myAccount(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException
@@ -44,7 +44,7 @@ public class AccountController
         cookie.setPath("/");
         response.addCookie(cookie);
         //for browser back button
-        reqMappingHandler.setCacheSeconds(0);
+      //  reqMappingHandler.setCacheSeconds(0);
         response.sendRedirect("/");
     }
     

@@ -60,11 +60,13 @@ public class UserController
 
         return Views.ABOUT_PAGE;
     }
-
+    
+    
     @RequestMapping( value = "/myhome", method = RequestMethod.POST )
     public String myhome(String email, String password, Model model, HttpServletResponse response)
     {
-       Optional<UserDetails> user = userService.isUserAuthenticated(email, password);
+     
+        Optional<UserDetails> user = userService.isUserAuthenticated(email, password);
         if (!user.isPresent()) {
             model.addAttribute("loginError", Constants.LOGIN_FAIL_MSG);
             return Views.HOME_PAGE;

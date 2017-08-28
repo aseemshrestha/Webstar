@@ -1,0 +1,91 @@
+  <link rel="stylesheet" type="text/css" href="${contextRoot}/css/jquery.emojipicker.css">
+  <script type="text/javascript" src="${contextRoot}/js/jquery.emojipicker.js"></script>
+
+  <!-- Emoji Data -->
+  <link rel="stylesheet" type="text/css" href="${contextRoot}/css/jquery.emojipicker.a.css">
+  <script type="text/javascript" src="${contextRoot}/js/jquery.emojipicker.a.js"></script>
+  
+  
+  <div id="post-contents" title="Compose your new post"
+	style="">
+	<br />
+	<form class="form-base-2" role="form">
+	<div class="form-group has-feedback">
+			<textarea name="postmsg" class="form-control form-control-lg emojiable-question"
+				cols="5" rows="5" placeholder="What's up" id="question"></textarea>
+		</div>
+		<div class="col-sm-13">
+			<div class="form-group has-feedback">
+				<label for="" class="text-uppercase">Pick a Category</label> <select
+					class="form-control form-control-lg selectpicker">
+					<option>Any</option>
+					<option>Any1</option>
+				</select>
+				<div class="help-block with-errors"></div>
+			</div>
+		</div>
+		<hr />
+
+		<a href="#" class="btn btn-styled btn-base-2" style="float: right">POST</a>
+		&nbsp;&nbsp; <a href="javascript:void(0)"
+			class="btn btn-styled btn-xs btn-base-2" style="float: right"
+			id="trigger">Emotions</a>
+
+	</form>
+</div>
+  
+  <script type="text/javascript">
+    $(document).ready(function(e) {
+
+      $('.emojiable-question').emojiPicker({
+        width: '300px',
+        height: '200px',
+        button: false
+      });
+
+      $('.emojiable-option').emojiPicker({
+        width: '200px',
+        height: '100px'
+      });
+
+      $('#trigger').click(function(e) {
+        e.preventDefault();
+        $('#question').emojiPicker('toggle');
+      });
+
+    });
+  </script>
+
+  <style type="text/css">
+    body {background:#888;}
+    form {margin:200px 0 0 0; text-align:center;}
+    input {width:400px; height:30px;}
+    input,textarea,button {padding:5px 10px; font-family:"Helvetica Neue", "Helvetica", "Arial", sans-serif; font-size:24px; font-weight:300; outline:none; border:none;}
+    #emojiPickerWrap {margin:10px 0 0 0;}
+    .field { padding: 20px 0; }
+    textarea { width: 400px; height: 200px; }
+  </style>
+
+</head>
+<body>
+  <!-- &#x1F335; -->
+  <form style="background-color:red">
+
+    <button id="trigger1">Custom emoji trigger</button>
+
+    <div class="field">
+      <textarea id="question1" class="emojiable-question" placeholder="Your Question"></textarea>
+    </div>
+
+    <div class="field">
+      <input type="text" id="option1" class="emojiable-option" placeholder="Choice Text">
+    </div>
+
+    <div class="field">
+      <input type="text" id="option2" class="emojiable-option" placeholder="Choice Text">
+    </div>
+
+  </form>
+
+</body>
+</html>

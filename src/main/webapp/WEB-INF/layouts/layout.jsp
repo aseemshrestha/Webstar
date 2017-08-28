@@ -1,12 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+
 <c:set var="contextRoot" value="${pageContext.request.contextPath}" />
 <script src="${contextRoot}/js/jquery.min.js"></script>
 <script src="${contextRoot}/js/pace.min.js"></script>
@@ -41,7 +45,7 @@
 
 </head>
 <body>
-	<div class="body-wrap">
+	<div class="body-wrap body-boxed--no-margin">
 		<div id="st-container" class="st-container">
 			<div class="st-pusher">
 				<div class="st-content">
@@ -93,12 +97,16 @@
 <!-- Light Gallery -->
 <script src="${contextRoot}/js/lightgallery.min.js"></script>
 <script src="${contextRoot}/js/lg-thumbnail.min.js"></script>
+<!-- 
 <script src="${contextRoot}/js/lg-video.js"></script>
-
+-->
 
 
 <!-- App JS -->
 <script src="${contextRoot}/js/wpx.app.js"></script>
+<script src="${contextRoot}/js/webstar.posts.js"></script>
+
+<script src="${contextRoot}/js/webstar.global.js"></script>
 
 
 </html>
