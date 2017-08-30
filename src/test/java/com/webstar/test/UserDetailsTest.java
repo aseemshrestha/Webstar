@@ -1,6 +1,9 @@
 package com.webstar.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.io.InputStream;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +28,15 @@ public class UserDetailsTest
         String pass = Security.SALT.concat(Security.generateHash("aseem"));
         String pass1 = Security.SALT.concat(Security.generateHash("aseem"));
         assertEquals(pass,pass1);
+       // InputStream input = getResourceAsStream("cateogry.json");
+       // assertNotNull(input);
+        
     }
+    private InputStream getResourceAsStream(String fileName)
+    {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        InputStream input = classLoader.getResourceAsStream(fileName);
+        return input;
 
+    }
 }

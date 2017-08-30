@@ -1,37 +1,45 @@
 package com.webstar.util;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public class Categories
 {
-    public static final Map<String, String> CATEGORIES = new TreeMap<>();
+    public static final Map<String, String> CATEGORIES = new HashMap<>();
+    public static final Map<String, String> SUB_CATEGORIES = new HashMap<>();
 
-    public Categories()
+    public static Map<String, String> getCategories()
     {
-        setCategories();
-    }
-
-    private void setCategories()
-    {
-
-        CATEGORIES.put("KIDS", "KIDS");
-        CATEGORIES.put("MUSIC", "MUSIC");
-        CATEGORIES.put("WOMEN", "WOMEN");
-        CATEGORIES.put("SCHOOLS", "SCHOOLS");
-        CATEGORIES.put("SPORTS", "SPORTS");
-        CATEGORIES.put("GAMING", "GAMING");
-        CATEGORIES.put("MOVIES", "MOVIES");
-        CATEGORIES.put("PHOTOS", "PHOTOS");
-        CATEGORIES.put("POLITICS", "POLITICS");
-        CATEGORIES.put("LOL", "LOL");
-        CATEGORIES.put("NEWS", "NEWS");
-        CATEGORIES.put("TELEVISION", "TELEVISION");
-    }
-
-    public Map<String, String> getCategories()
-    {
-
+        CATEGORIES.put("Gaming", "Gaming");
+        CATEGORIES.put("Kids", "Kids");
+        CATEGORIES.put("Lol", "Lol");
+        CATEGORIES.put("Music", "Music");
+        CATEGORIES.put("Movies", "Movies");
+        CATEGORIES.put("News", "News");
+        CATEGORIES.put("Photos", "Photos");
+        CATEGORIES.put("Politics", "Politics");
+        CATEGORIES.put("Schools", "Schools");
+        CATEGORIES.put("Sports", "Sports");
+        CATEGORIES.put("Television", "Television");
+        CATEGORIES.put("Women", "Women");
         return CATEGORIES;
+    }
+
+    public static Map<String, String> getSubCategories()
+    {
+        SUB_CATEGORIES.put("Kids", "Kids1,Kids2,Kids3");
+        SUB_CATEGORIES.put("Music", "Music1,Music2,Music3");
+        return SUB_CATEGORIES;
+
+    }
+
+    public static String getSubCategoryByKey(String category)
+    {
+
+        return getSubCategories().entrySet().stream()
+            .filter(map -> category.equals(map.getKey()))
+            .map(map -> map.getValue())
+            .collect(Collectors.joining());
     }
 }

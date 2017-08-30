@@ -1,9 +1,19 @@
 package com.webstar.util;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Utils
 {
@@ -73,4 +83,33 @@ public class Utils
         return false;
     }
 
+    public static <T> T parseJSONFromUrl(String content, Class<T> cl) throws IOException
+    {
+        ObjectMapper mapper = JacksonMapper.INSTANCE.getObjectMapper();
+        URL jsonUrl = new URL(content);
+        return mapper.readValue(jsonUrl, cl);
+    }
+
+    public static <T> T parseJSONLocal(String content, Class<T> cl) throws IOException
+    {
+        ObjectMapper mapper = JacksonMapper.INSTANCE.getObjectMapper();
+        return mapper.readValue(content, cl);
+    }
+
+    public static <T> T parseJsonAsStream(InputStream input, Class<T> cl)
+        throws JsonParseException, JsonMappingException, IOException
+    {
+        ObjectMapper mapper = JacksonMapper.INSTANCE.getObjectMapper();
+        return mapper.readValue(input, cl);
+    }
+
+    public static InputStream getResourceAsStream(String fileName) throws IOException
+    {
+        Resource resource = new ClassPathResource(fileName);
+        System.out.println("resource===========================" + resource.getFilename());
+        InputStream resourceInputStream = resource.getInputStream();
+        System.out.println("input steam===================" + resourceInputStream);
+        return resourceInputStream;
+
+    }
 }

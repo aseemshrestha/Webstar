@@ -1,5 +1,5 @@
 <nav
-	class="navbar navbar-toggleable-md  navbar-inverse bg-base-1 navbar--link-arrow bg-base-1 navbar--uppercase">
+	class="navbar navbar-toggleable-md  navbar-inverse bg-base-1 navbar--link-arrow bg-base-3 navbar--uppercase">
 	<div class="container navbar-container">
 		<button class="navbar-toggler navbar-toggler-right" type="button"
 			data-toggle="collapse" data-target="#navbar_default_base_1"
@@ -12,7 +12,7 @@
 			<i class="ion-search"></i>
 		</button>
 
-		<a class="navbar-brand" href="/"> Webstar </a>
+		<a class="navbar-brand" href="/"> <img src="../img/logo/logo.png" alt="Webstar" style="width:50px;height:50px;"> </a>
 
         
 		<div

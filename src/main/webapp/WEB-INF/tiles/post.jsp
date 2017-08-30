@@ -60,11 +60,15 @@ img.portimg {
 <div id="post-contents" title="Compose your new post"
 	style="display: none">
 	<br />
-	<form class="form-base-2" role="form">
+  
+     <span id="error_post" class="alert alert-danger no-margin" style="display:none">Post message is required.</span>    
+     <span id="error_video" class="alert alert-danger no-margin" style="display:none">Invalid video url.</span><br />
+  
+   <form class="form-base-2" role="form">
 		<div class="form-group has-feedback">
 			<textarea name="postmsg"
 				class="form-control form-control-lg emojiable-question" cols="5"
-				rows="5" placeholder="What's up" maxlength="200" id="ta-post-1"
+				rows="5" placeholder="What's up" maxlength="200" required id="ta-post-1"
 				style="width: 695px;!important"></textarea>
 			   <small><span id="allowed" style="float:right;margin-right:5px;"></span></small>
 		</div>
@@ -80,8 +84,8 @@ img.portimg {
 		</div>
 		<div class="col-sm-13">
 			<div class="form-group has-feedback">
-				<label for="" class="text-uppercase">Add Video Links ( if
-					any )</label> <input type="text"
+				<label for="" class="text-uppercase">Add Video Link ( if
+					any -Youtube/Vimeo supported )</label> <input type="text" id="videoLinks"
 					class="form-control form-control-lg selectpicker"
 					placeholder="Audio Video links">
 			</div>
@@ -89,7 +93,8 @@ img.portimg {
 		<hr />
 
 		<a href="javascript:void(0)" class="btn btn-styled btn-md btn-base-2"
-			style="float: right">POST</a>
+			style="float: right" id="post_submit">POST</a>
+			
 		<div class="imgUpload">
 			     <label for="fileInput"> 
 			       <img src="../img/icons/upload.png" style="width: 30px;" />

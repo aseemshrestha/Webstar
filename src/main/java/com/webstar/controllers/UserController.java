@@ -1,5 +1,7 @@
 package com.webstar.controllers;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Map;
@@ -22,15 +24,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.webstar.generated.models.Classfication;
 import com.webstar.models.UserDetails;
 import com.webstar.services.IEmailService;
 import com.webstar.services.IUserService;
+import com.webstar.util.Categories;
 import com.webstar.util.Constants;
 import com.webstar.util.Roles;
-import com.webstar.util.Security;
 import com.webstar.util.Utils;
 import com.webstar.util.Views;
 
@@ -50,7 +55,6 @@ public class UserController
     @RequestMapping( "/" )
     public String home()
     {
-
         return Views.HOME_PAGE;
     }
 
@@ -60,28 +64,34 @@ public class UserController
 
         return Views.ABOUT_PAGE;
     }
-    
-    
-    @RequestMapping( value = "/myhome", method = RequestMethod.POST )
-    public String myhome(String email, String password, Model model, HttpServletResponse response)
+
+    @RequestMapping( value = "/myhome", method = { RequestMethod.GET, RequestMethod.POST } )
+    public String myhome(String email, String password, Model model, HttpServletResponse response,
+        HttpServletRequest request)
     {
-     
-        Optional<UserDetails> user = userService.isUserAuthenticated(email, password);
-        if (!user.isPresent()) {
-            model.addAttribute("loginError", Constants.LOGIN_FAIL_MSG);
-            return Views.HOME_PAGE;
+        String nameEmail = userService.readNameEmailFromCookie(request);
+
+        if (nameEmail == null || nameEmail.isEmpty()) {
+            Optional<UserDetails> user = userService.isUserAuthenticated(email, password);
+            if (!user.isPresent()) {
+                model.addAttribute("loginError", Constants.LOGIN_FAIL_MSG);
+                return Views.HOME_PAGE;
+            } else {
+                String cookieValue = email + "_" + user.get().getFirstName();
+                String encodedCookie = "";
+                try {
+                    userService.updateLastLoggedTime(new Date(), email);
+                    encodedCookie = new String(Base64.encodeBase64(cookieValue.getBytes(CHARSET)));
+                } catch (UnsupportedEncodingException e) {}
+                response.addCookie(new Cookie(Constants.WEBSTAR_COOKIE_AUTH, encodedCookie));
+                // if cookie is disabled, hidden form to maintain session
+                model.addAttribute("nameEmail", email + "_" + user.get().getFirstName());
+            }
         } else {
-            String cookieValue = email + "_" + user.get().getFirstName();
-            String encodedCookie = "";
-            try {
-                userService.updateLastLoggedTime(new Date(), email);
-                encodedCookie = new String(Base64.encodeBase64(cookieValue.getBytes(CHARSET)));
-            } catch (UnsupportedEncodingException e) {}
-            response.addCookie(new Cookie(Constants.WEBSTAR_COOKIE_AUTH, encodedCookie));
-            // if cookie is disabled, hidden form to maintain session
-            model.addAttribute("nameEmail", email + "_" + user.get().getFirstName());
-            return Views.MY_HOME_PAGE;
+            model.addAttribute("nameEmail", nameEmail);
         }
+        return Views.MY_HOME_PAGE;
+
     }
 
     @RequestMapping( value = "/register", method = RequestMethod.GET )
@@ -143,7 +153,8 @@ public class UserController
     }
 
     @RequestMapping( value = "/reset", method = RequestMethod.POST )
-    public ModelAndView resetPasswordPage(ModelAndView modelAndView, String password, String confirmpassword, String token)
+    public ModelAndView resetPasswordPage(ModelAndView modelAndView, String password, String confirmpassword,
+        String token)
     {
 
         Optional<UserDetails> user = userService.findUserbyToken(token);
@@ -168,6 +179,18 @@ public class UserController
         }
         modelAndView.setViewName(Views.RESET_PASSWORD);
         return modelAndView;
+    }
+
+    @RequestMapping( value = "/categories", method = RequestMethod.GET, produces = { "application/json" } )
+    public @ResponseBody Map<String, String> getCategories()
+    {
+        return Categories.getCategories();
+    }
+
+    @RequestMapping( value = "/subcategories", method = RequestMethod.GET )
+    public @ResponseBody String getSubCategoryByKey(@RequestParam( "category" ) String category)
+    {
+        return Categories.getSubCategoryByKey(category);
     }
 
     @RequestMapping( value = "/register", method = RequestMethod.POST )
