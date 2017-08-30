@@ -1,16 +1,17 @@
 package com.webstar.util;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Categories
 {
-    public static final Map<String, String> CATEGORIES = new HashMap<>();
-    public static final Map<String, String> SUB_CATEGORIES = new HashMap<>();
+    public static final Map<String, String> CATEGORIES = new LinkedHashMap<>();
+    public static final Map<String, String> SUB_CATEGORIES = new LinkedHashMap<>();
 
     public static Map<String, String> getCategories()
-    {
+    {   
+        CATEGORIES.put("Any", "Any");
         CATEGORIES.put("Gaming", "Gaming");
         CATEGORIES.put("Kids", "Kids");
         CATEGORIES.put("Lol", "Lol");
@@ -28,8 +29,19 @@ public class Categories
 
     public static Map<String, String> getSubCategories()
     {
-        SUB_CATEGORIES.put("Kids", "Kids1,Kids2,Kids3");
-        SUB_CATEGORIES.put("Music", "Music1,Music2,Music3");
+        SUB_CATEGORIES.put("Any", "Any");
+        SUB_CATEGORIES.put("Gaming", "Gaming1, Gaming2, Gaming3, Gaming4, Gaming5, Gaming6");
+        SUB_CATEGORIES.put("Kids", "Kids1, Kids1, Kids2, Kids3");
+        SUB_CATEGORIES.put("Lol", "Lol1, Lol2, Lol3, Lol4");
+        SUB_CATEGORIES.put("Music", "Music1, Music2, Music3, Music4");
+        SUB_CATEGORIES.put("Movies", "Movies1, Movies2, Movies3, Movies4, Movies5");
+        SUB_CATEGORIES.put("News", "News1, News2");
+        SUB_CATEGORIES.put("Photos", "Photos1, Photos2");
+        SUB_CATEGORIES.put("Politics", "Politics1, Politics2");
+        SUB_CATEGORIES.put("Schools", "Schools1, Schools2");
+        SUB_CATEGORIES.put("Sports", "Sports1, Sports2");
+        SUB_CATEGORIES.put("Television", "Television1, Television2");
+        SUB_CATEGORIES.put("Women", "Women1, Women2");
         return SUB_CATEGORIES;
 
     }

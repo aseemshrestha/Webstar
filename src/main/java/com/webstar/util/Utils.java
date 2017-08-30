@@ -106,9 +106,7 @@ public class Utils
     public static InputStream getResourceAsStream(String fileName) throws IOException
     {
         Resource resource = new ClassPathResource(fileName);
-        System.out.println("resource===========================" + resource.getFilename());
         InputStream resourceInputStream = resource.getInputStream();
-        System.out.println("input steam===================" + resourceInputStream);
         return resourceInputStream;
 
     }

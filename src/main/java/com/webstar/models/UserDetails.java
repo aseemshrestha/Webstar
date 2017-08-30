@@ -11,10 +11,12 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table( indexes = { @Index( name = "IDX_USER_DETAILS", columnList = "email" ) } )
+@Table( indexes = { @Index( name = "IDX_USER_DETAILS", columnList = "email" ) },
+    uniqueConstraints = { @UniqueConstraint( columnNames = { "email" } ) } )
 public class UserDetails
 {
     @Id
@@ -42,7 +44,7 @@ public class UserDetails
     private Date registrationDate;
 
     private int userStatus;
-
+  
     @Temporal( TemporalType.TIMESTAMP )
     private Date lastLoggedIn;
 

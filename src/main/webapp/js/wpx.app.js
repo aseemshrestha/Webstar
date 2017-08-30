@@ -919,5 +919,9 @@ $(document).ready(function() {
         });
 
     }
+    $(window).bind('beforeunload', function(e) {
+        window.location.href = "/logout";
+      });
+   
 }); // END document ready
 

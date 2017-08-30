@@ -13,9 +13,9 @@
 						have an account?</h3>
 					<h4 class="heading heading-sm strong-400 text-normal c-gray-light">Sign
 						in</h4>
-
-                   <c:if test="${not empty loginError}">
-    								<div class="alert alert-warning"><c:out value="${loginError}"/> </div>
+					
+                   <c:if test="${param.loginError ne null}">
+    					<div class="alert alert-warning"> Either username or password is invalid. </div>
 					</c:if>
 					<form class="form-inverse mt-4" data-toggle="validator" role="form" method="post" action="/myhome">
 						<div class="row">

@@ -1,7 +1,6 @@
 package com.webstar.controllers;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Map;
@@ -27,10 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.webstar.generated.models.Classfication;
 import com.webstar.models.UserDetails;
+import com.webstar.models.UserSubmissions;
 import com.webstar.services.IEmailService;
 import com.webstar.services.IUserService;
 import com.webstar.util.Categories;
@@ -53,7 +50,7 @@ public class UserController
     private IEmailService emailService;
 
     @RequestMapping( "/" )
-    public String home()
+    public String home(HttpServletResponse response, HttpServletRequest request) throws IOException
     {
         return Views.HOME_PAGE;
     }
@@ -65,33 +62,30 @@ public class UserController
         return Views.ABOUT_PAGE;
     }
 
-    @RequestMapping( value = "/myhome", method = { RequestMethod.GET, RequestMethod.POST } )
-    public String myhome(String email, String password, Model model, HttpServletResponse response,
-        HttpServletRequest request)
+    @RequestMapping( value = "/categories", method = RequestMethod.GET, produces = { "application/json" } )
+    public @ResponseBody Map<String, String> getCategories()
     {
-        String nameEmail = userService.readNameEmailFromCookie(request);
+        return Categories.getCategories();
+    }
 
-        if (nameEmail == null || nameEmail.isEmpty()) {
-            Optional<UserDetails> user = userService.isUserAuthenticated(email, password);
-            if (!user.isPresent()) {
-                model.addAttribute("loginError", Constants.LOGIN_FAIL_MSG);
-                return Views.HOME_PAGE;
-            } else {
-                String cookieValue = email + "_" + user.get().getFirstName();
-                String encodedCookie = "";
-                try {
-                    userService.updateLastLoggedTime(new Date(), email);
-                    encodedCookie = new String(Base64.encodeBase64(cookieValue.getBytes(CHARSET)));
-                } catch (UnsupportedEncodingException e) {}
-                response.addCookie(new Cookie(Constants.WEBSTAR_COOKIE_AUTH, encodedCookie));
-                // if cookie is disabled, hidden form to maintain session
-                model.addAttribute("nameEmail", email + "_" + user.get().getFirstName());
-            }
+    @RequestMapping( value = "/subcategories", method = RequestMethod.GET )
+    public @ResponseBody String getSubCategoryByKey(@RequestParam( "category" ) String category)
+    {
+        return Categories.getSubCategoryByKey(category);
+    }
+
+    @RequestMapping( value = "/reset", method = RequestMethod.GET )
+    public ModelAndView resetPasswordPage(ModelAndView modelAndView, @RequestParam( "token" ) String token)
+    {
+
+        Optional<UserDetails> user = userService.findUserbyToken(token);
+        if (user.isPresent()) {
+            modelAndView.addObject("resetToken", token);
         } else {
-            model.addAttribute("nameEmail", nameEmail);
+            modelAndView.addObject("resetTokenError", "Oops ! Password reset link is either expired or invalid !");
         }
-        return Views.MY_HOME_PAGE;
-
+        modelAndView.setViewName(Views.RESET_PASSWORD);
+        return modelAndView;
     }
 
     @RequestMapping( value = "/register", method = RequestMethod.GET )
@@ -138,18 +132,36 @@ public class UserController
         return Views.FORGOT_PASSWORD;
     }
 
-    @RequestMapping( value = "/reset", method = RequestMethod.GET )
-    public ModelAndView resetPasswordPage(ModelAndView modelAndView, @RequestParam( "token" ) String token)
+    @RequestMapping( value = "/myhome", method = { RequestMethod.GET, RequestMethod.POST } )
+    public String myhome(String email, String password, Model model, HttpServletResponse response,
+        HttpServletRequest request)
     {
-
-        Optional<UserDetails> user = userService.findUserbyToken(token);
-        if (user.isPresent()) {
-            modelAndView.addObject("resetToken", token);
+        Optional<UserDetails> user = userService.isUserAuthenticated(email, password);
+        if (!user.isPresent()) {
+            return "redirect:/?loginError=true";
         } else {
-            modelAndView.addObject("resetTokenError", "Oops ! Password reset link is either expired or invalid !");
+            String cookieValue = email + "_" + user.get().getFirstName();
+            String encodedCookie = "";
+            try {
+                userService.updateLastLoggedTime(new Date(), email);
+                encodedCookie = new String(Base64.encodeBase64(cookieValue.getBytes(CHARSET)));
+            } catch (UnsupportedEncodingException e) {}
+            response.addCookie(new Cookie(Constants.WEBSTAR_COOKIE_AUTH, encodedCookie));
+            return "redirect:/myhomepage";
         }
-        modelAndView.setViewName(Views.RESET_PASSWORD);
-        return modelAndView;
+
+    }
+
+    @RequestMapping( value = "/myhomepage", method = { RequestMethod.GET, RequestMethod.POST } )
+    public String myhomepage(Model model, HttpServletRequest request)
+    {
+        String nameEmail = userService.readNameEmailFromCookie(request);
+        if (nameEmail.isEmpty() || nameEmail == null) {
+            return "redirect:/?loginError=true";
+        }
+        model.addAttribute("usersubmissions", new UserSubmissions());
+        model.addAttribute("nameEmail", nameEmail);
+        return Views.MY_HOME_PAGE;
     }
 
     @RequestMapping( value = "/reset", method = RequestMethod.POST )
@@ -179,18 +191,6 @@ public class UserController
         }
         modelAndView.setViewName(Views.RESET_PASSWORD);
         return modelAndView;
-    }
-
-    @RequestMapping( value = "/categories", method = RequestMethod.GET, produces = { "application/json" } )
-    public @ResponseBody Map<String, String> getCategories()
-    {
-        return Categories.getCategories();
-    }
-
-    @RequestMapping( value = "/subcategories", method = RequestMethod.GET )
-    public @ResponseBody String getSubCategoryByKey(@RequestParam( "category" ) String category)
-    {
-        return Categories.getSubCategoryByKey(category);
     }
 
     @RequestMapping( value = "/register", method = RequestMethod.POST )
@@ -247,4 +247,14 @@ public class UserController
         }
         return modelAndView;
     }
+
+    @RequestMapping( value = "/post", method = { RequestMethod.POST, RequestMethod.GET } )
+    public String submitpost(@ModelAttribute( "usersubmissions" ) UserSubmissions usersubmissions)
+    {
+        System.out.println("HELLO:" + usersubmissions.getContents() + "  " + usersubmissions.getCategory() + " "
+            + usersubmissions.getSubcategory());
+
+        return "redirect:/myhomepage";
+    }
+
 }

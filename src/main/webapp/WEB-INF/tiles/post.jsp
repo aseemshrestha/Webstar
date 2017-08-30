@@ -1,9 +1,9 @@
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="stylesheet" type="text/css"
 	href="${contextRoot}/css/jquery.emojipicker.css">
 <script type="text/javascript"
 	src="${contextRoot}/js/jquery.emojipicker.js"></script>
-
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!-- Emoji Data -->
 <link rel="stylesheet" type="text/css"
 	href="${contextRoot}/css/jquery.emojipicker.a.css">
@@ -56,44 +56,43 @@ img.portimg {
     max-height: 200px;
 }
 </style>
-
+<c:url var="home" value="/" scope="request" />
 <div id="post-contents" title="Compose your new post"
 	style="display: none">
 	<br />
   
      <span id="error_post" class="alert alert-danger no-margin" style="display:none">Post message is required.</span>    
      <span id="error_video" class="alert alert-danger no-margin" style="display:none">Invalid video url.</span><br />
-  
-   <form class="form-base-2" role="form">
+     <form:form modelAttribute="usersubmissions" action="/post" method="POST" class="form-base-2" role="form" id="post_form">
+
 		<div class="form-group has-feedback">
-			<textarea name="postmsg"
-				class="form-control form-control-lg emojiable-question" cols="5"
-				rows="5" placeholder="What's up" maxlength="200" required id="ta-post-1"
-				style="width: 695px;!important"></textarea>
-			   <small><span id="allowed" style="float:right;margin-right:5px;"></span></small>
+			<form:textarea path="contents" class="form-control form-control-lg emojiable-question" cols="5" rows="5" placeholder="What's up" maxlength="200"  id="ta-post-1" style="width: 695px;!important" />
+			<small><span id="allowed" style="float:right;margin-right:5px;"></span></small>
 		</div>
 		<div class="col-sm-13">
 			<div class="form-group has-feedback">
-				<label for="" class="text-uppercase">Pick a Category</label> <select
-					class="form-control form-control-lg selectpicker">
-					<option>Any</option>
-					<option>Any1</option>
-				</select>
+				<label for="" class="text-uppercase">Pick a Category</label> 
+				<form:select path="category" class="form-control form-control-lg selectpicker" id="cat_dd" />
+				<div class="help-block with-errors"></div>
+			</div>
+		</div>
+	   <div class="col-sm-13">
+			<div class="form-group has-feedback">
+				<label for="" class="text-uppercase">Pick a Sub Category</label>
+				 <form:select path="subcategory" class="form-control form-control-lg selectpicker" id="subcat_dd"/>
 				<div class="help-block with-errors"></div>
 			</div>
 		</div>
 		<div class="col-sm-13">
 			<div class="form-group has-feedback">
 				<label for="" class="text-uppercase">Add Video Link ( if
-					any -Youtube/Vimeo supported )</label> <input type="text" id="videoLinks"
-					class="form-control form-control-lg selectpicker"
-					placeholder="Audio Video links">
+					any -Youtube/Vimeo supported )</label> 
+					<form:input type="text" path="videoUrl" id="videoLinks" class="form-control form-control-lg selectpicker" placeholder="Audio Video links"/>
 			</div>
 		</div>
 		<hr />
 
-		<a href="javascript:void(0)" class="btn btn-styled btn-md btn-base-2"
-			style="float: right" id="post_submit">POST</a>
+		
 			
 		<div class="imgUpload">
 			     <label for="fileInput"> 
@@ -108,8 +107,8 @@ img.portimg {
                  </div>
 		</div>
 
-
-	</form>
+	<a href="javascript:void(0)" class="btn btn-styled btn-md btn-base-2" style="float: right" id="post_submit">POST</a>
+	</form:form>
 </div>
 <script type="text/javascript">
 	$(document).ready(function(e) {

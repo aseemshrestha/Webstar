@@ -5,7 +5,9 @@ var ThreadWidget = {
 		postContents : $("#post-contents"),
 		postSubmit : $("#post_submit"),
 		textAreaPost : $("#ta-post-1"),
-		videoLinks : $("#videoLinks")
+		videoLinks : $("#videoLinks"),
+		category : $("#cat_dd"),
+		subcategory : $("#subcat_dd")
 
 	},
 
@@ -17,11 +19,47 @@ var ThreadWidget = {
 	bindUIActions : function() {
 		APP_THREAD.btnPost.on("click", function() {
 			ThreadWidget.buildDialog(APP_THREAD.postContents);
+			$.ajax({
+				type : "GET",
+				url : "/categories",
+				success : function(data) {
+					APP_THREAD.category.empty();
+					APP_THREAD.category.append($("<option></option>").attr("value", '').text('Please select'));
+					$.each(data, function(value, key) {
+						APP_THREAD.category.append($("<option></option>").attr("value", value).text(key));
+					});
+				},
+				error : function(e) {
+					console.log("error:", e);
+				}
+			})
 		});
 		APP_THREAD.postSubmit.on("click", function() {
 			ThreadWidget.submitPost();
 		});
+		APP_THREAD.category.on("change", function() {
+			ThreadWidget.showSubCategories();
+		});
 	},
+	showSubCategories : function() {
+        var key = APP_THREAD.category.val();
+    	$.ajax({
+			type : "GET",
+			url : "/subcategories?category="+key,
+			success : function(data) {
+			    var items = data.split(","); 
+			    APP_THREAD.subcategory.empty();
+				APP_THREAD.subcategory.append($("<option></option>").attr("value", '').text('Please select'));
+				for(var i=0;i<items.length;i++){
+					APP_THREAD.subcategory.append($("<option></option>").attr("value", items[i]).text(items[i]));
+				}
+			},
+			error : function(e) {
+				console.log("error:", e);
+			}
+		})
+	},
+
 	validateVideoLinks : function(url) {
 		url.match(/^http:\/\/(?:.*?)\.?(youtube|vimeo)\.com\/(watch\?[^#]*v=(\w+)|(\d+)).+$/);
 		return {
@@ -30,26 +68,25 @@ var ThreadWidget = {
 		}
 	},
 	submitPost : function() {
-		var hasErros = false;
 		if (APP_THREAD.textAreaPost.val() == "") {
 			$("#error_post").show();
 			$("#error_video").hide()
-			hasErrors = true;
-		}
-		
+			return;
+     	}
+        if(APP_THREAD.category.val()=="" || APP_THREAD.subcategory.val()==""){
+        	$("#error_post").val('Category and respective subcateogy is required.');
+        	return;
+        }
 		if (APP_THREAD.videoLinks.val() != "") {
 			var obj = ThreadWidget.validateVideoLinks(APP_THREAD.videoLinks.val());
 			if (obj.provider == "" || obj.id == "") {
 				$("#error_video").show();
 				$("#error_post").hide();
-                hasErrors = true; 
+				return;
 			}
 		}
-		if (hasErrors) {
-			return;
-		} else {
-			alert("all good");
-			return;
+	  else {
+			$("#post_form").submit();
 		}
 	},
 	buildDialog : function(div) {
@@ -67,7 +104,7 @@ var ThreadWidget = {
 				within : $("body")
 			},
 			closeOnEscape : false,
-			close: function( event, ui ) {
+			close : function(event, ui) {
 				$("#error_video").hide();
 				$("#error_post").hide();
 			},

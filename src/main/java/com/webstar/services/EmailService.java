@@ -7,7 +7,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class EmailService implements IEmailService
 {
@@ -24,7 +23,7 @@ public class EmailService implements IEmailService
         mailMessage.setText(message);
         mailMessage.setFrom(fromEmail);
         try {
-           // javaMailSender.send(mailMessage);
+            javaMailSender.send(mailMessage);
         } catch (Exception ex) {
             LOG.debug("[EmailService][sendmail]Exception sending the mail", ex);
         }
