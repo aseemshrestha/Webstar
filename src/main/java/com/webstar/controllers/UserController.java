@@ -2,6 +2,9 @@ package com.webstar.controllers;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
@@ -24,11 +27,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.webstar.models.UserDetails;
 import com.webstar.models.UserSubmissions;
 import com.webstar.services.IEmailService;
+import com.webstar.services.ISubmissionService;
 import com.webstar.services.IUserService;
 import com.webstar.util.Categories;
 import com.webstar.util.Constants;
@@ -42,9 +47,13 @@ public class UserController
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     public static final String CHARSET = "ISO-8859-1";
+    private static String UPLOADED_FOLDER = "//pics//";
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private ISubmissionService subService;
 
     @Autowired
     private IEmailService emailService;
@@ -140,7 +149,7 @@ public class UserController
         if (!user.isPresent()) {
             return "redirect:/?loginError=true";
         } else {
-            String cookieValue = email + "_" + user.get().getFirstName();
+            String cookieValue = email + "@@" + user.get().getFirstName()+"@@"+user.get().getId();
             String encodedCookie = "";
             try {
                 userService.updateLastLoggedTime(new Date(), email);
@@ -249,11 +258,35 @@ public class UserController
     }
 
     @RequestMapping( value = "/post", method = { RequestMethod.POST, RequestMethod.GET } )
-    public String submitpost(@ModelAttribute( "usersubmissions" ) UserSubmissions usersubmissions)
+    public String submitpost(@RequestParam( "file" ) MultipartFile file,
+        @ModelAttribute( "usersubmissions" ) UserSubmissions usersubmissions, HttpServletRequest request)
     {
-        System.out.println("HELLO:" + usersubmissions.getContents() + "  " + usersubmissions.getCategory() + " "
-            + usersubmissions.getSubcategory());
-
+        if(userService.readNameEmailFromCookie(request).isEmpty()){
+            return "redirect:/"; 
+        }
+        try {
+            if (!file.isEmpty()) {
+                String absPath = request.getServletContext().getRealPath("/");
+                byte[] bytes = file.getBytes();
+                Path path = Paths.get(absPath + UPLOADED_FOLDER + file.getOriginalFilename());
+                usersubmissions.setImageUrl(path.toString());
+                Files.write(path, bytes);
+            }
+        } catch (IOException e) {
+            LOG.debug("[UserController:SubmitPost]Exception while trying to upload the file", e);
+        }
+        UserDetails userDetail = new UserDetails();
+        usersubmissions.setSubmittiedDate(new Date());
+        usersubmissions.setIp(request.getRemoteAddr());
+        usersubmissions.setIsActivePost(1);
+        usersubmissions.setUpdatedDate(new Date());
+        userDetail.setId(Long.parseLong(userService.readNameEmailFromCookie(request).split("@@")[2]));
+        usersubmissions.setUserDetails(userDetail);
+         try {
+            subService.save(usersubmissions);
+        } catch (Exception ex) {
+            LOG.debug("[UserController:SubmitPost]Exception while to save submissions to db", ex);
+        }
         return "redirect:/myhomepage";
     }
 

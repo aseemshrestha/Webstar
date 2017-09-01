@@ -29,9 +29,6 @@ public class UserService implements IUserService
     @Transactional
     public void save(UserDetails userDetails)
     {
-
-        //use hash because of its one way - no decryption
-        // String hashedPassword = Security.generateHash(Security.SALT.concat(password));
         String passwordHash = Security.generateHash(Security.SALT.concat(userDetails.getPassword()));
         userDetails.setPassword(passwordHash);
         userDetails.setPasswordConfirm(passwordHash);

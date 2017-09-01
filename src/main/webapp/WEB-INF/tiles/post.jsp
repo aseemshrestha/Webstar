@@ -7,6 +7,11 @@
 <!-- Emoji Data -->
 <link rel="stylesheet" type="text/css"
 	href="${contextRoot}/css/jquery.emojipicker.a.css">
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<c:set var="name" value="${fn:split(nameEmail,'@@')[1]}" />
+<c:set var="email" value="${fn:split(nameEmail,'@@')[2]}" />
+
 <script type="text/javascript"
 	src="${contextRoot}/js/jquery.emojipicker.a.js"></script>
 <style>
@@ -61,10 +66,11 @@ img.portimg {
 	style="display: none">
 	<br />
   
-     <span id="error_post" class="alert alert-danger no-margin" style="display:none">Post message is required.</span>    
-     <span id="error_video" class="alert alert-danger no-margin" style="display:none">Invalid video url.</span><br />
-     <form:form modelAttribute="usersubmissions" action="/post" method="POST" class="form-base-2" role="form" id="post_form">
-
+     <span id="error_post" class="alert alert-danger no-margin" style="display:none"></span>    
+    
+     <br />
+     <form:form modelAttribute="usersubmissions" action="/post" method="POST" class="form-base-2" role="form" id="post_form" enctype="multipart/form-data">
+        <input type="hidden" type="text" name="email" value="${email}" />
 		<div class="form-group has-feedback">
 			<form:textarea path="contents" class="form-control form-control-lg emojiable-question" cols="5" rows="5" placeholder="What's up" maxlength="200"  id="ta-post-1" style="width: 695px;!important" />
 			<small><span id="allowed" style="float:right;margin-right:5px;"></span></small>
@@ -98,12 +104,12 @@ img.portimg {
 			     <label for="fileInput"> 
 			       <img src="../img/icons/upload.png" style="width: 30px;" />
 			     </label>
-				 <input type="file" id="fileInput" class="fileUpload" accept="image/jpeg, image/jpg,image/png, image/gif" name="postImg[]" style="display: none" /> 
+				 <input name="file" type="file" id="fileInput" class="fileUpload" accept="image/jpeg, image/jpg,image/png, image/gif" name="postImg[]" style="display: none" /> 
 				 <a href="javascript:void(0)" class="" style="float: left; margin-right: 10px;" id="emoji-1">
 				   <img src="../img/icons/emoji.png" style="width: 30px;" />
 				 </a>
 				 <div class="upload-demo">
-                           <div class="upload-demo-wrap"><img alt="your image" class="portimg" src="#"></div>
+                      <div class="upload-demo-wrap" id="img-place"><img alt="your image" class="portimg" src="#"></div>
                  </div>
 		</div>
 

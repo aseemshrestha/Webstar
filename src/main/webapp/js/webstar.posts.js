@@ -42,16 +42,17 @@ var ThreadWidget = {
 		});
 	},
 	showSubCategories : function() {
-        var key = APP_THREAD.category.val();
-    	$.ajax({
+		var key = APP_THREAD.category.val();
+		$.ajax({
 			type : "GET",
-			url : "/subcategories?category="+key,
+			url : "/subcategories?category=" + key,
 			success : function(data) {
-			    var items = data.split(","); 
-			    APP_THREAD.subcategory.empty();
+				var items = data.split(",");
+				APP_THREAD.subcategory.empty();
 				APP_THREAD.subcategory.append($("<option></option>").attr("value", '').text('Please select'));
-				for(var i=0;i<items.length;i++){
-					APP_THREAD.subcategory.append($("<option></option>").attr("value", items[i]).text(items[i]));
+				for (var i = 0; i < items.length; i++) {
+					APP_THREAD.subcategory.append($("<option></option>").attr(
+							"value", items[i]).text(items[i]));
 				}
 			},
 			error : function(e) {
@@ -61,31 +62,28 @@ var ThreadWidget = {
 	},
 
 	validateVideoLinks : function(url) {
-		url.match(/^http:\/\/(?:.*?)\.?(youtube|vimeo)\.com\/(watch\?[^#]*v=(\w+)|(\d+)).+$/);
-		return {
-			provider : RegExp.$1,
-			id : RegExp.$1 == 'vimeo' ? RegExp.$2 : RegExp.$3
-		}
+		var regU = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+		var regv =  /^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/;
+		return (url.match(regU) || url.match(regv)) ? true /* RegExp.$*1 */: false;
 	},
+  
 	submitPost : function() {
+		var errorpost = $("#error_post");
+		errorpost.html('');
 		if (APP_THREAD.textAreaPost.val() == "") {
-			$("#error_post").show();
-			$("#error_video").hide()
+			errorpost.html('Post contents is required.').show();
 			return;
-     	}
-        if(APP_THREAD.category.val()=="" || APP_THREAD.subcategory.val()==""){
-        	$("#error_post").val('Category and respective subcateogy is required.');
-        	return;
-        }
-		if (APP_THREAD.videoLinks.val() != "") {
-			var obj = ThreadWidget.validateVideoLinks(APP_THREAD.videoLinks.val());
-			if (obj.provider == "" || obj.id == "") {
-				$("#error_video").show();
-				$("#error_post").hide();
-				return;
-			}
 		}
-	  else {
+		if (APP_THREAD.category.val() == ""
+				|| APP_THREAD.subcategory.val() == "") {
+			errorpost.html('Category and respective subcateogy is required.').show();
+			return;
+		}
+		if (APP_THREAD.videoLinks.val() != "" && !ThreadWidget.validateVideoLinks(APP_THREAD.videoLinks.val())) {
+			errorpost.append("Incorrect video url.").show();
+			return;
+
+		} else {
 			$("#post_form").submit();
 		}
 	},
@@ -105,7 +103,6 @@ var ThreadWidget = {
 			},
 			closeOnEscape : false,
 			close : function(event, ui) {
-				$("#error_video").hide();
 				$("#error_post").hide();
 			},
 			buttons : {}

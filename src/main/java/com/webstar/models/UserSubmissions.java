@@ -7,16 +7,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
+
 @Entity
-@Table( indexes = { @Index( name = "IDX_USER_SUBMISSIONS", columnList = "email" ) } )
+//@Table( indexes = { @Index( name = "IDX_USER_SUBMISSIONS", columnList = "email" ) } )
 public class UserSubmissions
 {
     @Id
@@ -47,12 +46,15 @@ public class UserSubmissions
 
     private Date deletedDate;
 
-    private String isActivePost;
+    private int isActivePost;
 
-    @ManyToOne( fetch = FetchType.LAZY )
-    @JoinColumn( name = "email" )
-    private UserDetails userDetail;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID")
+    private UserDetails userDetails;
 
+    public UserSubmissions()
+    {}
+   
     public Long getId()
     {
         return Id;
@@ -153,24 +155,25 @@ public class UserSubmissions
         this.deletedDate = deletedDate;
     }
 
-    public String getIsActivePost()
+    public int getIsActivePost()
     {
         return isActivePost;
     }
 
-    public void setIsActivePost(String isActivePost)
+    public void setIsActivePost(int isActivePost)
     {
         this.isActivePost = isActivePost;
     }
 
-    public UserDetails getUserDetail()
+    public UserDetails getUserDetails()
     {
-        return userDetail;
+        return userDetails;
     }
 
-    public void setUserDetail(UserDetails userDetail)
+    public void setUserDetails(UserDetails userDetails)
     {
-        this.userDetail = userDetail;
+        this.userDetails = userDetails;
     }
 
+   
 }

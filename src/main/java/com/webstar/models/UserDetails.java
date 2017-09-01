@@ -44,7 +44,7 @@ public class UserDetails
     private Date registrationDate;
 
     private int userStatus;
-  
+
     @Temporal( TemporalType.TIMESTAMP )
     private Date lastLoggedIn;
 
@@ -56,19 +56,6 @@ public class UserDetails
 
     public UserDetails()
     {}
-
-    public UserDetails(String firstName, String lastName, String email, String phone, String password,
-        Date registrationDate, String ipAddress)
-    {
-        super();
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-        this.password = password;
-        this.registrationDate = registrationDate;
-        this.ipAddress = ipAddress;
-    }
 
     @PrePersist
     protected void onCreate()
