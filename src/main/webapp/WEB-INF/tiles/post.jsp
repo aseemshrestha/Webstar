@@ -8,10 +8,6 @@
 <link rel="stylesheet" type="text/css"
 	href="${contextRoot}/css/jquery.emojipicker.a.css">
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<c:set var="name" value="${fn:split(nameEmail,'@@')[1]}" />
-<c:set var="email" value="${fn:split(nameEmail,'@@')[2]}" />
-
 <script type="text/javascript"
 	src="${contextRoot}/js/jquery.emojipicker.a.js"></script>
 <style>

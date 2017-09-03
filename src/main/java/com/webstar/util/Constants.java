@@ -13,8 +13,12 @@ public class Constants
     public static final String EMAIL_EXISTS = "Email already exists.";
     public static final String HIDDEN_FORM_ATTRIBUTE_SESSION = "nameEmail";
     
+    public static final String IMG_PATH = "//pics//";
+    public static final String IMG_PATH_FOLDER = "pics";
+    
     //email
     public static final String FROM_EMAIL = "support@webstar.com";
+    
     
     public static final String REGISTRATION_MESSAGE ="\nWelcome! Thank you for registering with us. This email is just a reminder that you have successfully "
         + "registered and you account is activated.\n"

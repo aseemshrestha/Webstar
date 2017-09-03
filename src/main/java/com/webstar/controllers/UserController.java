@@ -1,5 +1,6 @@
 package com.webstar.controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
@@ -47,7 +48,7 @@ public class UserController
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     public static final String CHARSET = "ISO-8859-1";
-    private static String UPLOADED_FOLDER = "//pics//";
+    //private static String UPLOADED_FOLDER = "//pics//";
 
     @Autowired
     private IUserService userService;
@@ -149,7 +150,7 @@ public class UserController
         if (!user.isPresent()) {
             return "redirect:/?loginError=true";
         } else {
-            String cookieValue = email + "@@" + user.get().getFirstName()+"@@"+user.get().getId();
+            String cookieValue = email + "###" + user.get().getFirstName() + "###" + user.get().getId();
             String encodedCookie = "";
             try {
                 userService.updateLastLoggedTime(new Date(), email);
@@ -168,6 +169,8 @@ public class UserController
         if (nameEmail.isEmpty() || nameEmail == null) {
             return "redirect:/?loginError=true";
         }
+        model.addAttribute("categories", Categories.getCategories());
+        model.addAttribute("recentPosts", subService.getRecentPosts(25, 0));
         model.addAttribute("usersubmissions", new UserSubmissions());
         model.addAttribute("nameEmail", nameEmail);
         return Views.MY_HOME_PAGE;
@@ -261,14 +264,18 @@ public class UserController
     public String submitpost(@RequestParam( "file" ) MultipartFile file,
         @ModelAttribute( "usersubmissions" ) UserSubmissions usersubmissions, HttpServletRequest request)
     {
-        if(userService.readNameEmailFromCookie(request).isEmpty()){
-            return "redirect:/"; 
+        if (userService.readNameEmailFromCookie(request).isEmpty()) {
+            return "redirect:/";
         }
         try {
             if (!file.isEmpty()) {
+                File fileSaveDir = new File(Constants.IMG_PATH);
+                if (!fileSaveDir.exists()) {
+                    fileSaveDir.mkdir();
+                }
                 String absPath = request.getServletContext().getRealPath("/");
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(absPath + UPLOADED_FOLDER + file.getOriginalFilename());
+                Path path = Paths.get(absPath + Constants.IMG_PATH + file.getOriginalFilename());
                 usersubmissions.setImageUrl(path.toString());
                 Files.write(path, bytes);
             }
@@ -280,9 +287,9 @@ public class UserController
         usersubmissions.setIp(request.getRemoteAddr());
         usersubmissions.setIsActivePost(1);
         usersubmissions.setUpdatedDate(new Date());
-        userDetail.setId(Long.parseLong(userService.readNameEmailFromCookie(request).split("@@")[2]));
+        userDetail.setId(Long.parseLong(userService.readNameEmailFromCookie(request).split("###")[2]));
         usersubmissions.setUserDetails(userDetail);
-         try {
+        try {
             subService.save(usersubmissions);
         } catch (Exception ex) {
             LOG.debug("[UserController:SubmitPost]Exception while to save submissions to db", ex);

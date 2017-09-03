@@ -51,8 +51,7 @@ var ThreadWidget = {
 				APP_THREAD.subcategory.empty();
 				APP_THREAD.subcategory.append($("<option></option>").attr("value", '').text('Please select'));
 				for (var i = 0; i < items.length; i++) {
-					APP_THREAD.subcategory.append($("<option></option>").attr(
-							"value", items[i]).text(items[i]));
+					APP_THREAD.subcategory.append($("<option></option>").attr("value", items[i]).text(items[i]));
 				}
 			},
 			error : function(e) {
@@ -96,8 +95,8 @@ var ThreadWidget = {
 			resizable : true,
 			autoOpen : true,
 			position : {
-				my : isMobile == true ? "top-500" : "top-200",
-				at : "center",
+				my : isMobile == true ? "bottom-300" : "top",
+				at : "top",
 				of : $("body"),
 				within : $("body")
 			},
