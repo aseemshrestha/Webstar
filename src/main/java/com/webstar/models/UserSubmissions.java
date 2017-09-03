@@ -1,5 +1,7 @@
 package com.webstar.models;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -13,6 +15,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
+import com.webstar.util.Constants;
+import com.webstar.util.TimeLapse;
+import com.webstar.util.Utils;
 
 @Entity
 //@Table( indexes = { @Index( name = "IDX_USER_SUBMISSIONS", columnList = "email" ) } )
@@ -48,13 +53,13 @@ public class UserSubmissions
 
     private int isActivePost;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
+    @ManyToOne( fetch = FetchType.LAZY )
+    @JoinColumn( name = "USER_ID" )
     private UserDetails userDetails;
 
     public UserSubmissions()
     {}
-   
+
     public Long getId()
     {
         return Id;
@@ -97,7 +102,22 @@ public class UserSubmissions
 
     public String getVideoUrl()
     {
-        return videoUrl;
+        String videoId = "";
+        if (videoUrl != null && !videoUrl.isEmpty()) {
+            if (videoUrl.contains("youtube")) {
+                if (videoUrl.contains("?v=")) {
+                    videoId = "Y-"+videoUrl.substring(videoUrl.indexOf("?v=") + 3, videoUrl.length());
+                }
+                if (videoUrl.contains("/embed/")) {
+                    videoId = "Y-"+videoUrl.split("/embed/")[1];
+                }
+                //  return videoId;
+            }
+            if (videoUrl.contains("vimeo")) {
+                videoId = "V-"+videoUrl.split("vimeo.com/")[1];
+            }
+        }
+        return videoId;
     }
 
     public void setVideoUrl(String videoUrl)
@@ -107,6 +127,11 @@ public class UserSubmissions
 
     public String getImageUrl()
     {
+        if (imageUrl != null) {
+            int index = imageUrl.indexOf(Constants.IMG_PATH_FOLDER);
+            int l = imageUrl.length();
+            return imageUrl.substring(index, l).replace("\\", "/");
+        }
         return imageUrl;
     }
 
@@ -128,6 +153,17 @@ public class UserSubmissions
     public Date getSubmittiedDate()
     {
         return submittiedDate;
+    }
+
+    public String getTimeLapse() throws ParseException
+    {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+        Date dateNow = new Date();
+
+        String n = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dateNow);
+        String n1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(getSubmittiedDate());
+        return TimeLapse.toRelative(format.parse(n1), format.parse(n));
+
     }
 
     public void setSubmittiedDate(Date submittiedDate)
@@ -175,5 +211,4 @@ public class UserSubmissions
         this.userDetails = userDetails;
     }
 
-   
 }
