@@ -54,46 +54,21 @@ img.portimg {
 }
 </style>
 <c:url var="home" value="/" scope="request" />
-<div id="post-contents" title="Compose your new post" style="display: none;">
+<div id="post-comments" title="Compose your comment" style="display: none;">
 	<br />
   
      <span id="error_post" class="alert alert-danger no-margin" style="display:none"></span>    
     
      <br />
-     <form:form modelAttribute="usersubmissions" action="/post" method="POST" class="form-base-2" role="form" id="post_form" enctype="multipart/form-data">
+     <form:form modelAttribute="usersubmissions" action="/post" method="POST" class="form-base-2" role="form" id="comment_form" enctype="multipart/form-data">
         <input type="hidden" type="text" name="email" value="${email}" />
 		 <div class="col-sm-13"> 
 		   <div class="form-group has-feedback">
-			<form:textarea path="contents" class="form-control form-control-lg selectpicker emojiable-question" cols="5" rows="5" placeholder="What's up" maxlength="200"  id="ta-post-1" />
+			<form:textarea path="contents" class="form-control form-control-lg selectpicker emojiable-question" cols="5" rows="5" placeholder="What's up" maxlength="200"  id="ta-comment-1"/>
 			<small><span id="allowed" style="float:right;margin-right:5px;"></span></small>
 	   	</div>
 		</div>
-		
-		<div class="col-sm-13">
-			<div class="form-group has-feedback">
-				<label for="" class="text-uppercase">Pick a Category</label> 
-				<form:select path="category" class="form-control form-control-lg selectpicker" id="cat_dd" />
-				<div class="help-block with-errors"></div>
-			</div>
-		</div>
-	   <div class="col-sm-13">
-			<div class="form-group has-feedback">
-				<label for="" class="text-uppercase">Pick a Sub Category</label>
-				 <form:select path="subcategory" class="form-control form-control-lg selectpicker" id="subcat_dd"/>
-				<div class="help-block with-errors"></div>
-			</div>
-		</div>
-		<div class="col-sm-13">
-			<div class="form-group has-feedback">
-				<label for="" class="text-uppercase">Add Video Link ( if
-					any -Youtube/Vimeo supported )</label> 
-					<form:input type="text" path="videoUrl" id="videoLinks" class="form-control form-control-lg selectpicker" placeholder="Audio Video links"/>
-			</div>
-		</div>
 		<hr />
-
-		
-			
 		<div class="imgUpload">
 			     <label for="fileInput"> 
 			       <img src="../img/icons/upload.png" style="width: 30px;" />
@@ -107,21 +82,22 @@ img.portimg {
                  </div>
 		</div>
 
-	<a href="javascript:void(0)" class="btn btn-styled btn-md btn-base-2" style="float: right" id="post_submit">POST</a>
+	<a href="javascript:void(0)" class="btn btn-styled btn-md btn-base-2" style="float: right" id="post_comment">POST</a>
 	</form:form>
 </div>
 <script type="text/javascript">
 	$(document).ready(function(e) {
 		var textMax = 200;
-		var textArea = $('#ta-post-1');
+		var textArea = $('#ta-comment-1');
 		var allowed = $('#allowed');
 		var isMobile = /iPhone|iPod|Android/i.test(navigator.userAgent);
-		console.log(isMobile);
+		
 		if(!isMobile){
-			$("#ta-post-1").css('width','674px');
+			$("#ta-comment-1").css('width','6px74');
 		}else{
-			$("#ta-post-1").css('width','320px');
+			$("#ta-comment-1").css('width','320px');
 		}
+
 		$('.emojiable-question').emojiPicker({
 			button : false
 		});

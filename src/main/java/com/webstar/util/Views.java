@@ -9,4 +9,5 @@ public class Views
     public static final String MY_ACCOUNT = "webstar.myaccount";
     public static final String FORGOT_PASSWORD = "webstar.forgotpassword";
     public static final String RESET_PASSWORD = "webstar.resetpassword";
+    public static final String PARTIAL = "webstar.partial";
 }

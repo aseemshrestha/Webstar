@@ -2628,7 +2628,7 @@ iframe {
   padding: 15px 20px 10px; }
 
 .st-profile {
-  background-image: url("../images/patterns/pattern-1.png");
+  background-image: url("../img/patterns/pattern-1.png");
   background-repeat: repeat;
   padding: 2rem; }
 
@@ -13777,15 +13777,15 @@ body {
   .body-wrap.body-boxed {
     width: 1000px; } }
 .body-bg-1 {
-  background: url("../images/patterns/pattern-1.png");
+  background: url("../img/patterns/pattern-1.png");
   background-repeat: repeat; }
 
 .body-bg-2 {
-  background: url("../images/patterns/pattern-2.png");
+  background: url("../img/patterns/pattern-2.png");
   background-repeat: repeat; }
 
 .body-bg-3 {
-  background: url("../images/patterns/pattern-3.png");
+  background: url("../img/patterns/pattern-3.png");
   background-repeat: repeat; }
 
 .same-height {

@@ -105,7 +105,7 @@
 <!-- App JS -->
 <script src="${contextRoot}/js/wpx.app.js"></script>
 <script src="${contextRoot}/js/webstar.posts.js"></script>
-
+<script src="${contextRoot}/js/webstar.page.js"></script>
 <script src="${contextRoot}/js/webstar.global.js"></script>
 
 

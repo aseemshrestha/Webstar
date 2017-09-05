@@ -7,6 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -48,7 +50,9 @@ public class UserController
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     public static final String CHARSET = "ISO-8859-1";
-    //private static String UPLOADED_FOLDER = "//pics//";
+    private Map<String, List<UserSubmissions>> postsMap = new HashMap<>();
+    private static final int BLOCKSIZE = 50; //update in webstar.posts.js as well
+    private static int OFFSET = 0;
 
     @Autowired
     private IUserService userService;
@@ -60,8 +64,12 @@ public class UserController
     private IEmailService emailService;
 
     @RequestMapping( "/" )
-    public String home(HttpServletResponse response, HttpServletRequest request) throws IOException
+    public String home(Model model, HttpServletResponse response, HttpServletRequest request) throws IOException
     {
+        if (postsMap.isEmpty()) {
+            postsMap.put("recent-posts", subService.getRecentPostsDesc(16, OFFSET).get());
+        }
+        model.addAttribute("recentPostsHome", postsMap);
         return Views.HOME_PAGE;
     }
 
@@ -70,18 +78,6 @@ public class UserController
     {
 
         return Views.ABOUT_PAGE;
-    }
-
-    @RequestMapping( value = "/categories", method = RequestMethod.GET, produces = { "application/json" } )
-    public @ResponseBody Map<String, String> getCategories()
-    {
-        return Categories.getCategories();
-    }
-
-    @RequestMapping( value = "/subcategories", method = RequestMethod.GET )
-    public @ResponseBody String getSubCategoryByKey(@RequestParam( "category" ) String category)
-    {
-        return Categories.getSubCategoryByKey(category);
     }
 
     @RequestMapping( value = "/reset", method = RequestMethod.GET )
@@ -170,7 +166,7 @@ public class UserController
             return "redirect:/?loginError=true";
         }
         model.addAttribute("categories", Categories.getCategories());
-        model.addAttribute("recentPosts", subService.getRecentPosts(25, 0));
+        model.addAttribute("recentPosts", subService.getRecentPostsDesc(BLOCKSIZE, OFFSET).get());
         model.addAttribute("usersubmissions", new UserSubmissions());
         model.addAttribute("nameEmail", nameEmail);
         return Views.MY_HOME_PAGE;
@@ -278,6 +274,7 @@ public class UserController
                 Path path = Paths.get(absPath + Constants.IMG_PATH + file.getOriginalFilename());
                 usersubmissions.setImageUrl(path.toString());
                 Files.write(path, bytes);
+
             }
         } catch (IOException e) {
             LOG.debug("[UserController:SubmitPost]Exception while trying to upload the file", e);
@@ -285,16 +282,54 @@ public class UserController
         UserDetails userDetail = new UserDetails();
         usersubmissions.setSubmittiedDate(new Date());
         usersubmissions.setIp(request.getRemoteAddr());
-        usersubmissions.setIsActivePost(1);
+        usersubmissions.setIsActivePost(Constants.ACTIVE);
         usersubmissions.setUpdatedDate(new Date());
         userDetail.setId(Long.parseLong(userService.readNameEmailFromCookie(request).split("###")[2]));
         usersubmissions.setUserDetails(userDetail);
         try {
             subService.save(usersubmissions);
+            postsMap.clear();
         } catch (Exception ex) {
             LOG.debug("[UserController:SubmitPost]Exception while to save submissions to db", ex);
         }
         return "redirect:/myhomepage";
+    }
+
+    @RequestMapping( value = "/loadMoreRecent", method = RequestMethod.GET, produces = { "application/json" } )
+    public @ResponseBody List<UserSubmissions> loadmore(@RequestParam( "blocksize" ) int blocksize,
+        @RequestParam( "offset" ) int offset, HttpServletResponse response)
+    {
+        Optional<List<UserSubmissions>> submissionsList = subService.getRecentPostsDesc(blocksize, offset);
+        return submissionsList.get();
+    }
+
+    @RequestMapping( value = "/categories", method = RequestMethod.GET, produces = { "application/json" } )
+    public @ResponseBody Map<String, String> getCategories()
+    {
+        return Categories.getCategories();
+    }
+
+    @RequestMapping( value = "/subcategories", method = RequestMethod.GET )
+    public @ResponseBody String getSubCategoryByKey(@RequestParam( "category" ) String category)
+    {
+        return Categories.getSubCategoryByKey(category);
+    }
+
+    @RequestMapping( value = "/bycategory", method = RequestMethod.GET )
+    public @ResponseBody List<UserSubmissions> filterByCateogry(@RequestParam( "category" ) String category,
+        Model model, HttpServletRequest request)
+    {
+        Optional<List<UserSubmissions>> submissions = subService.fetchByCategoryDesc(category, BLOCKSIZE, OFFSET);
+        return submissions.get();
+    }
+
+    @RequestMapping( value = "/loadMoreCategory", method = RequestMethod.GET, produces = { "application/json" } )
+    public @ResponseBody List<UserSubmissions> loadmoreByCategory(@RequestParam( "category" ) String category,
+        @RequestParam( "blocksize" ) int blocksize,
+        @RequestParam( "offset" ) int offset, HttpServletResponse response)
+    {
+        Optional<List<UserSubmissions>> submissionsList = subService.fetchByCategoryDesc(category, blocksize, offset);
+        return submissionsList.get();
     }
 
 }

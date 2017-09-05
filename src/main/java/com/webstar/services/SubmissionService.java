@@ -1,6 +1,7 @@
 package com.webstar.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -23,8 +24,16 @@ public class SubmissionService implements ISubmissionService
         submissionsRepo.save(submissions);
     }
 
-    public List<UserSubmissions> getRecentPosts(int limit, int offset)
+    public Optional<List<UserSubmissions>> getRecentPostsDesc(int limit, int offset)
     {
-        return submissionsRepo.fetchRecentPosts(limit, offset);
+        return submissionsRepo.fetchRecentPostsDesc(limit, offset);
     }
+
+    public Optional<List<UserSubmissions>> fetchByCategoryDesc(String category, int limit, int offset)
+    {
+        return submissionsRepo.findByCategoryOrderDesc(category, limit, offset);
+    }
+
+   
+
 }

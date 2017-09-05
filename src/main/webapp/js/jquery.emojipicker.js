@@ -44,9 +44,9 @@
     }
 
     // Do not enable if on mobile device (emojis already present)
-    if(!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    //if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
       this.init();
-    }
+    //}
 
   }
 
@@ -66,9 +66,9 @@
         elementHeight;
       var objectWidth = this.$el.width();
 
-      this.$el
-        .css('paddingRight', iconHeight + 10 + 'px')
-        .width(objectWidth - iconHeight - 10)
+     // this.$el
+       // .css('paddingRight', iconHeight + 10 + 'px')
+       // .width(objectWidth - iconHeight - 10)
 
       this.$wrapper = this.$el
         .wrap("<div class='emojiPickerIconWrap'></div>")

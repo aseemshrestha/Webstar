@@ -33,7 +33,8 @@ public class Categories
         SUB_CATEGORIES.put("Gaming", "Gaming1, Gaming2, Gaming3, Gaming4, Gaming5, Gaming6");
         SUB_CATEGORIES.put("Kids", "Kids1, Kids1, Kids2, Kids3");
         SUB_CATEGORIES.put("Lol", "Lol1, Lol2, Lol3, Lol4");
-        SUB_CATEGORIES.put("Music", "Music1, Music2, Music3, Music4");
+        SUB_CATEGORIES.put("Music", "Alternative Rock Ambient,Classical,Country,Dance & EDM,Dancehall, Deep House,Disco,Drum & Bass,Dubstep,Electronic,Folk,Hip-hop & Rap,House,Indie,Jazz & Blues"+
+        "Latin,Metal,Piano,Pop,R&B & Soul,Reggae,Reggaeton,Rock,Soundtrack,Techno,Trance,Trap,Triphop,World");
         SUB_CATEGORIES.put("Movies", "Movies1, Movies2, Movies3, Movies4, Movies5");
         SUB_CATEGORIES.put("News", "News1, News2");
         SUB_CATEGORIES.put("Photos", "Photos1, Photos2");

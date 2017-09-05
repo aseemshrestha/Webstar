@@ -5,22 +5,22 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
 import com.webstar.util.Constants;
 import com.webstar.util.TimeLapse;
-import com.webstar.util.Utils;
 
 @Entity
-//@Table( indexes = { @Index( name = "IDX_USER_SUBMISSIONS", columnList = "email" ) } )
+@Table( indexes = { @Index( name = "IDX_USER_CATEGORY", columnList = "category" ) } )
 public class UserSubmissions
 {
     @Id
@@ -53,7 +53,7 @@ public class UserSubmissions
 
     private int isActivePost;
 
-    @ManyToOne( fetch = FetchType.LAZY )
+    @ManyToOne
     @JoinColumn( name = "USER_ID" )
     private UserDetails userDetails;
 
@@ -106,15 +106,14 @@ public class UserSubmissions
         if (videoUrl != null && !videoUrl.isEmpty()) {
             if (videoUrl.contains("youtube")) {
                 if (videoUrl.contains("?v=")) {
-                    videoId = "Y-"+videoUrl.substring(videoUrl.indexOf("?v=") + 3, videoUrl.length());
+                    videoId = "$$-"+videoUrl.substring(videoUrl.indexOf("?v=") + 3, videoUrl.length());
                 }
                 if (videoUrl.contains("/embed/")) {
-                    videoId = "Y-"+videoUrl.split("/embed/")[1];
+                    videoId = "$$-"+videoUrl.split("/embed/")[1];
                 }
-                //  return videoId;
             }
             if (videoUrl.contains("vimeo")) {
-                videoId = "V-"+videoUrl.split("vimeo.com/")[1];
+                videoId = "##-"+videoUrl.split("vimeo.com/")[1];
             }
         }
         return videoId;

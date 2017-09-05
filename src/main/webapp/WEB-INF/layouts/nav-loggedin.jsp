@@ -21,7 +21,7 @@
 			<ul class="navbar-nav" data-hover="dropdown"
 				data-animations="zoomIn zoomIn zoomIn zoomIn">
 				<li class="nav-item"><a class="nav-link"
-					href="/myhome" aria-haspopup="true"
+					href="/myhomepage" aria-haspopup="true"
 					aria-expanded="false"> Home </a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="/myAccount" aria-haspopup="true"

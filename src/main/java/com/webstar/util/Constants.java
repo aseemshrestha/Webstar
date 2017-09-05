@@ -16,6 +16,7 @@ public class Constants
     public static final String IMG_PATH = "//pics//";
     public static final String IMG_PATH_FOLDER = "pics";
     
+   
     //email
     public static final String FROM_EMAIL = "support@webstar.com";
     
