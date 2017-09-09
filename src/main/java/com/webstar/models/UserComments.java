@@ -21,47 +21,43 @@ import com.webstar.util.Constants;
 import com.webstar.util.TimeLapse;
 
 @Entity
-@Table( indexes = { @Index( name = "IDX_USER_CATEGORY", columnList = "category" ),@Index( name = "IDX_USER_SUBMISSIONS", columnList = "USER_ID" )  } )
-public class UserSubmissions
+@Table( indexes = { @Index( name = "IDX_USER_COMMENTS", columnList = "POST_ID" ) } )
+public class UserComments
 {
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO )
     private Long Id;
 
     @Size( min = 1, max = 200, message = "required." )
-    private String contents;
-
-    @Size( min = 1, max = 50, message = "required." )
-    private String category;
-
-    @Size( min = 1, max = 50, message = "required." )
-    private String subcategory;
+    private String comments;
 
     private String videoUrl;
 
     private String imageUrl;
 
     private String Ip;
-    @Temporal( TemporalType.TIMESTAMP )
 
-    private Date submittiedDate;
     @Temporal( TemporalType.TIMESTAMP )
+    private Date commentedOn;
 
+    @Temporal( TemporalType.TIMESTAMP )
     private Date updatedDate;
-    @Temporal( TemporalType.TIMESTAMP )
 
+    @Temporal( TemporalType.TIMESTAMP )
     private Date deletedDate;
 
-    private int isActivePost;
+    private long commentedBy;
+    
+    private String commentedByName; 
 
     @ManyToOne
-    @JoinColumn( name = "USER_ID" )
-    private UserDetails userDetails;
-    
-    private int totalComments;
+    @JoinColumn( name = "POST_ID" )
+    private UserSubmissions userSubmissions;
 
-    public UserSubmissions()
-    {}
+    public UserComments()
+    {
+
+    }
 
     public Long getId()
     {
@@ -73,34 +69,14 @@ public class UserSubmissions
         Id = id;
     }
 
-    public String getContents()
+    public String getComments()
     {
-        return contents;
+        return comments;
     }
 
-    public void setContents(String contents)
+    public void setComments(String comments)
     {
-        this.contents = contents;
-    }
-
-    public String getCategory()
-    {
-        return category;
-    }
-
-    public void setCategory(String category)
-    {
-        this.category = category;
-    }
-
-    public String getSubcategory()
-    {
-        return subcategory;
-    }
-
-    public void setSubcategory(String subcategory)
-    {
-        this.subcategory = subcategory;
+        this.comments = comments;
     }
 
     public String getVideoUrl()
@@ -109,14 +85,14 @@ public class UserSubmissions
         if (videoUrl != null && !videoUrl.isEmpty()) {
             if (videoUrl.contains("youtube")) {
                 if (videoUrl.contains("?v=")) {
-                    videoId = "$$-"+videoUrl.substring(videoUrl.indexOf("?v=") + 3, videoUrl.length());
+                    videoId = "$$-" + videoUrl.substring(videoUrl.indexOf("?v=") + 3, videoUrl.length());
                 }
                 if (videoUrl.contains("/embed/")) {
-                    videoId = "$$-"+videoUrl.split("/embed/")[1];
+                    videoId = "$$-" + videoUrl.split("/embed/")[1];
                 }
             }
             if (videoUrl.contains("vimeo")) {
-                videoId = "##-"+videoUrl.split("vimeo.com/")[1];
+                videoId = "##-" + videoUrl.split("vimeo.com/")[1];
             }
         }
         return videoId;
@@ -152,25 +128,14 @@ public class UserSubmissions
         Ip = ip;
     }
 
-    public Date getSubmittiedDate()
+    public Date getCommentedOn()
     {
-        return submittiedDate;
+        return commentedOn;
     }
 
-    public String getTimeLapse() throws ParseException
+    public void setCommentedOn(Date commentedOn)
     {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
-        Date dateNow = new Date();
-
-        String n = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dateNow);
-        String n1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(getSubmittiedDate());
-        return TimeLapse.toRelative(format.parse(n1), format.parse(n));
-
-    }
-
-    public void setSubmittiedDate(Date submittiedDate)
-    {
-        this.submittiedDate = submittiedDate;
+        this.commentedOn = commentedOn;
     }
 
     public Date getUpdatedDate()
@@ -193,34 +158,47 @@ public class UserSubmissions
         this.deletedDate = deletedDate;
     }
 
-    public int getIsActivePost()
+    public UserSubmissions getUserSubmissions()
     {
-        return isActivePost;
+        return userSubmissions;
     }
 
-    public void setIsActivePost(int isActivePost)
+    public void setUserSubmissions(UserSubmissions userSubmissions)
     {
-        this.isActivePost = isActivePost;
+        this.userSubmissions = userSubmissions;
     }
 
-    public UserDetails getUserDetails()
+    public String getTimeLapse() throws ParseException
     {
-        return userDetails;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+        Date dateNow = new Date();
+
+        String n = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dateNow);
+        String n1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(getCommentedOn());
+        return TimeLapse.toRelative(format.parse(n1), format.parse(n));
+
     }
 
-    public void setUserDetails(UserDetails userDetails)
+    public long getCommentedBy()
     {
-        this.userDetails = userDetails;
+        return commentedBy;
     }
 
-    public int getTotalComments()
+    public void setCommentedBy(long commentedBy)
     {
-        return totalComments;
+        this.commentedBy = commentedBy;
     }
 
-    public void setTotalComments(int totalComments)
+    public String getCommentedByName()
     {
-        this.totalComments = totalComments;
+        return commentedByName;
     }
+
+    public void setCommentedByName(String commentedByName)
+    {
+        this.commentedByName = commentedByName;
+    }
+    
+   
 
 }

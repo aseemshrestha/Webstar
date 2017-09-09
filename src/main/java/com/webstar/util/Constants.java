@@ -16,11 +16,12 @@ public class Constants
     public static final String IMG_PATH = "//pics//";
     public static final String IMG_PATH_FOLDER = "pics";
     
+    public static final String COOKIE_SEPARATOR = "###";
    
     //email
     public static final String FROM_EMAIL = "support@webstar.com";
     
-    
+    public static final int BLOCKSIZE = 3;
     public static final String REGISTRATION_MESSAGE ="\nWelcome! Thank you for registering with us. This email is just a reminder that you have successfully "
         + "registered and you account is activated.\n"
         + "Should you have any feedback, please feel free to reach us at any time.\n\n"

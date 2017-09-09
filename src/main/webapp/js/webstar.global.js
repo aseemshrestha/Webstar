@@ -1,5 +1,5 @@
 (function() {
 	ThreadWidget.init();
-	//PageWidget.init();
+	PageWidget.init();
 
 })();

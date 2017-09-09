@@ -35,18 +35,18 @@
 					</div>
 				</div>
 			</div>
-
 			<div class="st-menu-list mt-2">
 				<ul>
 					<li><a href="#"> <i class="ion-ios-bookmarks-outline"></i>Theme documentation</a></li>
 					<li><a href="#"> <i class="ion-ios-cart-outline"></i>Purchase Tribus</a></li>
 				</ul>
 			</div>
-
 			<h3 class="st-menu-title">Account</h3>
 			<div class="st-menu-list">
 				<ul>
-					<li><a href="#"> <i class="ion-ios-person-outline"></i>User profile</a></li>
+					<li><a href="#"> <i class="ion-ios-person-outline"></i>
+							User profile
+					</a></li>
 					<li><a href="#"> <i class="ion-ios-location-outline"></i>My addresses</a></li>
 					<li><a href="#"> <i class="ion-card"></i> My cards</a></li>
 					<li><a href="#"> <i class="ion-ios-unlocked-outline"></i>Password update</a></li>
@@ -66,21 +66,15 @@
 		<div class="st-pusher">
 			<div class="st-content">
 				<div class="st-content-inner">
-
 					<!-- Top bar -->
 					<div class="top-navbar align-items-center">
 						<div class="container">
 							<div class="row align-items-center py-3">
 								<div class="col-4">
-								 
 									<form class="form-default form-inline my-2 my-md-0">
 										<input class="form-control mr-sm-2" type="text"placeholder="Search">
 										<button class="btn btn-base-1 my-2 my-sm-0" type="submit">Search</button>
 									</form>
-								</div>
-
-								<div class="col-sm-3">
-									<a href="javascript:void(0)" class="btn btn-styled btn-block btn-base-2"  onclick="ThreadWidget.buildPostWindow(event);">SUBMIT A NEW POST</a>
 								</div>
 							</div>
 						</div>
@@ -96,7 +90,7 @@
 								<ul class="navbar-nav " data-hover="dropdown" data-animations="zoomIn zoomIn zoomIn zoomIn">
 									<c:forEach var="category" items="${categories}" varStatus="position">
 										<li class="nav-item" style="padding: 5px 10px;!important">
-										   <h5 class="heading heading-5 strong-500"><a href="javascript:void(0);" id="${category.value}" onclick="ThreadWidget.loadPostsByCategory(event);">
+										   <h4 class="heading heading-4 strong-500"><a href="javascript:void(0);" id="${category.value}" onclick="ThreadWidget.loadPostsByCategory(event);">
 										        <c:choose>
 													  <c:when test="${param.category == category.value}">
 													    <strong>${category.value}</strong> 
@@ -106,14 +100,13 @@
 													  </c:otherwise>
 													</c:choose>
 										        </a>
-										   </h5>
+										   </h4>
 										</li>
 									</c:forEach>
 								</ul>
 							</div>
 						</div>
 					</nav>
-
 					<section class="slice sct-color-2" style="padding-top: 1em; padding-bottom: 1em;!important">
 						<div class="profile">
 							<div class="container">
@@ -128,19 +121,16 @@
 															<i class="ion ion-edit"></i>
 														</a>
 													</div>
-
 													<!-- Profile details -->
 													<div class="profile-details">
 														<h2 class="heading heading-3 strong-500 profile-name"><c:out value='${name}' /></h2>
 														<h3 class="heading heading-6 strong-400 profile-occupation mt-3"><c:out value='${email}' /></h3>
 													</div>
-
 													<!-- Profile connect -->
 													<div class="profile-connect mt-">
 														<a href="#" class="btn btn-styled btn-block btn-rounded btn-base-5">Follow</a>
 														<a href="#" class="btn btn-styled btn-block btn-rounded btn-base-2">Send message</a>
 													</div>
-
 													<!-- Profile stats -->
 													<div class="profile-stats clearfix">
 														<div class="stats-entry">
@@ -150,16 +140,12 @@
 															<span class="stats-count">1.3K</span> <span class="stats-label text-uppercase">Followers</span>
 														</div>
 													</div>
-
-													<!-- Profile connected accounts -->
 													<div class="profile-useful-links clearfix">
 														<div class="useful-links">
 															<a href="#"> <i class="icon ion-social-instagram-outline"></i></a> <a href="#"> <iclass="icon ion-social-linkedin-outline"></i>
-																
 															</a> <a href="#"> <i class="icon ion-earth"></i></a>
 														</div>
 													</div>
-
 													<div class="profile-useful-links clearfix">
 														<div class="useful-links">
 															<a href="#"> <i class="icon ion-code-download"></i></a>
@@ -167,31 +153,28 @@
 													</div>
 												</div>
 											</div>
-
 											<div class="widget">
 												<div class="card card-inverse bg-pink">
-													<div class="card-title"><h3 class="heading heading-6 strong-500">About me</h3></div>
+													<div class="card-title">
+														<h3 class="heading heading-6 strong-500">About me</h3>
+													</div>
 													<div class="card-body">
 														<div class="short-info">
 															<h4 class="short-info-label">Current position</h4>
 															<h3 class="short-info-title">Founder, Web Developer</h3>
 														</div>
-
 														<div class="short-info">
 															<h4 class="short-info-label">Previous position</h4>
 															<h3 class="short-info-title">Senior Developer</h3>
 														</div>
-
 														<div class="short-info">
 															<h4 class="short-info-label">Studied at</h4>
 															<h3 class="short-info-title">Harvard University</h3>
 														</div>
-
 														<div class="short-info">
 															<h4 class="short-info-label">Lives in</h4>
 															<h3 class="short-info-title">Bucharest, Romania</h3>
 														</div>
-
 														<div class="short-info">
 															<h4 class="short-info-label">Relationship</h4>
 															<h3 class="short-info-title">Single</h3>
@@ -199,83 +182,61 @@
 													</div>
 												</div>
 											</div>
-
 										</div>
 									</div>
 
-									<div class="col-lg-6" id="contents-div">
+									<div class="col-lg-6" id="contents-div-comment">
 										<div class="widget">
 											<div class="card z-depth-2-top">
-												<section class="slice sct-color-2" style="padding-top: 0em; padding-bottom: 0em;!important">
-													<div class="container">
-														<div class="row">
-															<div class="col-md-8 col-lg-9 offset-lg-0">
-																<div class="tabs tabs--style-2 tabs--centered"
-																	role="tabpanel">
-																	<!-- Nav tabs -->
-																	<ul class="nav nav-tabs justify-content-center"
-																		role="tablist">
-																		<li class="nav-item" role="presentation"><a href="#tabTwoCentered-1" aria-controls="home"
-																			role="tab" data-toggle="tab"
-																			class="nav-link active text-center text-uppercase strong-500">Recent
-																				Posts</a></li>
-																		<li class="nav-item" role="presentation"><a
-																			href="#tabTwoCentered-2" aria-controls="profile"
-																			role="tab" data-toggle="tab"
-																			class="nav-link text-center text-uppercase strong-500">Most
-																				Liked</a></li>
-																		<li class="nav-item" role="presentation"><a
-																			href="#tabTwoCentered-3" aria-controls="messages"
-																			role="tab" data-toggle="tab"
-																			class="nav-link text-center text-uppercase strong-500">Following</a></li>
-																	</ul>
-																</div>
-															</div>
-														</div>
-													</div>
+											<section class="slice sct-color-1" style="padding-top: 0em; padding-bottom: 0em;!important">
+												 <div class="container container-xs">
+						                            <div class="text-center">
+						                             <br />
+						                                <h3 class="heading heading-6 strong-400 text-normal"> ${post} </h3>
+						                                <h5 class="heading heading-xs c-gray-dark text-uppercase strong-500 letter-spacing-2 mb-0 mt-1">${category}</h5>
+						                                <span class="short-delimiter short-delimiter-center short-delimiter--style-1 short-delimiter-light short-delimiter-center short-delimiter-lg"></span>
+						                                <ul class="inline-links inline-links--style-2 mt-1">
+						                                   <li>${postedby}</li>
+						                                   <li> ${totalComments} <small>comments</small></li>
+						                                   <li><a href="javascript:void(0)"><i class="fa fa-comment"  id="${param.postid}" onclick="PageWidget.displayCommentWindow(event);"></i></a></li>
+						                                   <li><a href="/myhomepage"><i class="fa fa-arrow-left" aria-hidden="true"></i></a></li>
+						                                   
+						                                </ul>
+						                            </div>
+						                           </div>
 												</section>
-										
-										      <c:forEach var="recent" items="${recentPosts}" varStatus="position">
-													<div class="card-body" style="padding-left:0.5em;padding-top:0.5em;!important">
-													        <div class="block block-comment" style="margin-bottom: 0rem;!important">
-					                                            <div class="block-image">
-					                                                <img src="../img/prv/people/brin.jpg" class="img-square">
-					                                            </div>
-					                                          <div class="block-body">   
-					                                            <div class="block-body-inner"><h3 class="heading heading-6">${ recent.userDetails.firstName} ${ recent.userDetails.lastName} 
-					                                            <small>${recent.timeLapse}</small>
-					                                            <span style="float:right"> <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.category}</a>
-					                                             <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.subcategory}</a></span>
-					                          			       </h3>
-					                                            <p class="mb-4" style="margin-bottom:0px;!important">${recent.contents}</p>
-																	<c:if test="${recent.imageUrl ne null}">
-																		<img src="../${recent.imageUrl}" style="width: 100%; top: -0px;" />
-																	</c:if>
-																	<c:if test="${not empty recent.videoUrl}">
-																		<c:if test="${fn:startsWith(recent.videoUrl,'$$-') }">
-																			<iframe width="100%" height="315" src="https://www.youtube.com/embed/${ fn:split(recent.videoUrl,'$$-')[0] }"></iframe>
-																		</c:if>
-																		<c:if test="${fn:startsWith(recent.videoUrl,'##-') }">
-																			<iframe width="100%" height="315" src="https://player.vimeo.com/video/${ fn:split(recent.videoUrl,'##-')[0] }"></iframe>
-																		</c:if>
-																	</c:if>
-																	<div class="col-10">
-																		<ul class="inline-links inline-links--style-1" style='margin-left:-4%;'>
-																			<li><a href="#"> <i class="fa fa-heart"></i> 50</a></li>
-																			<li><a href="javascript:void(0)"><i class="fa fa-comment"  id="${recent.id}" onclick="PageWidget.displayCommentWindow(event);"></i></a>
-																			<li><a href="#"><i class="fa fa-retweet"></i> 50</a></li>
-																			<li><i class="fa fa-envelope"></i></li>
-																			<li><i class="fa fa-share" aria-hidden="true"></i></li>
-																			 <c:if test= "${ recent.totalComments gt  0 }">
-																			  <li><a href="/getcomments?postid=${recent.id}&offset=0">Show comments(${recent.totalComments })</a> </li>
+											     <c:if test="${not empty( commentsList ) }">
+											     <ul class="block-post-comments block-post-comments--style-1">
+											       <c:forEach var="recent" items="${commentsList}" varStatus="position">
+													<div class="card-body">
+													  <li>
+                                                            <div class="block block-comment">
+					                                            <div class="block-image"> <img src="../img/prv/people/person-2.jpg" class="img-circle"></div>
+					                                            <div class="block-body">
+					                                                <div class="block-body-inner">
+					                                                    <h3 class="heading heading-6"><a href="#">${recent.commentedByName}</a></h3>
+					                                                    <span class="comment-date">${recent.timeLapse}</span>
+					                                                    <p class="comment-text">${recent.comments}<br />
+					                                                    <c:if test="${recent.imageUrl ne null}"><img src="../${recent.imageUrl}" style="width: 100%; top: -0px;" /></c:if>
+																		<c:if test="${not empty recent.videoUrl}">
+																			<c:if test="${fn:startsWith(recent.videoUrl,'$$-') }">
+																				<iframe width="100%" height="315" src="https://www.youtube.com/embed/${ fn:split(recent.videoUrl,'$$-')[0] }"></iframe>
 																			</c:if>
-																		</ul>
-																   </div>
-														       </div>
-													         </div>
-														  </div>
-													   </div>
-												   </c:forEach>
+																			<c:if test="${fn:startsWith(recent.videoUrl,'##-') }">
+																				<iframe width="100%" height="315" src="https://player.vimeo.com/video/${ fn:split(recent.videoUrl,'##-')[0] }"></iframe>
+																			</c:if>
+																		</c:if>
+					                                                    </p>
+					                                                   
+					                                                </div>
+					                                            </div>
+					                                        </div>
+					                                    </li>
+					                                    <hr />
+													 </div>
+											   	    </c:forEach>
+											   	    </ul>
+										     	   </c:if>
 											</div>
 										</div>
 									</div>
@@ -289,11 +250,9 @@
 												</div>
 											</div>
 										</div>
-
 										<div class="widget z-depth-2-top">
 											<div class="datepicker"></div>
 										</div>
-
 										<div class="widget">
 											<div class="card z-depth-2-top">
 												<div class="card-body">

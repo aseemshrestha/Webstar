@@ -66,6 +66,7 @@ public class UserService implements IUserService
                 }
             }
         }
+
         return nameEmail;
     }
 
@@ -82,4 +83,5 @@ public class UserService implements IUserService
 
         userRepo.updateLastLoggedIn(loggedin, email);
     }
+
 }

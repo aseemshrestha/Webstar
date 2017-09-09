@@ -34,6 +34,12 @@ public class SubmissionService implements ISubmissionService
         return submissionsRepo.findByCategoryOrderDesc(category, limit, offset);
     }
 
-   
+    @Override
+
+    public int updateTotalCommentCount(int totalComments, Long postid)
+    {
+
+        return submissionsRepo.updateTotalCommentsCount(totalComments, postid);
+    }
 
 }

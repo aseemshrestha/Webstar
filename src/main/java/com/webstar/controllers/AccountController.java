@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,17 +21,17 @@ import com.webstar.util.Views;
 public class AccountController
 {
     @Autowired
-    private IUserService service;
+    private IUserService userService;
     // @Autowired
     //private RequestMappingHandlerAdapter reqMappingHandler;
 
     @RequestMapping( value = "/myAccount", method = RequestMethod.GET )
-    public String myAccount(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException
+    public String myAccount(HttpServletRequest request, HttpServletResponse response, Model model)
+        throws IOException
     {
-        String nameEmail = service.readNameEmailFromCookie(request);
+        String nameEmail = userService.readNameEmailFromCookie(request);
         if (nameEmail.isEmpty()) {
-            model.addAttribute("enableCookie", "Please enable cookie features.");
-            response.sendRedirect("/");
+            return "redirect:/";
         }
         model.addAttribute("nameEmail", nameEmail);
         return Views.MY_ACCOUNT;
@@ -38,7 +39,8 @@ public class AccountController
     }
 
     @RequestMapping( value = "/logout", method = RequestMethod.GET )
-    public String logout(HttpServletRequest request, HttpServletResponse response) throws IOException
+    public String logout(HttpServletRequest request, HttpServletResponse response)
+        throws IOException
     {
         Cookie cookie = new Cookie(Constants.WEBSTAR_COOKIE_AUTH, null);
         cookie.setMaxAge(0);

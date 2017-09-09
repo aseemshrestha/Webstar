@@ -47,53 +47,55 @@
 	position: relative;
 	font-size: 1em;
 }
-img.portimg {
+img.portimg-comment {
     display: none;
     max-width: 200px;
     max-height: 200px;
 }
 </style>
-<c:url var="home" value="/" scope="request" />
 <div id="post-comments" title="Compose your comment" style="display: none;">
 	<br />
-  
-     <span id="error_post" class="alert alert-danger no-margin" style="display:none"></span>    
-    
-     <br />
-     <form:form modelAttribute="usersubmissions" action="/post" method="POST" class="form-base-2" role="form" id="comment_form" enctype="multipart/form-data">
-        <input type="hidden" type="text" name="email" value="${email}" />
-		 <div class="col-sm-13"> 
+     <span id="error_post_comment" class="alert alert-danger no-margin" style="display:none"></span>    
+     <form:form modelAttribute="usercomments" action="/postcomment" method="POST" class="form-base-2" role="form" id="comment_form" enctype="multipart/form-data">
+    	 <div class="col-sm-13"> 
 		   <div class="form-group has-feedback">
-			<form:textarea path="contents" class="form-control form-control-lg selectpicker emojiable-question" cols="5" rows="5" placeholder="What's up" maxlength="200"  id="ta-comment-1"/>
-			<small><span id="allowed" style="float:right;margin-right:5px;"></span></small>
+			<form:textarea path="comments" class="form-control form-control-lg selectpicker emojiable-question" cols="5" rows="5" placeholder="What's up" maxlength="200"  id="ta-comment-1"/>
+			<small><span id="allowedc" style="float:right;margin-right:5px;"></span></small>
 	   	</div>
+		</div>
+		<div class="col-sm-13">
+			<div class="form-group has-feedback">
+				<label for="" class="text-uppercase">Add Video Link ( if
+					any -Youtube/Vimeo supported )</label> 
+					<form:input type="text" path="videoUrl" id="videoLinksComment" class="form-control form-control-lg selectpicker" placeholder="Audio Video links"/>
+			</div>
 		</div>
 		<hr />
 		<div class="imgUpload">
-			     <label for="fileInput"> 
+			     <label for="fileInputComment"> 
 			       <img src="../img/icons/upload.png" style="width: 30px;" />
 			     </label>
-				 <input name="file" type="file" id="fileInput" class="fileUpload" accept="image/jpeg, image/jpg,image/png, image/gif" name="postImg[]" style="display: none" /> 
-				 <a href="javascript:void(0)" class="" style="float: left; margin-right: 10px;" id="emoji-1">
+				 <input name="file" type="file" id="fileInputComment" class="fileUpload" accept="image/jpeg, image/jpg,image/png, image/gif" name="postImg[]" style="display: none" /> 
+				 <a href="javascript:void(0)" class="" style="float: left; margin-right: 10px;" id="emoji-2">
 				   <img src="../img/icons/emoji.png" style="width: 30px;" />
 				 </a>
 				 <div class="upload-demo">
-                      <div class="upload-demo-wrap" id="img-place"><img alt="your image" class="portimg" src="#"></div>
+                      <div class="upload-demo-wrap" id="img-place-comment"><img alt="your image" class="portimg-comment" src="#"></div>
                  </div>
+               <a href="javascript:void(0)" class="btn btn-styled btn-md btn-base-2" style="float: right" id="post_comment">POST</a>  
 		</div>
-
-	<a href="javascript:void(0)" class="btn btn-styled btn-md btn-base-2" style="float: right" id="post_comment">POST</a>
+ 	       
 	</form:form>
 </div>
+
 <script type="text/javascript">
 	$(document).ready(function(e) {
 		var textMax = 200;
 		var textArea = $('#ta-comment-1');
-		var allowed = $('#allowed');
+		var allowedc = $('#allowedc');
 		var isMobile = /iPhone|iPod|Android/i.test(navigator.userAgent);
-		
 		if(!isMobile){
-			$("#ta-comment-1").css('width','6px74');
+			$("#ta-comment-1").css('width','674px');
 		}else{
 			$("#ta-comment-1").css('width','320px');
 		}
@@ -101,16 +103,15 @@ img.portimg {
 		$('.emojiable-question').emojiPicker({
 			button : false
 		});
-		$('#emoji-1').on('click', function(e) {
+		$('#emoji-2').on('click', function(e) {
 			e.preventDefault();
 			textArea.emojiPicker('toggle');
 		});
-		allowed.html(textMax);
+		allowedc.html(textMax);
 		textArea.keyup(function() {
 			var textlength = textArea.val().length;
 			var remaining = textMax - textlength;
-			allowed.html(remaining);
+			allowedc.html(remaining);
 		});
-
 	});
 </script>

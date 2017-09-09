@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.webstar.models.UserComments;
 import com.webstar.models.UserDetails;
 import com.webstar.models.UserSubmissions;
 import com.webstar.services.IEmailService;
@@ -51,7 +52,6 @@ public class UserController
 
     public static final String CHARSET = "ISO-8859-1";
     private Map<String, List<UserSubmissions>> postsMap = new HashMap<>();
-    private static final int BLOCKSIZE = 50; //update in webstar.posts.js as well
     private static int OFFSET = 0;
 
     @Autowired
@@ -114,7 +114,6 @@ public class UserController
     @RequestMapping( value = "/forgotpassword", method = RequestMethod.POST )
     public String forgotPassword(String email, Model model, HttpServletRequest request)
     {
-
         Optional<UserDetails> user = userService.findUserbyEmail(email);
         if (!user.isPresent()) {
             model.addAttribute("noaccount", "Cannot find the user with email:" + email);
@@ -146,7 +145,8 @@ public class UserController
         if (!user.isPresent()) {
             return "redirect:/?loginError=true";
         } else {
-            String cookieValue = email + "###" + user.get().getFirstName() + "###" + user.get().getId();
+            String cookieValue = email + Constants.COOKIE_SEPARATOR + user.get().getFirstName() + " "
+                + user.get().getLastName() + Constants.COOKIE_SEPARATOR + user.get().getId();
             String encodedCookie = "";
             try {
                 userService.updateLastLoggedTime(new Date(), email);
@@ -162,12 +162,14 @@ public class UserController
     public String myhomepage(Model model, HttpServletRequest request)
     {
         String nameEmail = userService.readNameEmailFromCookie(request);
-        if (nameEmail.isEmpty() || nameEmail == null) {
+        if (nameEmail.isEmpty()) {
             return "redirect:/?loginError=true";
+
         }
         model.addAttribute("categories", Categories.getCategories());
-        model.addAttribute("recentPosts", subService.getRecentPostsDesc(BLOCKSIZE, OFFSET).get());
+        model.addAttribute("recentPosts", subService.getRecentPostsDesc(Constants.BLOCKSIZE, OFFSET).get());
         model.addAttribute("usersubmissions", new UserSubmissions());
+        model.addAttribute("usercomments", new UserComments());
         model.addAttribute("nameEmail", nameEmail);
         return Views.MY_HOME_PAGE;
     }
@@ -203,7 +205,8 @@ public class UserController
 
     @RequestMapping( value = "/register", method = RequestMethod.POST )
     public ModelAndView register(ModelAndView modelAndView,
-        @ModelAttribute( "userDetails" ) @Valid UserDetails userDetails, BindingResult result)
+        @ModelAttribute( "userDetails" ) @Valid UserDetails userDetails, BindingResult result,
+        HttpServletRequest request)
     {
 
         boolean isValidPassword = true;
@@ -214,13 +217,7 @@ public class UserController
         if (user.isPresent()) {
             modelAndView.getModel().put("emailExists", Constants.EMAIL_EXISTS);
         } else {
-            userDetails.setFirstName(userDetails.getFirstName());
-            userDetails.setLastName(userDetails.getLastName());
-            userDetails.setEmail(userDetails.getEmail());
-            userDetails.setPassword(userDetails.getPassword());
-            userDetails.setPasswordConfirm(userDetails.getPasswordConfirm());
-            userDetails.setPhone(userDetails.getPhone());
-            userDetails.setIpAddress(userDetails.getIpAddress());
+            userDetails.setIpAddress(Utils.getClientIp(request));
             userDetails.setUserStatus(Constants.ACTIVE);
             userDetails.setRegistrationDate(new Date());
             userDetails.setLastLoggedIn(new Date());
@@ -260,7 +257,9 @@ public class UserController
     public String submitpost(@RequestParam( "file" ) MultipartFile file,
         @ModelAttribute( "usersubmissions" ) UserSubmissions usersubmissions, HttpServletRequest request)
     {
-        if (userService.readNameEmailFromCookie(request).isEmpty()) {
+
+        String nameEmail = userService.readNameEmailFromCookie(request);
+        if (nameEmail.isEmpty()) {
             return "redirect:/";
         }
         try {
@@ -281,10 +280,11 @@ public class UserController
         }
         UserDetails userDetail = new UserDetails();
         usersubmissions.setSubmittiedDate(new Date());
-        usersubmissions.setIp(request.getRemoteAddr());
+        usersubmissions.setIp(Utils.getClientIp(request));
         usersubmissions.setIsActivePost(Constants.ACTIVE);
         usersubmissions.setUpdatedDate(new Date());
-        userDetail.setId(Long.parseLong(userService.readNameEmailFromCookie(request).split("###")[2]));
+        userDetail
+            .setId(Long.parseLong(nameEmail.split(Constants.COOKIE_SEPARATOR)[2]));
         usersubmissions.setUserDetails(userDetail);
         try {
             subService.save(usersubmissions);
@@ -295,20 +295,25 @@ public class UserController
         return "redirect:/myhomepage";
     }
 
+    
     @RequestMapping( value = "/loadMoreRecent", method = RequestMethod.GET, produces = { "application/json" } )
-    public @ResponseBody List<UserSubmissions> loadmore(@RequestParam( "blocksize" ) int blocksize,
-        @RequestParam( "offset" ) int offset, HttpServletResponse response)
+    public @ResponseBody List<UserSubmissions> loadmore(@RequestParam( "offset" ) int offset,
+        HttpServletResponse response)
     {
-        Optional<List<UserSubmissions>> submissionsList = subService.getRecentPostsDesc(blocksize, offset);
-        return submissionsList.get();
+        if(offset !=0)
+            offset = Constants.BLOCKSIZE * offset ;
+        
+        return subService.getRecentPostsDesc(Constants.BLOCKSIZE, offset).get();
     }
 
+    
     @RequestMapping( value = "/categories", method = RequestMethod.GET, produces = { "application/json" } )
     public @ResponseBody Map<String, String> getCategories()
     {
         return Categories.getCategories();
     }
 
+    
     @RequestMapping( value = "/subcategories", method = RequestMethod.GET )
     public @ResponseBody String getSubCategoryByKey(@RequestParam( "category" ) String category)
     {
@@ -317,19 +322,14 @@ public class UserController
 
     @RequestMapping( value = "/bycategory", method = RequestMethod.GET )
     public @ResponseBody List<UserSubmissions> filterByCateogry(@RequestParam( "category" ) String category,
+        @RequestParam( "offset" ) int offset,
         Model model, HttpServletRequest request)
     {
-        Optional<List<UserSubmissions>> submissions = subService.fetchByCategoryDesc(category, BLOCKSIZE, OFFSET);
-        return submissions.get();
+        if(offset !=0)
+            offset = Constants.BLOCKSIZE *  offset ;
+        return subService.fetchByCategoryDesc(category, Constants.BLOCKSIZE, offset).get();
     }
 
-    @RequestMapping( value = "/loadMoreCategory", method = RequestMethod.GET, produces = { "application/json" } )
-    public @ResponseBody List<UserSubmissions> loadmoreByCategory(@RequestParam( "category" ) String category,
-        @RequestParam( "blocksize" ) int blocksize,
-        @RequestParam( "offset" ) int offset, HttpServletResponse response)
-    {
-        Optional<List<UserSubmissions>> submissionsList = subService.fetchByCategoryDesc(category, blocksize, offset);
-        return submissionsList.get();
-    }
+    
 
 }

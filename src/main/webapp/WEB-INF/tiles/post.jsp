@@ -53,16 +53,11 @@ img.portimg {
     max-height: 200px;
 }
 </style>
-<c:url var="home" value="/" scope="request" />
 <div id="post-contents" title="Compose your new post" style="display: none;">
 	<br />
-  
      <span id="error_post" class="alert alert-danger no-margin" style="display:none"></span>    
-    
-     <br />
      <form:form modelAttribute="usersubmissions" action="/post" method="POST" class="form-base-2" role="form" id="post_form" enctype="multipart/form-data">
-        <input type="hidden" type="text" name="email" value="${email}" />
-		 <div class="col-sm-13"> 
+        <div class="col-sm-13"> 
 		   <div class="form-group has-feedback">
 			<form:textarea path="contents" class="form-control form-control-lg selectpicker emojiable-question" cols="5" rows="5" placeholder="What's up" maxlength="200"  id="ta-post-1" />
 			<small><span id="allowed" style="float:right;margin-right:5px;"></span></small>
@@ -91,12 +86,9 @@ img.portimg {
 			</div>
 		</div>
 		<hr />
-
-		
-			
-		<div class="imgUpload">
+       <div class="imgUpload">
 			     <label for="fileInput"> 
-			       <img src="../img/icons/upload.png" style="width: 30px;" />
+			       <img src="../img/icons/upload.png" style="width: 30px;"/>
 			     </label>
 				 <input name="file" type="file" id="fileInput" class="fileUpload" accept="image/jpeg, image/jpg,image/png, image/gif" name="postImg[]" style="display: none" /> 
 				 <a href="javascript:void(0)" class="" style="float: left; margin-right: 10px;" id="emoji-1">
@@ -116,7 +108,6 @@ img.portimg {
 		var textArea = $('#ta-post-1');
 		var allowed = $('#allowed');
 		var isMobile = /iPhone|iPod|Android/i.test(navigator.userAgent);
-		console.log(isMobile);
 		if(!isMobile){
 			$("#ta-post-1").css('width','674px');
 		}else{

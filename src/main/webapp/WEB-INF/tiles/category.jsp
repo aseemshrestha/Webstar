@@ -235,7 +235,7 @@
 													</div>
 												</section>
 										
-										      <c:forEach var="recent" items="${recentPosts}" varStatus="position">
+										      <c:forEach var="recent" items="${categoriescomments}" varStatus="position">
 													<div class="card-body" style="padding-left:0.5em;padding-top:0.5em;!important">
 													        <div class="block block-comment" style="margin-bottom: 0rem;!important">
 					                                            <div class="block-image">
@@ -244,8 +244,7 @@
 					                                          <div class="block-body">   
 					                                            <div class="block-body-inner"><h3 class="heading heading-6">${ recent.userDetails.firstName} ${ recent.userDetails.lastName} 
 					                                            <small>${recent.timeLapse}</small>
-					                                            <span style="float:right"> <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.category}</a>
-					                                             <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.subcategory}</a></span>
+					                                            <span style="float:right"> <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.category}</a> <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.subcategory}</a></span>
 					                          			       </h3>
 					                                            <p class="mb-4" style="margin-bottom:0px;!important">${recent.contents}</p>
 																	<c:if test="${recent.imageUrl ne null}">
