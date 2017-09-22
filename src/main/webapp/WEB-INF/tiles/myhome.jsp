@@ -14,12 +14,15 @@
   .card-body {
   padding: 0.1rem 0.5rem;
   }
+ 
 </style>
 <c:set var="name" value="${fn:split(nameEmail,'###')[1]}" />
 <c:set var="email" value="${fn:split(nameEmail,'###')[0]}" />
+<c:set var="uid" value="${fn:split(nameEmail,'###')[2]}" />
 
 <jsp:include page="post.jsp" />
 <jsp:include page="comment.jsp" />
+<jsp:include page="repost.jsp" />
 
 <div class="body-wrap" data-template-mode="cards">
 	<div id="st-container" class="st-container">
@@ -74,8 +77,8 @@
 								<div class="col-4">
 								 
 									<form class="form-default form-inline my-2 my-md-0">
-										<input class="form-control mr-sm-2" type="text"placeholder="Search">
-										<button class="btn btn-base-1 my-2 my-sm-0" type="submit">Search</button>
+										<input class="form-control mr-sm-2" type="text" id="searchuname" placeholder="Search" onkeypress="PageWidget.doSearch(event);">
+										<button class="btn btn-base-1 my-2 my-sm-0" type="submit">Search User</button>
 									</form>
 								</div>
 
@@ -234,7 +237,7 @@
 														</div>
 													</div>
 												</section>
-										
+										  
 										      <c:forEach var="recent" items="${recentPosts}" varStatus="position">
 													<div class="card-body" style="padding-left:0.5em;padding-top:0.5em;!important">
 													        <div class="block block-comment" style="margin-bottom: 0rem;!important">
@@ -242,7 +245,7 @@
 					                                                <img src="../img/prv/people/brin.jpg" class="img-square">
 					                                            </div>
 					                                          <div class="block-body">   
-					                                            <div class="block-body-inner"><h3 class="heading heading-6">${ recent.userDetails.firstName} ${ recent.userDetails.lastName} 
+					                                            <div class="block-body-inner"><h3 class="heading heading-6"><a href="/byuser?uid=${recent.userDetails.id}&offset=0&repost=0" id="${recent.userDetails.id}" style="color:#007aff">${recent.userDetails.username} - ${ recent.userDetails.firstName} ${ recent.userDetails.lastName}</a> 
 					                                            <small>${recent.timeLapse}</small>
 					                                            <span style="float:right"> <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.category}</a>
 					                                             <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.subcategory}</a></span>
@@ -261,15 +264,21 @@
 																	</c:if>
 																	<div class="col-10">
 																		<ul class="inline-links inline-links--style-1" style='margin-left:-4%;'>
-																			<li><a href="#"> <i class="fa fa-heart"></i> 50</a></li>
-																			<li><a href="javascript:void(0)"><i class="fa fa-comment"  id="${recent.id}" onclick="PageWidget.displayCommentWindow(event);"></i></a>
-																			<li><a href="#"><i class="fa fa-retweet"></i> 50</a></li>
+																	        <li><a href="javascript:void(0)"><i class="fa fa-heart" id="${recent.id}" onclick="PageWidget.doLike(event);"></i></a>
+																		    <span id="like${recent.id}">${recent.totalLikes }</span></li>
+																			<li><a href="javascript:void(0)" id="${recent.id}" onclick="PageWidget.displayCommentWindow(${recent.id},event);"><i class="fa fa-comment"></i></a>
+																			<li><a href="javascript:void(0)"><i class="fa fa-retweet" id="${recent.id}"  onclick="PageWidget.displayRepostWindow(event);"></i></a></li>
 																			<li><i class="fa fa-envelope"></i></li>
-																			<li><i class="fa fa-share" aria-hidden="true"></i></li>
+																			<li><a href="javascript:void(0)"><i class="fa fa-star-o fa-2" aria-hidden="true" id="${recent.id}" onclick="PageWidget.doRating(event);"></i></a></li>
 																			 <c:if test= "${ recent.totalComments gt  0 }">
 																			  <li><a href="/getcomments?postid=${recent.id}&offset=0">Show comments(${recent.totalComments })</a> </li>
 																			</c:if>
 																		</ul>
+																		 <input type="hidden" name="rating" id="ratingreviews${recent.id}" aria-required="true" />
+																		 <span class="label label-success" id="reviews-rating-label${recent.id}"></span>
+																		 <small><span class="label label-success" id="rate${recent.id}"></span></small>
+																		 <small><span class="label label-success" id="close${recent.id}"></span></small>
+																		
 																   </div>
 														       </div>
 													         </div>

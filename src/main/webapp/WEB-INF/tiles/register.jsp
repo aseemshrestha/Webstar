@@ -94,6 +94,16 @@
 										<form:input path="passwordConfirm" type="password" class="form-control form-control-lg"/>
 									</div>
 								</div>
+								<div class="col-md-6">
+									<div class="form-group has-feedback">
+										<label class="control-label">*Username</label> 
+										 <c:if test="${not empty usernameExists}">
+    							    	   <small><span style="color:red"><c:out value="${usernameExists}"/></span></small>
+						    			</c:if>
+										<small><form:errors path="username" style="color:red"/></small>
+										<form:input path="username" type="username" class="form-control form-control-lg"/>
+									</div>
+								</div>
 							</div>
 
 							<div class="mt-1 ">

@@ -20,6 +20,7 @@
 
 <jsp:include page="post.jsp" />
 <jsp:include page="comment.jsp" />
+<jsp:include page="repost.jsp" />
 
 <div class="body-wrap" data-template-mode="cards">
 	<div id="st-container" class="st-container">
@@ -238,31 +239,24 @@
 										      <c:forEach var="recent" items="${categoriescomments}" varStatus="position">
 													<div class="card-body" style="padding-left:0.5em;padding-top:0.5em;!important">
 													        <div class="block block-comment" style="margin-bottom: 0rem;!important">
-					                                            <div class="block-image">
-					                                                <img src="../img/prv/people/brin.jpg" class="img-square">
-					                                            </div>
-					                                          <div class="block-body">   
-					                                            <div class="block-body-inner"><h3 class="heading heading-6">${ recent.userDetails.firstName} ${ recent.userDetails.lastName} 
-					                                            <small>${recent.timeLapse}</small>
-					                                            <span style="float:right"> <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.category}</a> <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.subcategory}</a></span>
-					                          			       </h3>
+					                                            <div class="block-image"> <img src="../img/prv/people/brin.jpg" class="img-square"></div>
+					                                            <div class="block-body-inner">
+					                                            <h3 class="heading heading-6"><a href="/byuser?uid=${recent.userDetails.id}&offset=0&repost=0" id="${recent.userDetails.id}" style="color:#007aff">${recent.userDetails.username} - ${ recent.userDetails.firstName} ${ recent.userDetails.lastName}</a>
+					                                              <small>${recent.timeLapse}</small>
+					                                               <span style="float:right"> <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.category}</a> <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.subcategory}</a></span>
+					                          			        </h3>
 					                                            <p class="mb-4" style="margin-bottom:0px;!important">${recent.contents}</p>
-																	<c:if test="${recent.imageUrl ne null}">
-																		<img src="../${recent.imageUrl}" style="width: 100%; top: -0px;" />
-																	</c:if>
+																	<c:if test="${recent.imageUrl ne null}"> <img src="../${recent.imageUrl}" style="width: 100%; top: -0px;" /></c:if>
 																	<c:if test="${not empty recent.videoUrl}">
-																		<c:if test="${fn:startsWith(recent.videoUrl,'$$-') }">
-																			<iframe width="100%" height="315" src="https://www.youtube.com/embed/${ fn:split(recent.videoUrl,'$$-')[0] }"></iframe>
-																		</c:if>
-																		<c:if test="${fn:startsWith(recent.videoUrl,'##-') }">
-																			<iframe width="100%" height="315" src="https://player.vimeo.com/video/${ fn:split(recent.videoUrl,'##-')[0] }"></iframe>
-																		</c:if>
+																		<c:if test="${fn:startsWith(recent.videoUrl,'$$-')}"><iframe width="100%" height="315" src="https://www.youtube.com/embed/${ fn:split(recent.videoUrl,'$$-')[0] }"></iframe></c:if>
+																		<c:if test="${fn:startsWith(recent.videoUrl,'##-')}"><iframe width="100%" height="315" src="https://player.vimeo.com/video/${ fn:split(recent.videoUrl,'##-')[0] }"></iframe></c:if>
 																	</c:if>
 																	<div class="col-10">
 																		<ul class="inline-links inline-links--style-1" style='margin-left:-4%;'>
-																			<li><a href="#"> <i class="fa fa-heart"></i> 50</a></li>
+																			<li><a href="javascript:void(0)"><i class="fa fa-heart" id="${recent.id}" onclick="PageWidget.doLike(event);"></i></a>
+																		    <span id="like${recent.id}">${recent.totalLikes }</span></li>
 																			<li><a href="javascript:void(0)"><i class="fa fa-comment"  id="${recent.id}" onclick="PageWidget.displayCommentWindow(event);"></i></a>
-																			<li><a href="#"><i class="fa fa-retweet"></i> 50</a></li>
+																			<li><a href="javascript:void(0)"><i class="fa fa-retweet" id="${recent.id}"  onclick="PageWidget.displayRepostWindow(event);"></i></a></li>
 																			<li><i class="fa fa-envelope"></i></li>
 																			<li><i class="fa fa-share" aria-hidden="true"></i></li>
 																			 <c:if test= "${ recent.totalComments gt  0 }">
@@ -272,7 +266,7 @@
 																   </div>
 														       </div>
 													         </div>
-														  </div>
+														 
 													   </div>
 												   </c:forEach>
 											</div>

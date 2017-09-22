@@ -18,9 +18,7 @@ public class CommentService implements ICommentService
     @Autowired
     private CommentRepository commentRepo;
 
-    @Autowired
-    private SubmissionRepository submissionRepo;
-
+  
     @Override
     @Transactional
     public void save(UserComments comments)

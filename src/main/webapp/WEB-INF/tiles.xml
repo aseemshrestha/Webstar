@@ -65,4 +65,29 @@
 		<put-attribute name="content" value="/WEB-INF/tiles/comments.jsp" />
 	</definition>
 	
+	<definition name="webstar.userposts" extends="webstar.defaultloggedin">
+		<put-attribute name="nav-loggedin" value="/WEB-INF/layouts/nav-loggedin.jsp" />
+		<put-attribute name="title" value="User Posts" />
+		<put-attribute name="content" value="/WEB-INF/tiles/userposts.jsp" />
+	</definition>
+	
+	<!--  non logged in pages -->
+	<definition name="webstar.nlcategory" extends="webstar.default">
+	    <put-attribute name="nav-loggedin" value="/WEB-INF/layouts/nav-nonloggedin.jsp" />
+		<put-attribute name="title" value="Category" />
+		<put-attribute name="content" value="/WEB-INF/tiles/nlcategory.jsp" />
+	</definition>
+	
+	<definition name="webstar.nluserposts" extends="webstar.default">
+	    <put-attribute name="nav-loggedin" value="/WEB-INF/layouts/nav-nonloggedin.jsp" />
+		<put-attribute name="title" value="Userposts" />
+		<put-attribute name="content" value="/WEB-INF/tiles/nluserposts.jsp" />
+	</definition>
+	
+	<definition name="webstar.nlcomments" extends="webstar.default">
+	    <put-attribute name="nav-loggedin" value="/WEB-INF/layouts/nav-nonloggedin.jsp" />
+		<put-attribute name="title" value="Usercomments" />
+		<put-attribute name="content" value="/WEB-INF/tiles/nlcomments.jsp" />
+	</definition>
+	
 </tiles-definitions>

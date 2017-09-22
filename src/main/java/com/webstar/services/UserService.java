@@ -2,6 +2,7 @@ package com.webstar.services;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.Cookie;
@@ -16,6 +17,7 @@ import com.webstar.models.UserDetails;
 import com.webstar.repository.UserRepository;
 import com.webstar.util.Constants;
 import com.webstar.util.Security;
+import com.webstar.viewmodels.SearchViewModel;
 
 @Service
 public class UserService implements IUserService
@@ -82,6 +84,20 @@ public class UserService implements IUserService
     {
 
         userRepo.updateLastLoggedIn(loggedin, email);
+    }
+
+    @Override
+    public Optional<UserDetails> findUserbyUsername(String username)
+    {
+        return userRepo.findByUsername(username);
+    }
+
+    @Override
+    public Optional<List<UserDetails>> fetchUsersByUsername(String username, int limit, int offset)
+    {
+
+       return userRepo.fetchUserNames(username,limit, offset);
+       
     }
 
 }

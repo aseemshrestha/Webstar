@@ -15,7 +15,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table( indexes = { @Index( name = "IDX_USER_DETAILS", columnList = "email" ) },
+@Table( indexes = { @Index( name = "IDX_USER_DETAILS", columnList = "email,username" ) },
     uniqueConstraints = { @UniqueConstraint( columnNames = { "email" } ) } )
 public class UserDetails
 {
@@ -53,6 +53,9 @@ public class UserDetails
     private String role;
 
     private String resetToken;
+    
+    @Size( min = 1, max = 100, message = "required." )
+    private String username;
 
     public UserDetails()
     {}
@@ -220,6 +223,16 @@ public class UserDetails
     {
 
         this.resetToken = resetToken;
+    }
+
+    public String getUsername()
+    {
+        return username;
+    }
+
+    public void setUsername(String username)
+    {
+        this.username = username;
     }
 
     @Override

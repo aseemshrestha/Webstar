@@ -12,4 +12,5 @@ public class Views
     public static final String PARTIAL = "webstar.partial";
     public static final String COMMENTS = "webstar.comments";
     public static final String CATEGORIES = "webstar.category";
+    public static final String USER_POSTS = "webstar.userposts";
 }

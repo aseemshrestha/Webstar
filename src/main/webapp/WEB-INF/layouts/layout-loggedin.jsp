@@ -92,6 +92,7 @@
 <!-- Bootstrap Extensions -->
 <script src="${contextRoot}/js/bootstrap-dropdown-hover.js"></script>
 <script src="${contextRoot}/js/bootstrap-growl.min.js"></script>
+<script src="${contextRoot}/js/bootstrap-rating.js"></script>
 <script src="${contextRoot}/js/scrollpos-styler.js"></script>
 
 <!-- Plugins -->

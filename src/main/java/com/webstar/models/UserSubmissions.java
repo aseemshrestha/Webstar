@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +20,8 @@ import com.webstar.util.Constants;
 import com.webstar.util.TimeLapse;
 
 @Entity
-@Table( indexes = { @Index( name = "IDX_USER_CATEGORY", columnList = "category" ),@Index( name = "IDX_USER_SUBMISSIONS", columnList = "USER_ID" )  } )
+@Table( indexes = { @Index( name = "IDX_USER_CATEGORY", columnList = "category" ),
+        @Index( name = "IDX_USER_SUBMISSIONS", columnList = "USER_ID" ) } )
 public class UserSubmissions
 {
     @Id
@@ -57,8 +57,12 @@ public class UserSubmissions
     @ManyToOne
     @JoinColumn( name = "USER_ID" )
     private UserDetails userDetails;
-    
+
     private int totalComments;
+
+    private int totalLikes;
+
+    private int totalReposts;
 
     public UserSubmissions()
     {}
@@ -109,14 +113,14 @@ public class UserSubmissions
         if (videoUrl != null && !videoUrl.isEmpty()) {
             if (videoUrl.contains("youtube")) {
                 if (videoUrl.contains("?v=")) {
-                    videoId = "$$-"+videoUrl.substring(videoUrl.indexOf("?v=") + 3, videoUrl.length());
+                    videoId = "$$-" + videoUrl.substring(videoUrl.indexOf("?v=") + 3, videoUrl.length());
                 }
                 if (videoUrl.contains("/embed/")) {
-                    videoId = "$$-"+videoUrl.split("/embed/")[1];
+                    videoId = "$$-" + videoUrl.split("/embed/")[1];
                 }
             }
             if (videoUrl.contains("vimeo")) {
-                videoId = "##-"+videoUrl.split("vimeo.com/")[1];
+                videoId = "##-" + videoUrl.split("vimeo.com/")[1];
             }
         }
         return videoId;
@@ -221,6 +225,26 @@ public class UserSubmissions
     public void setTotalComments(int totalComments)
     {
         this.totalComments = totalComments;
+    }
+
+    public int getTotalLikes()
+    {
+         return totalLikes;
+    }
+
+    public void setTotalLikes(int totalLikes)
+    {
+        this.totalLikes = totalLikes;
+    }
+
+    public int getTotalReposts()
+    {
+        return totalReposts;
+    }
+
+    public void setTotalReposts(int totalReposts)
+    {
+        this.totalReposts = totalReposts;
     }
 
 }

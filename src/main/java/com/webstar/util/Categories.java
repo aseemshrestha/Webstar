@@ -12,29 +12,40 @@ public class Categories
     public static Map<String, String> getCategories()
     {   
         CATEGORIES.put("Any", "Any");
+        CATEGORIES.put("Art", "Art");
+        CATEGORIES.put("Food", "Food");
         CATEGORIES.put("Gaming", "Gaming");
+        CATEGORIES.put("Health","Health");
         CATEGORIES.put("Kids", "Kids");
         CATEGORIES.put("Lol", "Lol");
         CATEGORIES.put("Music", "Music");
         CATEGORIES.put("Movies", "Movies");
         CATEGORIES.put("News", "News");
+        CATEGORIES.put("Photos", "Photos");
+        CATEGORIES.put("Religion", "Religion");
         CATEGORIES.put("Schools", "Schools");
         CATEGORIES.put("Sports", "Sports");
         CATEGORIES.put("Women", "Women");
+        
         return CATEGORIES;
     }
 
     public static Map<String, String> getSubCategories()
     {
         SUB_CATEGORIES.put("Any", "Any");
+        SUB_CATEGORIES.put("Art", "Art");
+        SUB_CATEGORIES.put("Food", "Food");
         SUB_CATEGORIES.put("Gaming", "Action,Fighting,Music & Party,Role-Playing,Shooter,Simulation,Strategy,Sports");
         SUB_CATEGORIES.put("Kids", "Cartoons,Educational,LOL,Sports,Toys,Other");
+        SUB_CATEGORIES.put("Health", "Weight Loss,Fitness,E-cig,Other");
         SUB_CATEGORIES.put("Lol", "Lol1, Lol2, Lol3, Lol4");
         SUB_CATEGORIES.put("Music", "Alternative Rock Ambient,Classical,Country,Dance & EDM,Dancehall, Deep House,Disco,Drum & Bass,Dubstep,Electronic,Folk,Hip-hop & Rap,House,Indie,Jazz & Blues,"+
         "Latin,Metal,Piano,Pop,R&B & Soul,Reggae,Reggaeton,Rock,Soundtrack,Techno,Trance,Trap,Triphop,World");
         SUB_CATEGORIES.put("Movies", "Action,Adventure,Animation,Biography,Comedy,Crime,Documentary,Drama,Family,Fantasy,Game-Show,History,Horror,Musical,Mystery,Reality-TV,Romance,Sci-Fi,"+
         "Tv Shows,Sports,Talk-Show,Thriller,War,Western");
-        SUB_CATEGORIES.put("News", "Breaking News,Local News, State News, Global News");
+        SUB_CATEGORIES.put("News", "Wtf,Omg, Smh");
+        SUB_CATEGORIES.put("Photos", "Selfies,Family,Party,Pets,Other");
+        SUB_CATEGORIES.put("Religion", "Religion");
         SUB_CATEGORIES.put("Schools", "College,High School,Elementary");
         SUB_CATEGORIES.put("Sports", "Football,Basketball,Baseball,Boxing,Hockey,MMA,Motor,Soccer,Other");
          SUB_CATEGORIES.put("Women", "Beauty,LOL,Gossip,Recipes,Romance,Sports,Other");

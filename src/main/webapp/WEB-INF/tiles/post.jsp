@@ -91,7 +91,7 @@ img.portimg {
 			       <img src="../img/icons/upload.png" style="width: 30px;"/>
 			     </label>
 				 <input name="file" type="file" id="fileInput" class="fileUpload" accept="image/jpeg, image/jpg,image/png, image/gif" name="postImg[]" style="display: none" /> 
-				 <a href="javascript:void(0)" class="" style="float: left; margin-right: 10px;" id="emoji-1">
+				 <a href="javascript:void(0)" class="" style="float: left; margin-right: 10px;" id="emoji-2">
 				   <img src="../img/icons/emoji.png" style="width: 30px;" />
 				 </a>
 				 <div class="upload-demo">
@@ -116,7 +116,7 @@ img.portimg {
 		$('.emojiable-question').emojiPicker({
 			button : false
 		});
-		$('#emoji-1').on('click', function(e) {
+		$('#emoji-2').on('click', function(e) {
 			e.preventDefault();
 			textArea.emojiPicker('toggle');
 		});

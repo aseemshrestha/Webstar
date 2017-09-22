@@ -6,6 +6,8 @@ import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -35,8 +37,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.webstar.models.UserComments;
 import com.webstar.models.UserDetails;
+import com.webstar.models.UserReposts;
 import com.webstar.models.UserSubmissions;
 import com.webstar.services.IEmailService;
+import com.webstar.services.IRepostsService;
 import com.webstar.services.ISubmissionService;
 import com.webstar.services.IUserService;
 import com.webstar.util.Categories;
@@ -44,6 +48,8 @@ import com.webstar.util.Constants;
 import com.webstar.util.Roles;
 import com.webstar.util.Utils;
 import com.webstar.util.Views;
+import com.webstar.viewmodels.RepostSubmissionsViewModel;
+import com.webstar.viewmodels.SearchViewModel;
 
 @Controller
 public class UserController
@@ -62,6 +68,8 @@ public class UserController
 
     @Autowired
     private IEmailService emailService;
+    @Autowired
+    private IRepostsService repostService;
 
     @RequestMapping( "/" )
     public String home(Model model, HttpServletResponse response, HttpServletRequest request) throws IOException
@@ -83,7 +91,6 @@ public class UserController
     @RequestMapping( value = "/reset", method = RequestMethod.GET )
     public ModelAndView resetPasswordPage(ModelAndView modelAndView, @RequestParam( "token" ) String token)
     {
-
         Optional<UserDetails> user = userService.findUserbyToken(token);
         if (user.isPresent()) {
             modelAndView.addObject("resetToken", token);
@@ -98,7 +105,6 @@ public class UserController
     public ModelAndView register(ModelAndView modelAndView, @ModelAttribute( "userDetails" ) UserDetails userDetails,
         HttpServletRequest request)
     {
-
         modelAndView.setViewName(Views.REGISTRATION_PAGE);
         modelAndView.getModel().put("ipAddress", Utils.getClientIp(request));
         return modelAndView;
@@ -107,7 +113,6 @@ public class UserController
     @RequestMapping( value = "/forgotpassword", method = RequestMethod.GET )
     public String forgotPassword()
     {
-
         return Views.FORGOT_PASSWORD;
     }
 
@@ -171,7 +176,8 @@ public class UserController
         model.addAttribute("usersubmissions", new UserSubmissions());
         model.addAttribute("usercomments", new UserComments());
         model.addAttribute("nameEmail", nameEmail);
-        return Views.MY_HOME_PAGE;
+
+        return "webstar.myhome";
     }
 
     @RequestMapping( value = "/reset", method = RequestMethod.POST )
@@ -214,7 +220,10 @@ public class UserController
         boolean isPhoneValid = true;
         modelAndView.setViewName(Views.REGISTRATION_PAGE);
         Optional<UserDetails> user = userService.findUserbyEmail(userDetails.getEmail());
-        if (user.isPresent()) {
+        Optional<UserDetails> username = userService.findUserbyUsername(userDetails.getUsername());
+        if (username.isPresent()) {
+            modelAndView.getModel().put("usernameExists", "Username already exists");
+        } else if (user.isPresent()) {
             modelAndView.getModel().put("emailExists", Constants.EMAIL_EXISTS);
         } else {
             userDetails.setIpAddress(Utils.getClientIp(request));
@@ -283,8 +292,7 @@ public class UserController
         usersubmissions.setIp(Utils.getClientIp(request));
         usersubmissions.setIsActivePost(Constants.ACTIVE);
         usersubmissions.setUpdatedDate(new Date());
-        userDetail
-            .setId(Long.parseLong(nameEmail.split(Constants.COOKIE_SEPARATOR)[2]));
+        userDetail.setId(Long.parseLong(nameEmail.split(Constants.COOKIE_SEPARATOR)[2]));
         usersubmissions.setUserDetails(userDetail);
         try {
             subService.save(usersubmissions);
@@ -295,25 +303,64 @@ public class UserController
         return "redirect:/myhomepage";
     }
 
-    
-    @RequestMapping( value = "/loadMoreRecent", method = RequestMethod.GET, produces = { "application/json" } )
-    public @ResponseBody List<UserSubmissions> loadmore(@RequestParam( "offset" ) int offset,
-        HttpServletResponse response)
+    @RequestMapping( value = "/byuser", method = { RequestMethod.POST, RequestMethod.GET } )
+    public String showPostsByUser(Long uid, int offset, int repost, Model model, HttpServletRequest request)
+        throws ParseException
     {
-        if(offset !=0)
-            offset = Constants.BLOCKSIZE * offset ;
-        
+        Optional<List<UserSubmissions>> submissionList =
+            subService.fetchPostsByUserId(uid, Constants.BLOCKSIZE, offset);
+        Optional<List<UserReposts>> reposts = repostService.fetchRePostsByUser(uid, Constants.BLOCKSIZE, offset);
+        List<RepostSubmissionsViewModel> rvmList = populateSubmissions(submissionList.get(), reposts.get());
+
+        model.addAttribute("usersubmissions", new UserSubmissions());
+        model.addAttribute("usercomments", new UserComments());
+        model.addAttribute("categories", Categories.getCategories());
+        String nameEmail = userService.readNameEmailFromCookie(request);
+        model.addAttribute("recentPosts", rvmList);
+        if (nameEmail.isEmpty()) {
+            return "webstar.nluserposts";
+        } else {
+            return Views.USER_POSTS;
+        }
+
+    }
+
+    @RequestMapping( value = "/q", method = RequestMethod.GET )
+    public String searchByUsername(String un, int offset, Model model, HttpServletRequest request)
+        throws ParseException
+    {
+        Long id = userService.findUserbyUsername(un).get().getId();
+        Optional<List<UserSubmissions>> submissionList = subService.fetchPostsByUserId(id, Constants.BLOCKSIZE, offset);
+        Optional<List<UserReposts>> reposts = repostService.fetchRePostsByUser(id, Constants.BLOCKSIZE, offset);
+        List<RepostSubmissionsViewModel> rvmList = populateSubmissions(submissionList.get(), reposts.get());
+        String nameEmail = userService.readNameEmailFromCookie(request);
+        if (nameEmail.isEmpty()) {
+            model.addAttribute("loggedinuser", false);
+        } else {
+            model.addAttribute("loggedinuser", true);
+        }
+        model.addAttribute("recentPosts", rvmList);
+        model.addAttribute("usersubmissions", new UserSubmissions());
+        model.addAttribute("usercomments", new UserComments());
+        model.addAttribute("categories", Categories.getCategories());
+        return Views.USER_POSTS;
+    }
+
+    @RequestMapping( value = "/loadMoreRecent", method = RequestMethod.GET, produces = { "application/json" } )
+    public @ResponseBody List<UserSubmissions> loadmore(@RequestParam( "offset" ) int offset)
+    {
+        if (offset != 0)
+            offset = Constants.BLOCKSIZE * offset;
+
         return subService.getRecentPostsDesc(Constants.BLOCKSIZE, offset).get();
     }
 
-    
     @RequestMapping( value = "/categories", method = RequestMethod.GET, produces = { "application/json" } )
     public @ResponseBody Map<String, String> getCategories()
     {
         return Categories.getCategories();
     }
 
-    
     @RequestMapping( value = "/subcategories", method = RequestMethod.GET )
     public @ResponseBody String getSubCategoryByKey(@RequestParam( "category" ) String category)
     {
@@ -322,14 +369,62 @@ public class UserController
 
     @RequestMapping( value = "/bycategory", method = RequestMethod.GET )
     public @ResponseBody List<UserSubmissions> filterByCateogry(@RequestParam( "category" ) String category,
-        @RequestParam( "offset" ) int offset,
-        Model model, HttpServletRequest request)
+        @RequestParam( "offset" ) int offset)
     {
-        if(offset !=0)
-            offset = Constants.BLOCKSIZE *  offset ;
+        if (offset != 0)
+            offset = Constants.BLOCKSIZE * offset;
         return subService.fetchByCategoryDesc(category, Constants.BLOCKSIZE, offset).get();
     }
 
-    
+    @RequestMapping( value = "/search", method = RequestMethod.GET, produces = { "application/json" } )
+    public @ResponseBody List<SearchViewModel> search(@RequestParam String term)
+    {
+
+        Optional<List<UserDetails>> userDetails = userService.fetchUsersByUsername(term, 15, 0);
+        List<SearchViewModel> searchList = new ArrayList<>();
+        userDetails.get().forEach(item -> {
+            SearchViewModel svm = new SearchViewModel();
+            svm.setUsername(item.getUsername());
+            searchList.add(svm);
+        });
+
+        return searchList;
+
+    }
+
+    private List<RepostSubmissionsViewModel> populateSubmissions(List<UserSubmissions> subList,
+        List<UserReposts> repostsList) throws ParseException
+    {
+        List<RepostSubmissionsViewModel> rvmList = new ArrayList<>();
+        for (UserSubmissions submission : subList) {
+            RepostSubmissionsViewModel rv = new RepostSubmissionsViewModel();
+            rv.setPost_id(submission.getId());
+            rv.setFirstName(submission.getUserDetails().getFirstName());
+            rv.setLastName(submission.getUserDetails().getLastName());
+            rv.setContents(submission.getContents());
+            rv.setCategory(submission.getCategory());
+            rv.setSubcategory(submission.getSubcategory());
+            rv.setTimeLapse(submission.getTimeLapse());
+            rv.setImageUrl(submission.getImageUrl());
+            rv.setVideoUrl(submission.getVideoUrl());
+            rv.setTotalComments(submission.getTotalComments());
+            rv.setTotalLikes(submission.getTotalLikes());
+            rv.setUsername(submission.getUserDetails().getUsername());
+            rvmList.add(rv);
+        }
+        for (UserReposts re : repostsList) {
+            RepostSubmissionsViewModel rv1 = new RepostSubmissionsViewModel();
+            rv1.setRepostedBy(re.getRepostedByName());
+            rv1.setRepostedPost(re.getRepostedPost());
+            rv1.setComments(re.getComments());
+            rv1.setRepostedOf(re.getRepostOf());
+            rv1.setTimeLapse(re.getTimeLapse());
+            rv1.setRepostedById(re.getRepostedBy());
+            rv1.setRepostOfId(re.getRepostOfId());
+            rvmList.add(rv1);
+        }
+        return rvmList;
+
+    }
 
 }

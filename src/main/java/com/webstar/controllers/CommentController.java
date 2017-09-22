@@ -30,6 +30,7 @@ import com.webstar.models.UserSubmissions;
 import com.webstar.services.ICommentService;
 import com.webstar.services.ISubmissionService;
 import com.webstar.services.IUserService;
+import com.webstar.util.Categories;
 import com.webstar.util.Constants;
 import com.webstar.util.Utils;
 import com.webstar.util.Views;
@@ -47,7 +48,7 @@ public class CommentController
     @Autowired
     private ISubmissionService submissionService;
 
-    @RequestMapping( value = "/postcomment", method = { RequestMethod.POST, RequestMethod.GET } )
+    @RequestMapping( value = "/postcomment", method = RequestMethod.POST )
     public String postcomment(
         @RequestParam( "file" ) MultipartFile file,
         @ModelAttribute( "usercomments" ) UserComments usercomments,
@@ -55,7 +56,6 @@ public class CommentController
     {
         String nameEmail = userService.readNameEmailFromCookie(request);
         long postid = Long.parseLong(postId);
-
         if (nameEmail.isEmpty()) {
             return "redirect:/";
         }
@@ -100,10 +100,12 @@ public class CommentController
     public String showComments(Long postid, int offset, HttpServletRequest request, Model model)
         throws ParseException
     {
-
+        String nameEmail = userService.readNameEmailFromCookie(request);
+        
         Optional<List<UserComments>> commentsList =
             commentService.fetchCommentsByPostId(postid, Constants.BLOCKSIZE, offset);
         model.addAttribute("commentsList", commentsList.get());
+
         if (commentsList.get().size() > 0) {
             UserDetails details = commentsList.get().get(0).getUserSubmissions().getUserDetails();
             UserSubmissions submissions = commentsList.get().get(0).getUserSubmissions();
@@ -111,11 +113,17 @@ public class CommentController
                                details.getFirstName() + " " + details.getLastName() + " " + submissions.getTimeLapse());
             model.addAttribute("post", submissions.getContents());
             model.addAttribute("category", submissions.getCategory() + " - " + submissions.getSubcategory());
+            model.addAttribute("imageUrl", submissions.getImageUrl());
+            model.addAttribute("videoUrl", submissions.getVideoUrl());
+
         }
         int totalComments = commentService.getTotalNumberComments(postid);
         model.addAttribute("totalComments", totalComments);
         model.addAttribute("usersubmissions", new UserSubmissions());
         model.addAttribute("usercomments", new UserComments());
+        if(nameEmail.isEmpty()){
+            return "webstar.nlcomments";
+        }
         return Views.COMMENTS;
     }
 
@@ -138,9 +146,15 @@ public class CommentController
         if (offset != 0) {
             offset = Constants.BLOCKSIZE * offset;
         }
-        modelAndView.setViewName(Views.CATEGORIES);
+        String nameEmail = userService.readNameEmailFromCookie(request);
+        if (nameEmail.isEmpty() || nameEmail == null) {
+            modelAndView.setViewName("webstar.nlcategory");
+        } else {
+            modelAndView.setViewName("webstar.category");
+        }
         modelAndView.addObject("categoriescomments",
                                submissionService.fetchByCategoryDesc(category, Constants.BLOCKSIZE, offset).get());
+        model.addAttribute("categories", Categories.getCategories());
         modelAndView.addObject("usersubmissions", new UserSubmissions());
         modelAndView.addObject("usercomments", new UserComments());
 
@@ -154,6 +168,13 @@ public class CommentController
         Optional<List<UserComments>> commentsList =
             commentService.fetchCommentsByPostId(postid, Constants.BLOCKSIZE, offset);
         return commentsList.get();
+    }
+
+    @RequestMapping( value = "/doLikes", method = RequestMethod.POST, produces = { "application/json" } )
+    public @ResponseBody int doLikes(@RequestParam( "postid" ) Long postid,
+        HttpServletRequest request, Model model)
+    {
+        return 0;
     }
 
 }
