@@ -14,7 +14,7 @@
 
 	<definition name="webstar.defaultloggedin" template="/WEB-INF/layouts/layout-loggedin.jsp">
 		<put-attribute name="title" value="Webstar" />
-		<put-attribute name="navloggedin" value="/WEB-INF/layouts/nav-loggedin.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/layouts/nav-loggedin.jsp" />
 		<put-attribute name="footer-nonloggedin" value="/WEB-INF/tiles/footer.jsp" />
 	</definition>
 
@@ -42,50 +42,50 @@
 	</definition>
 
 	<definition name="webstar.myhome" extends="webstar.defaultloggedin">
-		<put-attribute name="nav-loggedin" value="/WEB-INF/layouts/nav-loggedin.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/layouts/nav-loggedin.jsp" />
 		<put-attribute name="title" value="My Home" />
 		<put-attribute name="content" value="/WEB-INF/tiles/myhome.jsp" />
 	</definition>
 	
 	<definition name="webstar.category" extends="webstar.defaultloggedin">
-		<put-attribute name="nav-loggedin" value="/WEB-INF/layouts/nav-loggedin.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/layouts/nav-loggedin.jsp" />
 		<put-attribute name="title" value="Posts By Category" />
 		<put-attribute name="content" value="/WEB-INF/tiles/category.jsp" />
 	</definition>
 
 	<definition name="webstar.myaccount" extends="webstar.defaultloggedin">
-		<put-attribute name="nav-loggedin" value="/WEB-INF/layouts/nav-loggedin.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/layouts/nav-loggedin.jsp" />
 		<put-attribute name="title" value="My Home" />
 		<put-attribute name="content" value="/WEB-INF/tiles/myaccount.jsp" />
 	</definition>
 	
 	<definition name="webstar.comments" extends="webstar.defaultloggedin">
-		<put-attribute name="nav-loggedin" value="/WEB-INF/layouts/nav-loggedin.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/layouts/nav-loggedin.jsp" />
 		<put-attribute name="title" value="Comments" />
 		<put-attribute name="content" value="/WEB-INF/tiles/comments.jsp" />
 	</definition>
 	
 	<definition name="webstar.userposts" extends="webstar.defaultloggedin">
-		<put-attribute name="nav-loggedin" value="/WEB-INF/layouts/nav-loggedin.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/layouts/nav-loggedin.jsp" />
 		<put-attribute name="title" value="User Posts" />
 		<put-attribute name="content" value="/WEB-INF/tiles/userposts.jsp" />
 	</definition>
 	
 	<!--  non logged in pages -->
 	<definition name="webstar.nlcategory" extends="webstar.default">
-	    <put-attribute name="nav-loggedin" value="/WEB-INF/layouts/nav-nonloggedin.jsp" />
+	    <put-attribute name="nav" value="/WEB-INF/layouts/nav-nonloggedin.jsp" />
 		<put-attribute name="title" value="Category" />
 		<put-attribute name="content" value="/WEB-INF/tiles/nlcategory.jsp" />
 	</definition>
 	
 	<definition name="webstar.nluserposts" extends="webstar.default">
-	    <put-attribute name="nav-loggedin" value="/WEB-INF/layouts/nav-nonloggedin.jsp" />
+	    <put-attribute name="nav" value="/WEB-INF/layouts/nav-nonloggedin.jsp" />
 		<put-attribute name="title" value="Userposts" />
 		<put-attribute name="content" value="/WEB-INF/tiles/nluserposts.jsp" />
 	</definition>
 	
 	<definition name="webstar.nlcomments" extends="webstar.default">
-	    <put-attribute name="nav-loggedin" value="/WEB-INF/layouts/nav-nonloggedin.jsp" />
+	    <put-attribute name="nav" value="/WEB-INF/layouts/nav-nonloggedin.jsp" />
 		<put-attribute name="title" value="Usercomments" />
 		<put-attribute name="content" value="/WEB-INF/tiles/nlcomments.jsp" />
 	</definition>

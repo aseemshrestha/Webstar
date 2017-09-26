@@ -235,6 +235,14 @@
 					                                          <div class="block-body">   
 					                                            <div class="block-body-inner">
 					                                            <h3 class="heading heading-6">
+					                                             <span class="stars" data-rating="${recent.avgRatings}" data-num-stars="5" ></span>
+					                                              <c:if test="${recent.avgRatings gt  0 }">
+					                                                <small>${recent.avgRatings} / 5 avg rating</small>
+					                                              </c:if>
+					                                              <c:if test="${recent.avgRatings eq  0 }">
+					                                                <small>Not rated yet.</small>
+					                                              </c:if>
+					                                             <br />
 					                                               <a href="javascrip:void(0)" id="" style="color:#007aff">${ recent.username } - ${ recent.firstName} ${ recent.lastName }</a> 
 					                                               <small>${recent.timeLapse }</small>
 					                                               <span style="float:right"> <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.category}</a>

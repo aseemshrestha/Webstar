@@ -87,8 +87,9 @@ public class CommentController
             usercomments.setCommentedByName(nameEmail.split(Constants.COOKIE_SEPARATOR)[1]);
             int totalComments = commentService.getTotalNumberComments(postid);
             totalComments = totalComments + 1;
-            submissionService.updateTotalCommentCount(totalComments, postid);
+            submissionService.updateTotalCommentCount(totalComments, new Date(), postid);
             commentService.save(usercomments);
+            UserController.postsMap.clear();
 
         } catch (Exception ex) {
             LOG.debug("[CommentController  - exception while saving comment into db]", ex);
@@ -109,12 +110,12 @@ public class CommentController
         if (commentsList.get().size() > 0) {
             UserDetails details = commentsList.get().get(0).getUserSubmissions().getUserDetails();
             UserSubmissions submissions = commentsList.get().get(0).getUserSubmissions();
-            model.addAttribute("postedby",
-                               details.getFirstName() + " " + details.getLastName() + " " + submissions.getTimeLapse());
+            model.addAttribute("postedby",details.getFirstName() + " " + details.getLastName() + " " + submissions.getTimeLapse());
             model.addAttribute("post", submissions.getContents());
             model.addAttribute("category", submissions.getCategory() + " - " + submissions.getSubcategory());
             model.addAttribute("imageUrl", submissions.getImageUrl());
             model.addAttribute("videoUrl", submissions.getVideoUrl());
+            model.addAttribute("avgComments", submissions.getAvgRatings());
 
         }
         int totalComments = commentService.getTotalNumberComments(postid);

@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 public class RepostSubmissionsViewModel
 {
     private Long post_id;
+
     private Long repostedById;
 
     private String firstName;
@@ -45,6 +46,8 @@ public class RepostSubmissionsViewModel
     private int totalLikes;
 
     private String username;
+
+    private double avgRatings;
 
     public String getRepostedPost()
     {
@@ -244,6 +247,16 @@ public class RepostSubmissionsViewModel
     public void setUsername(String username)
     {
         this.username = username;
+    }
+
+    public double getAvgRatings()
+    {
+        return avgRatings;
+    }
+
+    public void setAvgRatings(double avgRatings)
+    {
+        this.avgRatings = avgRatings;
     }
 
 }

@@ -94,6 +94,14 @@
 												 <div class="container container-xs">
 						                            <div class="text-center">
 						                             <br />
+						                              <span class="stars" data-rating="${avgRatings}" data-num-stars="5" ></span>
+			                                              <c:if test="${avgRatings gt  0 }">
+			                                                <small>${avgRatings} / 5 avg rating</small>
+			                                              </c:if>
+			                                              <c:if test="${avgRatings eq  0 }">
+			                                                <small>Not rated yet.</small>
+			                                              </c:if>
+			                                             <br />
 						                                <h3 class="heading heading-6 strong-400 text-normal"> ${post} </h3>
 						                                <h5 class="heading heading-xs c-gray-dark text-uppercase strong-500 letter-spacing-2 mb-0 mt-1">${category}</h5>
 						                                <span class="short-delimiter short-delimiter-center short-delimiter--style-1 short-delimiter-light short-delimiter-center short-delimiter-lg"></span>
@@ -125,7 +133,7 @@
 					                                            <div class="block-image"> <img src="../img/prv/people/person-2.jpg" class="img-circle"></div>
 					                                            <div class="block-body">
 					                                                <div class="block-body-inner">
-						                                                <h3 class="heading heading-6"><a href="#">${recent.commentedByName}</a></h3>
+					                                                    <h3 class="heading heading-6"><a href="#">${recent.commentedByName}</a></h3>
 					                                                    <span class="comment-date">${recent.timeLapse}</span>
 					                                                    <p class="comment-text">${recent.comments}
 					                                                    <c:if test="${recent.imageUrl ne null}"><img src="../${recent.imageUrl}" style="width: 100%; top: -0px;" /></c:if>

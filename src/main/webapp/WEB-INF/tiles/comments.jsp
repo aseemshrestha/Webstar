@@ -117,7 +117,7 @@
 												<div class="card card-inverse bg-base-1">
 													<!-- Profile picture -->
 													
-													  <div class="profile-picture profile-picture--style-3"><a href="/register" class=""><img src="../img/prv/other/signup.png" class="img-center"> </a></div>
+													  <div class="profile-picture profile-picture--style-3"><a href="/register" class=""><img src="../img/prv/people/people-1.png" class="img-center"> </a></div>
 												 		<!-- Profile details -->
 														<div class="profile-details">
 															<h2 class="heading heading-3 strong-500 profile-name"><c:out value='${name}' /></h2>

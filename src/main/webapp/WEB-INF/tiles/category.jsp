@@ -241,6 +241,14 @@
 													        <div class="block block-comment" style="margin-bottom: 0rem;!important">
 					                                            <div class="block-image"> <img src="../img/prv/people/brin.jpg" class="img-square"></div>
 					                                            <div class="block-body-inner">
+					                                             <span class="stars" data-rating="${recent.avgRatings}" data-num-stars="5" ></span>
+					                                              <c:if test="${recent.avgRatings gt  0 }">
+					                                                <small>${recent.avgRatings} / 5 avg rating</small>
+					                                              </c:if>
+					                                              <c:if test="${recent.avgRatings eq  0 }">
+					                                                <small>Not rated yet.</small>
+					                                              </c:if>
+					                                             <br />
 					                                            <h3 class="heading heading-6"><a href="/byuser?uid=${recent.userDetails.id}&offset=0&repost=0" id="${recent.userDetails.id}" style="color:#007aff">${recent.userDetails.username} - ${ recent.userDetails.firstName} ${ recent.userDetails.lastName}</a>
 					                                              <small>${recent.timeLapse}</small>
 					                                               <span style="float:right"> <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.category}</a> <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.subcategory}</a></span>

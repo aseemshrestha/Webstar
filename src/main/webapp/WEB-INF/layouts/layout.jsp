@@ -34,6 +34,7 @@
 <link rel="stylesheet" href="${contextRoot}/css/ionicons.min.css" type="text/css">
 <link rel="stylesheet" href="${contextRoot}/css/line-icons.css" type="text/css">
 <link rel="stylesheet" href="${contextRoot}/css/line-icons-pro.css" type="text/css">
+<link rel="stylesheet" href="${contextRoot}/css/ratingbar.css" type="text/css">
 
 <!-- Global style (main) -->
 <link id="stylesheet" type="text/css" href="${contextRoot}/css/global-style.css" rel="stylesheet" media="screen">
@@ -75,7 +76,7 @@
 <!-- Bootstrap Extensions -->
 <script src="${contextRoot}/js/bootstrap-dropdown-hover.js"></script>
 <script src="${contextRoot}/js/bootstrap-growl.min.js"></script>
-<script src="${contextRoot}/js/bootstrap-rating.js"></script>
+<script src="${contextRoot}/js/ratingbar.js"></script>
 <script src="${contextRoot}/js/scrollpos-styler.js"></script>
 
 <!-- Plugins -->
@@ -105,9 +106,11 @@
 
 <!-- App JS -->
 <script src="${contextRoot}/js/wpx.app.js"></script>
+<script src="${contextRoot}/js/webstar.star.plugin.js"></script>
 <script src="${contextRoot}/js/webstar.posts.js"></script>
 <script src="${contextRoot}/js/webstar.page.js"></script>
 <script src="${contextRoot}/js/webstar.global.js"></script>
+<script src="${contextRoot}/js/webstar.star.plugin.js"></script>
 
 
 </html>

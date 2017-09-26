@@ -1,6 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-
 <style>
 .block-comment:last-child {
   border-bottom: 2px solid rgba(243, 243, 243, 0.7) !important;
@@ -20,9 +19,6 @@
 <c:set var="email" value="${fn:split(nameEmail,'###')[0]}" />
 <c:set var="uid" value="${fn:split(nameEmail,'###')[2]}" />
 
-<jsp:include page="post.jsp" />
-<jsp:include page="comment.jsp" />
-<jsp:include page="repost.jsp" />
 
 <div class="body-wrap" data-template-mode="cards">
 	<div id="st-container" class="st-container">
@@ -220,8 +216,7 @@
 																		role="tablist">
 																		<li class="nav-item" role="presentation"><a href="#tabTwoCentered-1" aria-controls="home"
 																			role="tab" data-toggle="tab"
-																			class="nav-link active text-center text-uppercase strong-500">Recent
-																				Posts</a></li>
+																			class="nav-link active text-center text-uppercase strong-500">Recently Updated Posts</a></li>
 																		<li class="nav-item" role="presentation"><a
 																			href="#tabTwoCentered-2" aria-controls="profile"
 																			role="tab" data-toggle="tab"
@@ -245,12 +240,24 @@
 					                                                <img src="../img/prv/people/brin.jpg" class="img-square">
 					                                            </div>
 					                                          <div class="block-body">   
-					                                            <div class="block-body-inner"><h3 class="heading heading-6"><a href="/byuser?uid=${recent.userDetails.id}&offset=0&repost=0" id="${recent.userDetails.id}" style="color:#007aff">${recent.userDetails.username} - ${ recent.userDetails.firstName} ${ recent.userDetails.lastName}</a> 
+					                                            <div class="block-body-inner">
+					                                            <h3 class="heading heading-6">
+					                                             <span class="stars" data-rating="${recent.avgRatings}" data-num-stars="5" ></span>
+					                                              <c:if test="${recent.avgRatings gt  0 }">
+					                                                <small>${recent.avgRatings} / 5 avg rating</small>
+					                                              </c:if>
+					                                              <c:if test="${recent.avgRatings eq  0 }">
+					                                                <small>Not rated yet.</small>
+					                                              </c:if>
+					                                             <br />
+					                                             <a href="/byuser?uid=${recent.userDetails.id}&offset=0&repost=0" id="${recent.userDetails.id}" style="color:#007aff">
+					                                               <span id="rusername">${recent.userDetails.username}</span> - ${ recent.userDetails.firstName} ${ recent.userDetails.lastName}
+					                                             </a> 
 					                                            <small>${recent.timeLapse}</small>
 					                                            <span style="float:right"> <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.category}</a>
 					                                             <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.subcategory}</a></span>
 					                          			       </h3>
-					                                            <p class="mb-4" style="margin-bottom:0px;!important">${recent.contents}</p>
+					                                            <p class="mb-4" style="margin-bottom:0px;!important" id="rcc${recent.id}">${recent.contents}</p>
 																	<c:if test="${recent.imageUrl ne null}">
 																		<img src="../${recent.imageUrl}" style="width: 100%; top: -0px;" />
 																	</c:if>
@@ -264,20 +271,16 @@
 																	</c:if>
 																	<div class="col-10">
 																		<ul class="inline-links inline-links--style-1" style='margin-left:-4%;'>
-																	        <li><a href="javascript:void(0)"><i class="fa fa-heart" id="${recent.id}" onclick="PageWidget.doLike(event);"></i></a>
+																	        <li><a href="javascript:void(0)" onclick="PageWidget.doLike(event);"><i class="fa fa-heart" id="${recent.id}"></i></a>
 																		    <span id="like${recent.id}">${recent.totalLikes }</span></li>
-																			<li><a href="javascript:void(0)" id="${recent.id}" onclick="PageWidget.displayCommentWindow(${recent.id},event);"><i class="fa fa-comment"></i></a>
-																			<li><a href="javascript:void(0)"><i class="fa fa-retweet" id="${recent.id}"  onclick="PageWidget.displayRepostWindow(event);"></i></a></li>
+																			<li><a href="javascript:void(0)" onclick="PageWidget.displayCommentWindow(event);"><i class="fa fa-comment" id="${recent.id}"></i></a></li>
+																			<li><a href="javascript:void(0)" onclick="PageWidget.displayRepostWindow(event);"><i class="fa fa-retweet" id="${recent.id}"></i></a></li>
 																			<li><i class="fa fa-envelope"></i></li>
-																			<li><a href="javascript:void(0)"><i class="fa fa-star-o fa-2" aria-hidden="true" id="${recent.id}" onclick="PageWidget.doRating(event);"></i></a></li>
+																			<li><a href="javascript:void(0)" onclick="PageWidget.displayRatingWindow(event)"><i class="fa fa-star-o fa-2" aria-hidden="true" id="${recent.id}"></i></a></li>
 																			 <c:if test= "${ recent.totalComments gt  0 }">
 																			  <li><a href="/getcomments?postid=${recent.id}&offset=0">Show comments(${recent.totalComments })</a> </li>
 																			</c:if>
 																		</ul>
-																		 <input type="hidden" name="rating" id="ratingreviews${recent.id}" aria-required="true" />
-																		 <span class="label label-success" id="reviews-rating-label${recent.id}"></span>
-																		 <small><span class="label label-success" id="rate${recent.id}"></span></small>
-																		 <small><span class="label label-success" id="close${recent.id}"></span></small>
 																		
 																   </div>
 														       </div>
@@ -285,6 +288,10 @@
 														  </div>
 													   </div>
 												   </c:forEach>
+												   <jsp:include page="post.jsp" />
+												   <jsp:include page="comment.jsp" />
+												   <jsp:include page="repost.jsp" />
+												   <jsp:include page="rating.jsp" />
 											</div>
 										</div>
 									</div>
@@ -384,14 +391,11 @@
 												</div>
 											</div>
 										</div>
-
 									</div>
 								</div>
 							</div>
 						</div>
 					</section>
-
-
 				</div>
 			</div>
 		</div>

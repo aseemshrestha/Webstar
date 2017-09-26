@@ -90,6 +90,14 @@
 					                                                <img src="../img/prv/people/brin.jpg" class="img-square">
 					                                            </div>
 					                                          <div class="block-body">   
+					                                           <span class="stars" data-rating="${recent.avgRatings}" data-num-stars="5" ></span>
+					                                              <c:if test="${recent.avgRatings gt  0 }">
+					                                                <small>${recent.avgRatings} / 5 avg rating</small>
+					                                              </c:if>
+					                                              <c:if test="${recent.avgRatings eq  0 }">
+					                                                <small>Not rated yet.</small>
+					                                              </c:if>
+					                                             <br />
 					                                            <div class="block-body-inner"><h3 class="heading heading-6"><a href="/byuser?uid=${recent.userDetails.id}&offset=0&repost=0">${ recent.userDetails.username}</a> - <a href="/byuser?uid=${recent.userDetails.id}&offset=0&repost=0">${ recent.userDetails.firstName}</a> <a href="/byuser?uid=${recent.userDetails.id}&offset=0&repost=0">${ recent.userDetails.lastName}</a> 
 					                                            <small>${recent.timeLapse}</small>
 					                                            <span style="float:right"> <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.category}</a> <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.subcategory}</a></span>
@@ -112,8 +120,8 @@
 																		    <span id="like${recent.id}">${recent.totalLikes }</span></li>
 																			<li><a href="javascript:void(0)"><i class="fa fa-comment"  id="${recent.id}" onclick="PageWidget.displayCommentWindow(event);"></i></a>
 																			<li><a href="javascript:void(0)"><i class="fa fa-retweet" id="${recent.id}"  onclick="PageWidget.displayRepostWindow(event);"></i></a></li>
+																			<li><a href="/register"><i class="fa fa-star-o fa-5" aria-hidden="true"></i></a></li>
 																			<li><i class="fa fa-envelope"></i></li>
-																			<li><i class="fa fa-share" aria-hidden="true"></i></li>
 																			 <c:if test= "${ recent.totalComments gt  0 }">
 																			  <li><a href="/getcomments?postid=${recent.id}&offset=0">Show comments(${recent.totalComments })</a> </li>
 																			</c:if>

@@ -16,7 +16,8 @@ var ThreadWidget = {
 		postComments :$('#post-comments'),
 		postForm:$("#post_form"),
 		contentsDivComment: $('.block-post-comments--style-1'),
-		postRepost : $("#post-repost")
+		postRepost : $("#post-repost"),
+		postRatings : $("#post-ratings")
 		
 	},
 
@@ -27,6 +28,10 @@ var ThreadWidget = {
 	
 	buildCommentWindow: function(e){
 	   ThreadWidget.buildDialog(APP_THREAD.postComments,e);
+	},
+	
+	buildRatingWindow: function(e){
+		   ThreadWidget.buildDialog(APP_THREAD.postRatings,e);
 	},
 	
 	buildPostWindow: function(e){
@@ -237,26 +242,24 @@ var ThreadWidget = {
 	},
 	
 	buildDialog : function(div, e) {
-		    
 		div.dialog({ 
 			modal : true,
 			minHeight : 'auto',
 			width : $(window).width() > 450 ? 700 : 350,
 			resizable : true,
 			autoOpen : true,
+			closeText : '',
 			position : {
 				my : "center+50 top+50", of: e,
 				within : $("body")
 			},
-			closeOnEscape : false,
+			//closeOnEscape : false,
 			close : function(event, ui) {
 				$("#error_post").hide();
 				$("#show_comment").hide();
 				//$("#displayComment").html();
-				
 			},
 			buttons : {}
-
 		});
 		$(window).resize(function() {
 			div.dialog({

@@ -47,7 +47,8 @@
 
 <link rel="stylesheet" href="${contextRoot}/css/jquery-ui.css"
 	type="text/css">
-
+<link rel="stylesheet" href="${contextRoot}/css/bootstrap-rating.css"
+	type="text/css">
 
 
 <!-- Global style (main) -->
@@ -66,7 +67,7 @@
 			<div class="st-pusher">
 				<div class="st-content">
 					<div class="st-content-inner">
-						<tiles:insertAttribute name="nav-loggedin" />
+						<tiles:insertAttribute name="nav" />
 						<tiles:insertAttribute name="content" />
 						<tiles:insertAttribute name="footer-nonloggedin" />
 					</div>
@@ -120,12 +121,15 @@
 
 
 <!-- App JS -->
+
 <script src="${contextRoot}/js/jquery-ui.js"></script>
 <script src="${contextRoot}/js/wpx.app.js"></script>
+<script src="${contextRoot}/js/webstar.star.plugin.js"></script>
 <script src="${contextRoot}/js/webstar.posts.js"></script>
 <script src="${contextRoot}/js/webstar.page.js"></script>
 <script src="${contextRoot}/js/webstar.global.js"></script>
 <script src="${contextRoot}/js/webstar.imageUpload.js"></script>
+
 
 
 </html>

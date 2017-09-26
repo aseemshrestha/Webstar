@@ -63,6 +63,7 @@ img.portimg-comment {
 			<small><span id="allowedc" style="float:right;margin-right:5px;"></span></small>
 	   	</div>
 		</div>
+		<input type="hidden" name="postId" id="postIdc" value="" />
 		<div class="col-sm-13">
 			<div class="form-group has-feedback">
 				<label for="" class="text-uppercase">Add Video Link ( if
@@ -82,6 +83,7 @@ img.portimg-comment {
 				 <div class="upload-demo">
                       <div class="upload-demo-wrap" id="img-place-comment"><img alt="your image" class="portimg-comment" src="#"></div>
                  </div>
+                
                <a href="javascript:void(0)" class="btn btn-styled btn-md btn-base-2" style="float: right" id="post_comment">POST</a>  
 		</div>
  	       

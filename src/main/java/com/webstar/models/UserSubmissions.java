@@ -1,5 +1,7 @@
 package com.webstar.models;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -64,6 +66,9 @@ public class UserSubmissions
 
     private int totalReposts;
 
+    private double avgRatings;
+
+   
     public UserSubmissions()
     {}
 
@@ -229,7 +234,7 @@ public class UserSubmissions
 
     public int getTotalLikes()
     {
-         return totalLikes;
+        return totalLikes;
     }
 
     public void setTotalLikes(int totalLikes)
@@ -245,6 +250,17 @@ public class UserSubmissions
     public void setTotalReposts(int totalReposts)
     {
         this.totalReposts = totalReposts;
+    }
+
+    public double getAvgRatings()
+    {
+        NumberFormat formatter = new DecimalFormat("#0.00");
+        return Double.parseDouble(formatter.format(avgRatings));
+    }
+
+    public void setAvgRatings(double avgRatings)
+    {
+        this.avgRatings = avgRatings;
     }
 
 }

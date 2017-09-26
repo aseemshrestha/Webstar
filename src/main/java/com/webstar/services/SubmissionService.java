@@ -1,5 +1,6 @@
 package com.webstar.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,7 +9,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.webstar.models.UserReposts;
 import com.webstar.models.UserSubmissions;
 import com.webstar.repository.SubmissionRepository;
 
@@ -36,9 +36,9 @@ public class SubmissionService implements ISubmissionService
     }
 
     @Override
-    public int updateTotalCommentCount(int totalComments, Long postid)
+    public int updateTotalCommentCount(int totalComments, Date updatedDate, Long postid)
     {
-        return submissionsRepo.updateTotalCommentsCount(totalComments, postid);
+        return submissionsRepo.updateTotalCommentsCount(totalComments,updatedDate, postid);
     }
 
     @Override
@@ -70,7 +70,13 @@ public class SubmissionService implements ISubmissionService
     @Override
     public Optional<List<UserSubmissions>> fetchPostsByUsername(String username, int limit, int offset)
     {
-       return submissionsRepo.findPostsByUsername(username, limit, offset);
+        return submissionsRepo.findPostsByUsername(username, limit, offset);
+    }
+
+    @Override
+    public int updateAvgRatings(double avgRating,  Date updatedDate, Long postId)
+    {
+        return submissionsRepo.updateAverageRating(avgRating,  updatedDate, postId);
     }
 
 }

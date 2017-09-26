@@ -1,5 +1,6 @@
 package com.webstar.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import com.webstar.models.UserSubmissions;
@@ -13,7 +14,7 @@ public interface ISubmissionService
 
     Optional<List<UserSubmissions>> fetchByCategoryDesc(String category, int limit, int offset);
 
-    int updateTotalCommentCount(int totalComments, Long postid);
+    int updateTotalCommentCount(int totalComments, Date updatedDate, Long postid);
 
     int updateTotalLikesCount(int totalComments, Long postid);
 
@@ -22,9 +23,9 @@ public interface ISubmissionService
     Optional<UserSubmissions> fetchByPostId(Long postId);
 
     Optional<List<UserSubmissions>> fetchPostsByUserId(Long userId, int limit, int offset);
-    
+
     Optional<List<UserSubmissions>> fetchPostsByUsername(String username, int limit, int offset);
 
-   
+    int updateAvgRatings(double avgRating, Date updatedDate, Long postId);
 
 }

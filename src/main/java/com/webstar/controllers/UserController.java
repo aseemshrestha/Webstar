@@ -57,7 +57,7 @@ public class UserController
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     public static final String CHARSET = "ISO-8859-1";
-    private Map<String, List<UserSubmissions>> postsMap = new HashMap<>();
+    public static Map<String, List<UserSubmissions>> postsMap = new HashMap<>();
     private static int OFFSET = 0;
 
     @Autowired
@@ -151,7 +151,7 @@ public class UserController
             return "redirect:/?loginError=true";
         } else {
             String cookieValue = email + Constants.COOKIE_SEPARATOR + user.get().getFirstName() + " "
-                + user.get().getLastName() + Constants.COOKIE_SEPARATOR + user.get().getId();
+                + user.get().getLastName() + Constants.COOKIE_SEPARATOR + user.get().getId() + Constants.COOKIE_SEPARATOR+ user.get().getUsername();
             String encodedCookie = "";
             try {
                 userService.updateLastLoggedTime(new Date(), email);
@@ -410,6 +410,7 @@ public class UserController
             rv.setTotalComments(submission.getTotalComments());
             rv.setTotalLikes(submission.getTotalLikes());
             rv.setUsername(submission.getUserDetails().getUsername());
+            rv.setAvgRatings(submission.getAvgRatings());
             rvmList.add(rv);
         }
         for (UserReposts re : repostsList) {

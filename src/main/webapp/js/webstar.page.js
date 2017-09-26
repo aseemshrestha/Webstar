@@ -5,20 +5,28 @@ var PageWidget = {
 		postComment : $("#post_comment"),
 		commentForm : $('#comment_form'),
 		repostForm : $('#repost_form'),
-		searchuname : $("#searchuname")
+		searchuname : $("#searchuname"),
+		ratingForm : $("#rating-form"),
+		ratingHead : $("#head_rating"),
+		ratingPostId:$("#rating_post_id")
 	},
 
 	init : function() {
 		PAGE_THREAD = this.settings;
 		this.bindPageActions();
-		
+
 	},
 
-	displayCommentWindow : function(id,event) {
-		PAGE_THREAD.commentForm.append('<input type="hidden" name="postId" id="post_id_comment" value='+ id + ' />');
+	displayCommentWindow : function(event) {
+		var id = event.target.id;
+//		PAGE_THREAD.commentForm
+	//			.append('<input type="hidden" name="postId" id="post_id_comment" value="'
+	//					+ id + '"></input>');
+		$("#postIdc").val(id);
 		ThreadWidget.buildCommentWindow.call(event);
 	},
-
+    
+	
 	displayRepostWindow : function(event) {
 		ThreadWidget.buildRepostWindow.call(event);
 	},
@@ -27,6 +35,14 @@ var PageWidget = {
 		PAGE_THREAD.postComment.on("click", function() {
 			PageWidget.submitComment();
 		});
+		
+	},
+	
+	displayRatingWindow : function(event){
+	   var id = event.target.id;
+	   PAGE_THREAD.ratingPostId.val(id);
+	   PAGE_THREAD.ratingHead.text($("#rcc"+id).text());
+	   ThreadWidget.buildRatingWindow.call(event);
 	},
 
 	submitComment : function() {
@@ -45,7 +61,6 @@ var PageWidget = {
 			type : "GET",
 			url : "/doLikes?postId=" + id,
 			success : function(data) {
-				console.log(data);
 				if (data == -1) {
 					return;
 				} else {
@@ -73,25 +88,11 @@ var PageWidget = {
 
 				})
 			},
-			select : function(event,ui){
-			   var label = ui.item.label;
-			   window.location.href = '/q?un='+label+'&offset=0';
-			  
+			select : function(event, ui) {
+				var label = ui.item.label;
+				window.location.href = '/q?un=' + label + '&offset=0';
+
 			}
 		})
-	},
-	
-	doRating : function(event){
-		var id = event.target.id;
-		$("#ratingreviews"+id).rating({
-			 filled: "fa fa-2x fa-star",
-		        empty: "fa fa-2x fa-star-o",
-		        fractions: 2
-			
-		})
-		.on('change', function () {
-	        $('#reviews-rating-label'+id).html($(this).val() + " Stars");
-	    });
 	}
-
 }
