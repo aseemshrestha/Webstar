@@ -29,8 +29,12 @@ public class XssRequestWrapper extends HttpServletRequestWrapper
         }
         final int count = values.length;
         final String[] encodedValues = new String[count];
-        for (int i = 0; i < count; i++) {
-            encodedValues[i] = stripXSS(parameter + "[" + i + "]", values[i]);
+        try {
+            for (int i = 0; i < count; i++) {
+                encodedValues[i] = stripXSS(parameter + "[" + i + "]", values[i]);
+            }
+        } catch (Exception ex) {
+           System.out.println("Error in XSS FILTER =======================================" + ex);
         }
         return encodedValues;
     }

@@ -7,7 +7,6 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import com.webstar.models.UserDetails;
-import com.webstar.viewmodels.SearchViewModel;
 
 public interface IUserService
 {

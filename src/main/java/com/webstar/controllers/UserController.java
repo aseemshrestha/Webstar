@@ -57,7 +57,7 @@ public class UserController
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     public static final String CHARSET = "ISO-8859-1";
-    public static Map<String, List<UserSubmissions>> postsMap = new HashMap<>();
+    public static final Map<String, List<UserSubmissions>> postsMap = new HashMap<>();
     private static int OFFSET = 0;
 
     @Autowired
@@ -310,6 +310,7 @@ public class UserController
         Optional<List<UserSubmissions>> submissionList =
             subService.fetchPostsByUserId(uid, Constants.BLOCKSIZE, offset);
         Optional<List<UserReposts>> reposts = repostService.fetchRePostsByUser(uid, Constants.BLOCKSIZE, offset);
+        System.out.printf("respots = =============== ",reposts.get().size());
         List<RepostSubmissionsViewModel> rvmList = populateSubmissions(submissionList.get(), reposts.get());
 
         model.addAttribute("usersubmissions", new UserSubmissions());
@@ -322,6 +323,25 @@ public class UserController
         } else {
             return Views.USER_POSTS;
         }
+
+    }
+    
+    @RequestMapping( value = "/byuserajax", method = RequestMethod.GET )
+    public @ResponseBody List<RepostSubmissionsViewModel> showPostsByUserAjax(Long uid, int offset, int repost, Model model, HttpServletRequest request)
+        throws ParseException
+    {
+        Optional<List<UserSubmissions>> submissionList =
+            subService.fetchPostsByUserId(uid, Constants.BLOCKSIZE, offset);
+        Optional<List<UserReposts>> reposts = repostService.fetchRePostsByUser(uid, Constants.BLOCKSIZE, offset);
+        List<RepostSubmissionsViewModel> rvmList = populateSubmissions(submissionList.get(), reposts.get());
+
+        //model.addAttribute("usersubmissions", new UserSubmissions());
+        //model.addAttribute("usercomments", new UserComments());
+      //  model.addAttribute("categories", Categories.getCategories());
+       // String nameEmail = userService.readNameEmailFromCookie(request);
+        //model.addAttribute("recentPosts", rvmList);
+        return rvmList;
+       
 
     }
 
@@ -373,6 +393,10 @@ public class UserController
     {
         if (offset != 0)
             offset = Constants.BLOCKSIZE * offset;
+        if("Photos".equalsIgnoreCase(category)){
+            return subService.fetchPhotosDesc(Constants.BLOCKSIZE, offset).get();
+                     
+        }
         return subService.fetchByCategoryDesc(category, Constants.BLOCKSIZE, offset).get();
     }
 
@@ -411,6 +435,7 @@ public class UserController
             rv.setTotalLikes(submission.getTotalLikes());
             rv.setUsername(submission.getUserDetails().getUsername());
             rv.setAvgRatings(submission.getAvgRatings());
+            rv.setUid(submission.getUserDetails().getId());
             rvmList.add(rv);
         }
         for (UserReposts re : repostsList) {

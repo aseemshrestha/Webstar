@@ -11,10 +11,13 @@ import com.webstar.repository.CommentRepository;
 @Service
 public class CommentService implements ICommentService
 {
-    @Autowired
-    private CommentRepository commentRepo;
+    private final CommentRepository commentRepo;
 
-  
+    @Autowired public CommentService(CommentRepository commentRepo)
+    {
+        this.commentRepo = commentRepo;
+    }
+
     @Override
     @Transactional
     public void save(UserComments comments)

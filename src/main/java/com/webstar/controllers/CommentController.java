@@ -102,7 +102,7 @@ public class CommentController
         throws ParseException
     {
         String nameEmail = userService.readNameEmailFromCookie(request);
-        
+
         Optional<List<UserComments>> commentsList =
             commentService.fetchCommentsByPostId(postid, Constants.BLOCKSIZE, offset);
         model.addAttribute("commentsList", commentsList.get());
@@ -110,7 +110,8 @@ public class CommentController
         if (commentsList.get().size() > 0) {
             UserDetails details = commentsList.get().get(0).getUserSubmissions().getUserDetails();
             UserSubmissions submissions = commentsList.get().get(0).getUserSubmissions();
-            model.addAttribute("postedby",details.getFirstName() + " " + details.getLastName() + " " + submissions.getTimeLapse());
+            model.addAttribute("postedby",
+                               details.getFirstName() + " " + details.getLastName() + " " + submissions.getTimeLapse());
             model.addAttribute("post", submissions.getContents());
             model.addAttribute("category", submissions.getCategory() + " - " + submissions.getSubcategory());
             model.addAttribute("imageUrl", submissions.getImageUrl());
@@ -122,7 +123,7 @@ public class CommentController
         model.addAttribute("totalComments", totalComments);
         model.addAttribute("usersubmissions", new UserSubmissions());
         model.addAttribute("usercomments", new UserComments());
-        if(nameEmail.isEmpty()){
+        if (nameEmail.isEmpty()) {
             return "webstar.nlcomments";
         }
         return Views.COMMENTS;
@@ -148,13 +149,20 @@ public class CommentController
             offset = Constants.BLOCKSIZE * offset;
         }
         String nameEmail = userService.readNameEmailFromCookie(request);
+
         if (nameEmail.isEmpty() || nameEmail == null) {
             modelAndView.setViewName("webstar.nlcategory");
         } else {
             modelAndView.setViewName("webstar.category");
         }
-        modelAndView.addObject("categoriescomments",
-                               submissionService.fetchByCategoryDesc(category, Constants.BLOCKSIZE, offset).get());
+        if ("Photos".equalsIgnoreCase(category)) {
+            modelAndView.addObject("categoriescomments",
+                                   submissionService.fetchPhotosDesc(Constants.BLOCKSIZE, offset).get());
+        } else {
+            modelAndView.addObject("categoriescomments",
+                                   submissionService.fetchByCategoryDesc(category, Constants.BLOCKSIZE, offset).get());
+
+        }
         model.addAttribute("categories", Categories.getCategories());
         modelAndView.addObject("usersubmissions", new UserSubmissions());
         modelAndView.addObject("usercomments", new UserComments());

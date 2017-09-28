@@ -49,10 +49,7 @@ public class Utils
         String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
-        if (matcher.matches()) {
-            return true;
-        }
-        return false;
+        return matcher.matches();
     }
 
     public static boolean validatePhoneNumber(String phoneNo)
@@ -67,20 +64,14 @@ public class Utils
         else if (phoneNo.matches("\\d{3}-\\d{3}-\\d{4}\\s(x|(ext))\\d{3,5}"))
             return true;
         //validating phone number where area code is in braces ()
-        else if (phoneNo.matches("\\(\\d{3}\\)-\\d{3}-\\d{4}"))
-            return true;
-        //return false if nothing matches the input
-        else
-            return false;
+        else //return false if nothing matches the input
+            return phoneNo.matches("\\(\\d{3}\\)-\\d{3}-\\d{4}");
 
     }
 
-    public static boolean checkIfStringIsNullOrEmpty(String input)
+    private static boolean checkIfStringIsNullOrEmpty(String input)
     {
-        if (input == "" || input == null) {
-            return true;
-        }
-        return false;
+        return input == "" || input == null;
     }
 
     public static <T> T parseJSONFromUrl(String content, Class<T> cl) throws IOException
@@ -97,7 +88,7 @@ public class Utils
     }
 
     public static <T> T parseJsonAsStream(InputStream input, Class<T> cl)
-        throws JsonParseException, JsonMappingException, IOException
+        throws IOException
     {
         ObjectMapper mapper = JacksonMapper.INSTANCE.getObjectMapper();
         return mapper.readValue(input, cl);
@@ -106,8 +97,7 @@ public class Utils
     public static InputStream getResourceAsStream(String fileName) throws IOException
     {
         Resource resource = new ClassPathResource(fileName);
-        InputStream resourceInputStream = resource.getInputStream();
-        return resourceInputStream;
+        return resource.getInputStream();
 
     }
 }

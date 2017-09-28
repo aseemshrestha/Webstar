@@ -1,4 +1,5 @@
 $.fn.stars = function() {
+	//console.log("star",this);
     return $(this).each(function() {
         var rating = $(this).data("rating");
         var numStars = $(this).data("numStars");

@@ -47,7 +47,7 @@
 								<ul class="navbar-nav " data-hover="dropdown" data-animations="zoomIn zoomIn zoomIn zoomIn">
 									<c:forEach var="category" items="${categories}" varStatus="position">
 										<li class="nav-item" style="padding: 5px 10px;!important">
-										   <h5 class="heading heading-5 strong-500"><a href="javascript:void(0);" id="${category.value}" onclick="ThreadWidget.loadPostsByCategory(event);">
+										   <h5 class="heading heading-5 strong-500"><a href="javascript:void(0);" id="${category.value}" onclick="ThreadWidget.loadPostsByCategory1(event);">
 										        <c:choose>
 													  <c:when test="${param.category == category.value}">
 													    <strong>${category.value}</strong> 

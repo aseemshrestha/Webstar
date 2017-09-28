@@ -3,6 +3,7 @@ var page1 = 0;
 var page2 = 0;
 var page3 = 0;
 var page4= 0;
+var page5=0;
 
 var ThreadWidget = {
 	settings : {
@@ -63,7 +64,13 @@ var ThreadWidget = {
 				error : function(e) { console.log("error:", e); }
 			})
 	},
-
+	
+	loadPostsByCategory1: function(event,page){
+		//console.log(event);
+		console.log("hello",event.path[0].innerText);
+		 var req = '/bycategorypage?category='+event.path[0].innerText+"&offset=0";
+	   	 window.location.href = req;
+	},
 	loadPostsByCategory: function(event,page){
 		 var req = '/bycategory?category='+event.target.id+"&offset=0";
 		   $.getJSON(req, function(result){
@@ -71,7 +78,8 @@ var ThreadWidget = {
 	    	    $.each(result, function(i, field){
 	            	ThreadWidget.buildAjaxUI(field);
 	            });
-	        });
+	    	    $(".stars").stars();
+	   		});
 	},
 	
 	//pagination
@@ -79,18 +87,34 @@ var ThreadWidget = {
 		next = page; 
 		var req = '/bycategory?category='+cat+'&offset='+next;
 		    $.getJSON(req, function(result){
-	    		 $.each(result, function(i, field){
+		  	 $.each(result, function(i, field){
 	            	ThreadWidget.buildAjaxUI(field);
 	            });
+		 	 $(".stars").stars();
+            });
+	},
+	//pagination
+	loadMorePostsByUser: function(id,page){
+		next = page; 
+		var req = '/byuserajax?uid='+id+'&offset='+next+"&repost=0";
+		    $.getJSON(req, function(result){
+		  	 $.each(result, function(i, field){
+		  		ThreadWidget.buildAjaxUI(field);
+	            });
+		  	  $(".stars").stars();
 	        });
+		   
+			 
 	},
 	//pagination
 	loadMorePosts : function(page){
 		   next = page;
 		    $.getJSON("/loadMoreRecent?offset="+next, function(result){
 		    $.each(result, function(i, field){
-            	ThreadWidget.buildAjaxUI(field);
-            });
+		    	ThreadWidget.buildAjaxUI(field);
+            })
+            $(".stars").stars();
+		    
         });
     },
   //pagination
@@ -100,6 +124,8 @@ var ThreadWidget = {
 	         $.each(result, function(i, field){
             	ThreadWidget.buildCommentUI(field);
             });
+	        $(".stars").stars();
+			 
         });
     },
     paramValue : function(name) {
@@ -119,29 +145,37 @@ var ThreadWidget = {
 		window.onscroll = function(ev) {
 			 if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
 			  var _uri = ev.target.documentURI;
-			  if(_uri.indexOf('?') > 0){
+			  if(_uri.indexOf('byuser') > 0){
+				  page5++;
+				  page1,page2,page3,page4=0;
+				  v = ThreadWidget.paramValue('uid');
+				  //console.log(v+"  "+page5);
+				  ThreadWidget.loadMorePostsByUser(v,page5);
+			  }
+			  else if(_uri.indexOf('?') > 0){
 				  var v = ThreadWidget.paramValue('category');
-				  
-		    	  if( v == "" || v == null){
-		    		  page1++;
-		    		  page2,page3,page4=0;
-		    		  v = ThreadWidget.paramValue('postid');
-		    		  ThreadWidget.loadMorePostsCommentsByPostId(v,page1);
-		    	  }else{
-		    	  page2++;
-		    	  page1,page3,page4=0;
-		    	  ThreadWidget.loadMorePostsByCategory(v,page2);
+				  if( v == "" || v == null)
+				  {
+		    		 page1++;
+		    		 page2,page3,page4,page5=0;
+		    		 v = ThreadWidget.paramValue('postid');
+		    		 ThreadWidget.loadMorePostsCommentsByPostId(v,page1);
+		    	  }
+				  else{
+		    	    page2++;
+		    	    page1,page3,page4,page5=0;
+		    	    ThreadWidget.loadMorePostsByCategory(v,page2);
 		    	  }
 		      }
 			  else if(ev.target.activeElement.id !=''){
-				  page3++;
-				  page1,page2,page4=0;
-				  ThreadWidget.loadMorePostsByCategory(ev.target.activeElement.id,page3);
+				   page3++;
+				   page1,page2,page4,page5=0;
+				   ThreadWidget.loadMorePostsByCategory(ev.target.activeElement.id,page3);
 			  }
 			  else{
-				  page4++;
-				  page1,page2,page3 = 0;
-				  ThreadWidget.loadMorePosts(page4);
+				   page4++;
+				   page1,page2,page3,page5 = 0;
+				   ThreadWidget.loadMorePosts(page4);
 			  }
 		    }
 		};
@@ -185,34 +219,36 @@ var ThreadWidget = {
    },
  
     buildAjaxUI: function(field){
-		var dummy = 50;
-		var html = '<div class="card-body" style="padding-left:0.5em;padding-top:0.5em;!important">'+
-		            '<div class="block block-comment" style="margin-bottom: 0rem;!important">'+
-		            '<div class="block-image">'+
-		            '<img src="../img/prv/people/brin.jpg" class="img-square"></div>';
-		    html =   html + '<div class="block-body">'+
-		    	     '<div class="block-body-inner">'  +
-		             '<h3 class="heading heading-6">'+ field.userDetails.firstName+" "+ field.userDetails.lastName+ '<small>&nbsp;&nbsp;'+ field.timeLapse +'</small>';
-		    html = html + '<span style="float:right"><a href="/bycategorypage?category='+field.category+'&offset=0">' + field.category +'</a> <a href="/bycategorypage?category='+field.category+'&offset=0">'+ "  "+field.subcategory +'</a></span></h3>';
-		    html = html + '<p class="mb-4" style="margin-bottom:0px;!important">'+ field.contents+'</p>';
-		    if(field.imageUrl!=null){
-	          html = html+'<img src=../'+field.imageUrl+' style="width:100%; top: -0px;" />';
+		var dummy = 100;
+		var html = '<div class="card-body" style="padding-left:0.5em;padding-top:0.5em;!important"><div class="block block-comment" style="margin-bottom: 0rem;!important"><div class="block-image"><img src="../img/prv/people/brin.jpg" class="img-square"></div>';
+			html =   html + '<div class="block-body"><div class="block-body-inner"><h3 class="heading heading-6"><span class="stars" data-rating="'+  field.avgRatings  +'" data-num-stars="5" ></span>';
+			    	      if(field.avgRatings > 0){  html = html +'<small> '+  field.avgRatings  +' / 5 avg rating</small><br />';   }else{  html = html +'<small> Not rated yet.</small><br/>';}
+	        if(field.userDetails === undefined){
+	  	      html = html+'<span style="color:#007aff"><a href="/byuser?uid='+field.uid+'&offset=0&repost=0">' + field.username+" - "+ field.firstName+" "+field.lastName + '</a></span><small>&nbsp;&nbsp;'+ field.timeLapse +'</small>';
+	        }else{
+	        	 html = html+'<span style="color:#007aff"><a href=/byuser?uid='+field.userDetails.id+'&offset=0&repost=0>' +  field.userDetails.username+" "+field.userDetails.firstName+" "+field.userDetails.lastName + '</a></span><small>&nbsp;&nbsp;'+ field.timeLapse +'</small>';
+	        }
+	        html = html + '<span style="float:right"><a href=/bycategorypage?category='+field.category+'&offset=0>' + field.category +'</a>';
+	        html = html + '<a href=/bycategorypage?category='+field.category+'&offset=0">'+ "  "+field.subcategory +'</a></span></h3>';
+	        html = html + '<p class="mb-4" style="margin-bottom:0px;!important">'+ field.contents+'</p>';
+	        if(field.imageUrl!=null){
+	    	  html = html+'<img src=../'+field.imageUrl+' style="width:100%; top: -0px;" />';
 	        }    
-		    if(field.videoUrl.startsWith('$$-')){
-			  html = html +'<iframe width="100%" height="315" src="https://www.youtube.com/embed/'+field.videoUrl.split('-')[1]+'"></iframe>';
-		    }   
-		    if(field.videoUrl.startsWith('##-')){
-			  html = html +'<iframe width="100%" height="315" src="https://player.vimeo.com/video/'+field.videoUrl.split('-')[1]+'"></iframe>';
-		    }     
-           html  = html+ '<div class="col-10"><ul class="inline-links inline-links--style-3" style="margin-left:-4%;">';
-    	   html = html+ '<li><a href="#"><i class="fa fa-heart"></i>'+ dummy +'</a></li>';
-    	   html = html+ '<li><a href="javascript:void(0)"><i class="fa fa-comment"  id='+field.id+' onclick=PageWidget.displayCommentWindow(event);></i></a></li>';     
-    	   html = html+ '<li><a href="#"><i class="fa fa-retweet"></i>'+ dummy +'</a></li>';
-	       html = html+ '<li><a href="#"><i class="fa fa-envelope"></i></a></li>';
-	       html = html+ '<li><a href="#"><i class="fa fa-share" aria-hidden="true"></i></li>';
-	       html = html+ '<li><a href="/getcomments?postid='+field.id+'">Show comments('+ field.totalComments+')</a> </li>';
-		   html = html +'</ul></div></div>';
-	       APP_THREAD.contentsDiv.append(html);
+	        if(field.videoUrl.startsWith('$$-')){
+	    	  html = html +'<iframe width="100%" height="315" src="https://www.youtube.com/embed/'+field.videoUrl.split('-')[1]+'"></iframe>';
+	        }   
+	        if(field.videoUrl.startsWith('##-')){
+	    	  html = html +'<iframe width="100%" height="315" src="https://player.vimeo.com/video/'+field.videoUrl.split('-')[1]+'"></iframe>';
+	        }     
+	        html  = html+ '<div class="col-10"><ul class="inline-links inline-links--style-3" style="margin-left:-4%;">';
+		    html = html+ '<li><a href="#"><i class="fa fa-heart"></i>'+ dummy +'</a></li>';
+		    html = html+ '<li><a href="javascript:void(0)"><i class="fa fa-comment"  id='+field.id+' onclick=PageWidget.displayCommentWindow(event);></i></a></li>';     
+		    html = html+ '<li><a href="#"><i class="fa fa-retweet"></i>'+ dummy +'</a></li>';
+	        html = html+ '<li><a href="#"><i class="fa fa-envelope"></i></a></li>';
+	        html = html+ '<li><a href="javascript:void(0)" onclick="PageWidget.displayRatingWindow(event)"><i class="fa fa-star-o fa-2" aria-hidden="true" id='+field.id+'></i></a></li>';
+	        html = html+ '<li><a href="/getcomments?postid='+field.id+'">Show comments('+ field.totalComments+')</a> </li>';
+		    html = html +'</ul></div></div>';
+	    APP_THREAD.contentsDiv.append(html);
 	},
     
 	validateVideoLinks : function(url) {

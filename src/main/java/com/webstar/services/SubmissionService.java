@@ -15,8 +15,12 @@ import com.webstar.repository.SubmissionRepository;
 @Service
 public class SubmissionService implements ISubmissionService
 {
-    @Autowired
-    private SubmissionRepository submissionsRepo;
+    private final SubmissionRepository submissionsRepo;
+
+    @Autowired public SubmissionService(SubmissionRepository submissionsRepo)
+    {
+        this.submissionsRepo = submissionsRepo;
+    }
 
     @Override
     @Transactional
@@ -77,6 +81,12 @@ public class SubmissionService implements ISubmissionService
     public int updateAvgRatings(double avgRating,  Date updatedDate, Long postId)
     {
         return submissionsRepo.updateAverageRating(avgRating,  updatedDate, postId);
+    }
+
+ 
+    @Override public Optional<List<UserSubmissions>> fetchPhotosDesc(int limit, int offset)
+    {
+        return submissionsRepo.fetchPhotosOnlyDesc(limit, offset);
     }
 
 }

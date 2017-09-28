@@ -48,6 +48,8 @@ public class RepostSubmissionsViewModel
     private String username;
 
     private double avgRatings;
+    
+    private Long uid;
 
     public String getRepostedPost()
     {
@@ -257,6 +259,16 @@ public class RepostSubmissionsViewModel
     public void setAvgRatings(double avgRatings)
     {
         this.avgRatings = avgRatings;
+    }
+
+    public Long getUid()
+    {
+        return uid;
+    }
+
+    public void setUid(Long uid)
+    {
+        this.uid = uid;
     }
 
 }

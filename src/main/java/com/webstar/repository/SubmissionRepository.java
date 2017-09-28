@@ -20,6 +20,11 @@ public interface SubmissionRepository extends JpaRepository<UserSubmissions, Lon
         value = "select * from User_Submissions u where u.is_active_post=1 order by u.updated_date desc limit ?1 offset ?2",
         nativeQuery = true )
     Optional<List<UserSubmissions>> fetchRecentPostsDesc(int limit, int offset);
+    
+    @Query(
+           value = "select * from User_Submissions u where u.is_active_post=1 and u.image_url is not null order by u.updated_date desc limit ?1 offset ?2",
+           nativeQuery = true )
+    Optional<List<UserSubmissions>> fetchPhotosOnlyDesc(int limit, int offset);
 
     @Query(
         value = "select * from User_Submissions u where u.is_active_post=1 and u.category = ?1 order by u.updated_date desc limit ?2 offset ?3",

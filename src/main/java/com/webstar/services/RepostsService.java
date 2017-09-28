@@ -10,9 +10,13 @@ import com.webstar.repository.RepostRepository;
 @Service
 public class RepostsService implements IRepostsService
 {
-    @Autowired
-    private RepostRepository repostRepo;
-    
+    private final RepostRepository repostRepo;
+
+    @Autowired public RepostsService(RepostRepository repostRepo)
+    {
+        this.repostRepo = repostRepo;
+    }
+
     @Override
     public void saveReposts(UserReposts reposts)
     {
@@ -36,7 +40,5 @@ public class RepostsService implements IRepostsService
     {
         return repostRepo.findPostRepostsByUsername(username, limit, offset);
     }
-
-    
 
 }

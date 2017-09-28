@@ -17,15 +17,18 @@ import com.webstar.models.UserDetails;
 import com.webstar.repository.UserRepository;
 import com.webstar.util.Constants;
 import com.webstar.util.Security;
-import com.webstar.viewmodels.SearchViewModel;
 
 @Service
 public class UserService implements IUserService
 {
-    @Autowired
-    private UserRepository userRepo;
+    private final UserRepository userRepo;
 
-    public static final String CHARSET = "ISO-8859-1";
+    private static final String CHARSET = "ISO-8859-1";
+
+    @Autowired public UserService(UserRepository userRepo)
+    {
+        this.userRepo = userRepo;
+    }
 
     @Override
     @Transactional
@@ -63,7 +66,7 @@ public class UserService implements IUserService
                 if (Constants.WEBSTAR_COOKIE_AUTH.equals(cookie.getName())) {
                     try {
                         nameEmail = new String(Base64.decodeBase64(cookie.getValue().getBytes(CHARSET)));
-                    } catch (UnsupportedEncodingException e) {}
+                    } catch (UnsupportedEncodingException ignored) {}
                     break;
                 }
             }

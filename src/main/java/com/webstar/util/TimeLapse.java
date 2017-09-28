@@ -8,7 +8,7 @@ import org.joda.time.Interval;
 public class TimeLapse
 {
 
-    public static String toRelative(Date start, Date end) throws ParseException
+    public static String toRelative(Date start, Date end)
     {
         if(start.equals(end) || end.before(start)){
             return "1 sec ago";
@@ -17,22 +17,22 @@ public class TimeLapse
         org.joda.time.Period period = interval.toPeriod();
         StringBuilder result = new StringBuilder();
         if (period.getYears() > 0) {
-            result.append(period.getYears() + " years ");
+            result.append(period.getYears()).append(" years ");
         }
         if (period.getMonths() > 0) {
-            result.append(period.getMonths() + " months ");
+            result.append(period.getMonths()).append(" months ");
         }
         if (period.getDays() > 0) {
-            result.append(period.getDays() + " days ");
+            result.append(period.getDays()).append(" days ");
         }
         if (period.getHours() > 0) {
-            result.append(period.getHours() + " hrs ");
+            result.append(period.getHours()).append(" hrs ");
         }
         if (period.getMinutes() > 0 && period.getMinutes() < 60) {
-            result.append(period.getMinutes() + " mins ");
+            result.append(period.getMinutes()).append(" mins ");
         }
         if (period.getSeconds() > 0 && period.getSeconds() < 60) {
-            result.append(period.getSeconds() + " sec ");
+            result.append(period.getSeconds()).append(" sec ");
         }
         return result.toString() + "ago";
 

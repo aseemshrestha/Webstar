@@ -97,7 +97,7 @@
 								<ul class="navbar-nav " data-hover="dropdown" data-animations="zoomIn zoomIn zoomIn zoomIn">
 									<c:forEach var="category" items="${categories}" varStatus="position">
 										<li class="nav-item" style="padding: 5px 10px;!important">
-										   <h5 class="heading heading-5 strong-500"><a href="javascript:void(0);" id="${category.value}" onclick="ThreadWidget.loadPostsByCategory(event);">
+										   <h5 class="heading heading-5 strong-500"><a href="javascript:void(0);" id="${category.value}" onclick="ThreadWidget.loadPostsByCategory1(event);">
 										        <c:choose>
 													  <c:when test="${param.category == category.value}">
 													    <strong>${category.value}</strong> 
@@ -266,7 +266,7 @@
 																			<li><a href="javascript:void(0)"><i class="fa fa-comment"  id="${recent.id}" onclick="PageWidget.displayCommentWindow(event);"></i></a>
 																			<li><a href="javascript:void(0)"><i class="fa fa-retweet" id="${recent.id}"  onclick="PageWidget.displayRepostWindow(event);"></i></a></li>
 																			<li><i class="fa fa-envelope"></i></li>
-																			<li><i class="fa fa-share" aria-hidden="true"></i></li>
+																			<li><a href="javascript:void(0)" onclick="PageWidget.displayRatingWindow(event)"><i class="fa fa-star-o fa-2" aria-hidden="true" id="${recent.id}"></i></a></li>
 																			 <c:if test= "${ recent.totalComments gt  0 }">
 																			  <li><a href="/getcomments?postid=${recent.id}&offset=0">Show comments(${recent.totalComments })</a> </li>
 																			</c:if>

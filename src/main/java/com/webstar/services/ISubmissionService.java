@@ -13,6 +13,8 @@ public interface ISubmissionService
     Optional<List<UserSubmissions>> getRecentPostsDesc(int limit, int offset);
 
     Optional<List<UserSubmissions>> fetchByCategoryDesc(String category, int limit, int offset);
+    
+    Optional<List<UserSubmissions>> fetchPhotosDesc(int limit, int offset);
 
     int updateTotalCommentCount(int totalComments, Date updatedDate, Long postid);
 

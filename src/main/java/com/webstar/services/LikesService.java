@@ -9,9 +9,13 @@ import com.webstar.repository.LikesRepository;
 @Service
 public class LikesService implements ILikesService
 {
-    @Autowired
-    private LikesRepository likesRepo;
- 
+    private final LikesRepository likesRepo;
+
+    @Autowired public LikesService(LikesRepository likesRepo)
+    {
+        this.likesRepo = likesRepo;
+    }
+
     @Override
     public void saveLikes(UserLikes likes)
     {

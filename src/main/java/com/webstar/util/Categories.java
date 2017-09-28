@@ -58,7 +58,7 @@ public class Categories
 
         return getSubCategories().entrySet().stream()
             .filter(map -> category.equals(map.getKey()))
-            .map(map -> map.getValue())
+            .map(Map.Entry::getValue)
             .collect(Collectors.joining());
     }
 }
