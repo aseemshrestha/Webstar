@@ -1,8 +1,12 @@
 package com.webstar.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +18,7 @@ import org.springframework.core.io.Resource;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.multipart.MultipartFile;
 
 public class Utils
 {
@@ -99,5 +104,18 @@ public class Utils
         Resource resource = new ClassPathResource(fileName);
         return resource.getInputStream();
 
+    }
+
+    public static String uploadFile(String imagePath, HttpServletRequest request, MultipartFile file) throws Exception{
+        File fileSaveDir = new File(imagePath);
+        if (!fileSaveDir.exists()) {
+            fileSaveDir.mkdir();
+        }
+        String absPath = request.getServletContext().getRealPath("/");
+        byte[] bytes = file.getBytes();
+        Path path = Paths.get(absPath + imagePath + file.getOriginalFilename());
+       // usercomments.setImageUrl(path.toString());
+        Files.write(path, bytes);
+        return path.toString();
     }
 }

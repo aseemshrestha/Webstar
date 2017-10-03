@@ -30,61 +30,16 @@
 					</div>
 					<div class="profile-user-info">
 						<span class="profile-user-name"><c:out value='${name}' /></span>
-						<span class="profile-user-email"><c:out value='${email}' /></span>
 					</div>
 				</div>
-			</div>
-
-			<div class="st-menu-list mt-2">
-				<ul>
-					<li><a href="#"> <i class="ion-ios-bookmarks-outline"></i>Theme documentation</a></li>
-					<li><a href="#"> <i class="ion-ios-cart-outline"></i>Purchase Tribus</a></li>
-				</ul>
-			</div>
-
-			<h3 class="st-menu-title">Account</h3>
-			<div class="st-menu-list">
-				<ul>
-					<li><a href="#"> <i class="ion-ios-person-outline"></i>User profile</a></li>
-					<li><a href="#"> <i class="ion-ios-location-outline"></i>My addresses</a></li>
-					<li><a href="#"> <i class="ion-card"></i> My cards</a></li>
-					<li><a href="#"> <i class="ion-ios-unlocked-outline"></i>Password update</a></li>
-				</ul>
-			</div>
-
-			<h3 class="st-menu-title">Support center</h3>
-			<div class="st-menu-list">
-				<ul>
-					<li><a href="#"> <i class="ion-ios-information-outline"></i>About Tribus</a></li>
-					<li><a href="#"> <i class="ion-ios-email-outline"></i>Contact &amp; support</a></li>
-					<li><a href="#"> <i class="fa fa-camera"></i> Getting started</a></li>
-				</ul>
 			</div>
 		</nav>
 
 		<div class="st-pusher">
 			<div class="st-content">
 				<div class="st-content-inner">
-
-					<!-- Top bar -->
-					<div class="top-navbar align-items-center">
-						<div class="container">
-							<div class="row align-items-center py-3">
-								<div class="col-4">
-								 
-									<form class="form-default form-inline my-2 my-md-0">
-										<input class="form-control mr-sm-2" type="text" id="searchuname" placeholder="Search" onkeypress="PageWidget.doSearch(event);">
-										<button class="btn btn-base-1 my-2 my-sm-0" type="submit">Search User</button>
-									</form>
-								</div>
-
-								<div class="col-sm-3">
-									<a href="javascript:void(0)" class="btn btn-styled btn-block btn-base-2"  onclick="ThreadWidget.buildPostWindow(event);">SUBMIT A NEW POST</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- Navbar -->
+					<jsp:include page="_search.jsp" />
+					
 					<nav class="navbar navbar-toggleable-md  navbar--style-1 navbar-light bg-default  bg-default navbar--shadow navbar--uppercase">
 						<div class="container navbar-container">
 							<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar_default" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -131,7 +86,6 @@
 													<!-- Profile details -->
 													<div class="profile-details">
 														<h2 class="heading heading-3 strong-500 profile-name"><c:out value='${name}' /></h2>
-														<h3 class="heading heading-6 strong-400 profile-occupation mt-3"><c:out value='${email}' /></h3>
 													</div>
 
 													<!-- Profile connect -->
@@ -149,56 +103,8 @@
 															<span class="stats-count">1.3K</span> <span class="stats-label text-uppercase">Followers</span>
 														</div>
 													</div>
-
-													<!-- Profile connected accounts -->
-													<div class="profile-useful-links clearfix">
-														<div class="useful-links">
-															<a href="#"> <i class="icon ion-social-instagram-outline"></i></a> <a href="#"> <iclass="icon ion-social-linkedin-outline"></i>
-																
-															</a> <a href="#"> <i class="icon ion-earth"></i></a>
-														</div>
-													</div>
-
-													<div class="profile-useful-links clearfix">
-														<div class="useful-links">
-															<a href="#"> <i class="icon ion-code-download"></i></a>
-														</div>
-													</div>
 												</div>
 											</div>
-
-											<div class="widget">
-												<div class="card card-inverse bg-pink">
-													<div class="card-title"><h3 class="heading heading-6 strong-500">About me</h3></div>
-													<div class="card-body">
-														<div class="short-info">
-															<h4 class="short-info-label">Current position</h4>
-															<h3 class="short-info-title">Founder, Web Developer</h3>
-														</div>
-
-														<div class="short-info">
-															<h4 class="short-info-label">Previous position</h4>
-															<h3 class="short-info-title">Senior Developer</h3>
-														</div>
-
-														<div class="short-info">
-															<h4 class="short-info-label">Studied at</h4>
-															<h3 class="short-info-title">Harvard University</h3>
-														</div>
-
-														<div class="short-info">
-															<h4 class="short-info-label">Lives in</h4>
-															<h3 class="short-info-title">Bucharest, Romania</h3>
-														</div>
-
-														<div class="short-info">
-															<h4 class="short-info-label">Relationship</h4>
-															<h3 class="short-info-title">Single</h3>
-														</div>
-													</div>
-												</div>
-											</div>
-
 										</div>
 									</div>
 
@@ -208,7 +114,7 @@
 												<section class="slice sct-color-2" style="padding-top: 0em; padding-bottom: 0em;!important">
 													<div class="container">
 														<div class="row">
-															<div class="col-md-8 col-lg-9 offset-lg-0">
+															<div class="col-md-8 col-lg-10 offset-lg-0">
 																<div class="tabs tabs--style-2 tabs--centered"
 																	role="tabpanel">
 																	<!-- Nav tabs -->
@@ -272,7 +178,7 @@
 																	<div class="col-10">
 																		<ul class="inline-links inline-links--style-1" style='margin-left:-4%;'>
 																	        <li><a href="javascript:void(0)" onclick="PageWidget.doLike(event);"><i class="fa fa-heart" id="${recent.id}"></i></a>
-																		    <span id="like${recent.id}">${recent.totalLikes }</span></li>
+																		    <span id="like${recent.id}">${ recent.totalLikes }</span></li>
 																			<li><a href="javascript:void(0)" onclick="PageWidget.displayCommentWindow(event);"><i class="fa fa-comment" id="${recent.id}"></i></a></li>
 																			<li><a href="javascript:void(0)" onclick="PageWidget.displayRepostWindow(event);"><i class="fa fa-retweet" id="${recent.id}"></i></a></li>
 																			<li><i class="fa fa-envelope"></i></li>
@@ -288,10 +194,10 @@
 														  </div>
 													   </div>
 												   </c:forEach>
-												   <jsp:include page="post.jsp" />
-												   <jsp:include page="comment.jsp" />
-												   <jsp:include page="repost.jsp" />
-												   <jsp:include page="rating.jsp" />
+												   <jsp:include page="_post.jsp" />
+												   <jsp:include page="_comment.jsp" />
+												   <jsp:include page="_repost.jsp" />
+												   <jsp:include page="_rating.jsp" />
 											</div>
 										</div>
 									</div>

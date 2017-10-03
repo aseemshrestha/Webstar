@@ -62,10 +62,8 @@ public class UserController
 
     @Autowired
     private IUserService userService;
-
     @Autowired
     private ISubmissionService subService;
-
     @Autowired
     private IEmailService emailService;
     @Autowired
@@ -84,7 +82,6 @@ public class UserController
     @RequestMapping( "/about" )
     public String about()
     {
-
         return Views.ABOUT_PAGE;
     }
 
@@ -169,14 +166,12 @@ public class UserController
         String nameEmail = userService.readNameEmailFromCookie(request);
         if (nameEmail.isEmpty()) {
             return "redirect:/?loginError=true";
-
         }
         model.addAttribute("categories", Categories.getCategories());
         model.addAttribute("recentPosts", subService.getRecentPostsDesc(Constants.BLOCKSIZE, OFFSET).get());
         model.addAttribute("usersubmissions", new UserSubmissions());
         model.addAttribute("usercomments", new UserComments());
         model.addAttribute("nameEmail", nameEmail);
-
         return "webstar.myhome";
     }
 
@@ -199,8 +194,7 @@ public class UserController
                 } catch (Exception ex) {
                     LOG.debug("Error logging password reset:", ex);
                 }
-                modelAndView.addObject("passwordResetSuccessful",
-                                       "You have successfully reset your password. You may now login");
+                modelAndView.addObject("passwordResetSuccessful", "You have successfully reset your password. You may now login");
             } else {
                 modelAndView.addObject("resetTokenError", "Oops! Password reset link is not valid.");
             }
@@ -310,13 +304,12 @@ public class UserController
         Optional<List<UserSubmissions>> submissionList =
             subService.fetchPostsByUserId(uid, Constants.BLOCKSIZE, offset);
         Optional<List<UserReposts>> reposts = repostService.fetchRePostsByUser(uid, Constants.BLOCKSIZE, offset);
-        System.out.printf("respots = =============== ",reposts.get().size());
         List<RepostSubmissionsViewModel> rvmList = populateSubmissions(submissionList.get(), reposts.get());
-
         model.addAttribute("usersubmissions", new UserSubmissions());
         model.addAttribute("usercomments", new UserComments());
         model.addAttribute("categories", Categories.getCategories());
         String nameEmail = userService.readNameEmailFromCookie(request);
+        model.addAttribute("nameEmail", nameEmail);
         model.addAttribute("recentPosts", rvmList);
         if (nameEmail.isEmpty()) {
             return "webstar.nluserposts";
@@ -334,16 +327,8 @@ public class UserController
             subService.fetchPostsByUserId(uid, Constants.BLOCKSIZE, offset);
         Optional<List<UserReposts>> reposts = repostService.fetchRePostsByUser(uid, Constants.BLOCKSIZE, offset);
         List<RepostSubmissionsViewModel> rvmList = populateSubmissions(submissionList.get(), reposts.get());
-
-        //model.addAttribute("usersubmissions", new UserSubmissions());
-        //model.addAttribute("usercomments", new UserComments());
-      //  model.addAttribute("categories", Categories.getCategories());
-       // String nameEmail = userService.readNameEmailFromCookie(request);
-        //model.addAttribute("recentPosts", rvmList);
         return rvmList;
-       
-
-    }
+     }
 
     @RequestMapping( value = "/q", method = RequestMethod.GET )
     public String searchByUsername(String un, int offset, Model model, HttpServletRequest request)
@@ -360,6 +345,7 @@ public class UserController
             model.addAttribute("loggedinuser", true);
         }
         model.addAttribute("recentPosts", rvmList);
+        model.addAttribute("nameEmail", nameEmail);
         model.addAttribute("usersubmissions", new UserSubmissions());
         model.addAttribute("usercomments", new UserComments());
         model.addAttribute("categories", Categories.getCategories());
@@ -395,7 +381,6 @@ public class UserController
             offset = Constants.BLOCKSIZE * offset;
         if("Photos".equalsIgnoreCase(category)){
             return subService.fetchPhotosDesc(Constants.BLOCKSIZE, offset).get();
-                     
         }
         return subService.fetchByCategoryDesc(category, Constants.BLOCKSIZE, offset).get();
     }

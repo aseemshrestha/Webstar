@@ -1,9 +1,5 @@
 package com.webstar.controllers;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -42,7 +38,6 @@ public class CommentController
 
     @Autowired
     private IUserService userService;
-
     @Autowired
     private ICommentService commentService;
     @Autowired
@@ -63,15 +58,8 @@ public class CommentController
 
             if (!file.isEmpty()) {
                 try {
-                    File fileSaveDir = new File(Constants.IMG_PATH);
-                    if (!fileSaveDir.exists()) {
-                        fileSaveDir.mkdir();
-                    }
-                    String absPath = request.getServletContext().getRealPath("/");
-                    byte[] bytes = file.getBytes();
-                    Path path = Paths.get(absPath + Constants.IMG_PATH + file.getOriginalFilename());
-                    usercomments.setImageUrl(path.toString());
-                    Files.write(path, bytes);
+                    String imagePathUrl =  Utils.uploadFile(Constants.IMG_PATH,request,file);
+                    usercomments.setImageUrl(imagePathUrl);
                 } catch (Exception ex) {
                     LOG.debug("[CommentController]Exception saving image :", ex);
                 }
@@ -123,6 +111,7 @@ public class CommentController
         model.addAttribute("totalComments", totalComments);
         model.addAttribute("usersubmissions", new UserSubmissions());
         model.addAttribute("usercomments", new UserComments());
+        
         if (nameEmail.isEmpty()) {
             return "webstar.nlcomments";
         }
@@ -163,6 +152,7 @@ public class CommentController
                                    submissionService.fetchByCategoryDesc(category, Constants.BLOCKSIZE, offset).get());
 
         }
+        model.addAttribute("nameEmail", nameEmail);
         model.addAttribute("categories", Categories.getCategories());
         modelAndView.addObject("usersubmissions", new UserSubmissions());
         modelAndView.addObject("usercomments", new UserComments());

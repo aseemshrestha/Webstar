@@ -18,9 +18,10 @@
 <c:set var="name" value="${fn:split(nameEmail,'###')[1]}" />
 <c:set var="email" value="${fn:split(nameEmail,'###')[0]}" />
 <c:set var="uid" value="${fn:split(nameEmail,'###')[2]}" />
-<jsp:include page="post.jsp" />
-<jsp:include page="comment.jsp" />
-<jsp:include page="repost.jsp" />
+<jsp:include page="_post.jsp" />
+<jsp:include page="_comment.jsp" />
+<jsp:include page="_repost.jsp" />
+<jsp:include page="_rating.jsp" />
 
 <div class="body-wrap" data-template-mode="cards">
 	<div id="st-container" class="st-container">
@@ -28,63 +29,20 @@
 			<div class="st-profile">
 				<div class="st-profile-user-wrapper">
 					<div class="profile-user-image">
-						<a href="/register" class=""><img src="../img/prv/other/signup.png" class="img-center"> </a>
+						<img src="../img/prv/people/person-1.jpg" class="img-circle" />
 					</div>
-						<div class="profile-user-info">
-							<span class="profile-user-name"><c:out value='${name}' /></span>
-							<span class="profile-user-email"><c:out value='${email}' /></span>
-						</div>
+					<div class="profile-user-info">
+						<span class="profile-user-name"><c:out value='${name}' /></span>
+					</div>
 				</div>
 			</div>
-            
-          	<div class="st-menu-list mt-2">
-					<ul>
-						<li><a href="#"> <i class="ion-ios-bookmarks-outline"></i>Theme documentation</a></li>
-						<li><a href="#"> <i class="ion-ios-cart-outline"></i>Purchase Tribus</a></li>
-					</ul>
-				</div>
-	
-				<h3 class="st-menu-title">Account</h3>
-				<div class="st-menu-list">
-					<ul>
-						<li><a href="#"> <i class="ion-ios-person-outline"></i>User profile</a></li>
-						<li><a href="#"> <i class="ion-ios-location-outline"></i>My addresses</a></li>
-						<li><a href="#"> <i class="ion-card"></i> My cards</a></li>
-						<li><a href="#"> <i class="ion-ios-unlocked-outline"></i>Password update</a></li>
-					</ul>
-				</div>
-	
-				<div class="st-menu-list">
-					<ul>
-						<li><a href="#"> <i class="ion-ios-information-outline"></i>About Tribus</a></li>
-						<li><a href="#"> <i class="ion-ios-email-outline"></i>Contact &amp; support</a></li>
-						<li><a href="#"> <i class="fa fa-camera"></i> Getting started</a></li>
-					</ul>
-				</div>
-		</nav>
+		</nav>s
        
 		<div class="st-pusher">
 			<div class="st-content">
 				<div class="st-content-inner">
-
-					<!-- Top bar -->
-					<div class="top-navbar align-items-center">
-						<div class="container">
-							<div class="row align-items-center py-3">
-								<div class="col-4">
-								 
-									<form class="form-default form-inline my-2 my-md-0">
-										<input class="form-control mr-sm-2" type="text" id="searchuname" placeholder="Search" onkeypress="PageWidget.doSearch(event);">
-										<button class="btn btn-base-1 my-2 my-sm-0" type="submit">Search User</button>
-									</form>
-								</div>
-									<div class="col-sm-3">
-										<a href="javascript:void(0)" class="btn btn-styled btn-block btn-base-2"  onclick="ThreadWidget.buildPostWindow(event);">SUBMIT A NEW POST</a>
-									</div>
-							</div>
-						</div>
-					</div>
-					<!-- Navbar -->
+				 <jsp:include page="_search.jsp" />
+				 
 					<nav class="navbar navbar-toggleable-md  navbar--style-1 navbar-light bg-default  bg-default navbar--shadow navbar--uppercase">
 						<div class="container navbar-container">
 							<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar_default" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -117,81 +75,39 @@
 						<div class="profile">
 							<div class="container">
 								<div class="row cols-md-space cols-sm-space cols-xs-space">
-									<div class="col-lg-3">
+								  <div class="col-lg-3">
 										<div class="sidebar">
 											<div class="widget">
 												<div class="card card-inverse bg-base-1">
 													<!-- Profile picture -->
-												       <div class="profile-picture profile-picture--style-3"><a href="/register" class=""><img src="../img/prv/people/person-1.jpg" class="img-center"> </a></div>
-												    	<!-- Profile details -->
-														<div class="profile-details">
-															<h2 class="heading heading-3 strong-500 profile-name"><c:out value='${name}' /></h2>
-															<h3 class="heading heading-6 strong-400 profile-occupation mt-3"><c:out value='${email}' /></h3>
+													<div class="profile-picture profile-picture--style-2">
+														<img src="../img/prv/people/person-1.jpg" class="img-center"> <a href="#" class="btn-aux">
+															<i class="ion ion-edit"></i>
+														</a>
+													</div>
+
+													<!-- Profile details -->
+													<div class="profile-details">
+														<h2 class="heading heading-3 strong-500 profile-name"><c:out value='${name}' /></h2>
+													</div>
+
+													<!-- Profile connect -->
+													<div class="profile-connect mt-">
+														<a href="#" class="btn btn-styled btn-block btn-rounded btn-base-5">Follow</a>
+														<a href="#" class="btn btn-styled btn-block btn-rounded btn-base-2">Send message</a>
+													</div>
+
+													<!-- Profile stats -->
+													<div class="profile-stats clearfix">
+														<div class="stats-entry">
+															<span class="stats-count">180</span> <span class="stats-label text-uppercase">Projects</span>
 														</div>
-														<!-- Profile connect -->
-														<div class="profile-connect mt-">
-															<a href="#" class="btn btn-styled btn-block btn-rounded btn-base-5">Follow</a>
-															<a href="#" class="btn btn-styled btn-block btn-rounded btn-base-2">Send message</a>
-														</div>
-	
-														<!-- Profile stats -->
-														<div class="profile-stats clearfix">
-												            <div class="stats-entry">
-												                <span class="stats-count">180</span>
-												                <span class="stats-label text-uppercase">Posts</span>
-												            </div>
-												            <div class="stats-entry">
-												                <span class="stats-count">1.3K</span>
-												                <span class="stats-label text-uppercase">Followers</span>
-												            </div>
-												        </div>
-	
-														<!-- Profile connected accounts -->
-														<div class="profile-useful-links clearfix">
-															<div class="useful-links">
-																<a href="#"> <i class="icon ion-social-instagram-outline"></i></a> <a href="#"> <iclass="icon ion-social-linkedin-outline"></i>
-																</a> <a href="#"> <i class="icon ion-earth"></i></a>
-															</div>
-														</div>
-	
-														<div class="profile-useful-links clearfix">
-															<div class="useful-links">
-																<a href="#"> <i class="icon ion-code-download"></i></a>
-															</div>
-														</div>
-											
-												</div>
-											</div>
-											 	<div class="widget">
-													<div class="card card-inverse bg-pink">
-														<div class="card-title"><h3 class="heading heading-6 strong-500">About me</h3></div>
-														<div class="card-body">
-															<div class="short-info">
-																<h4 class="short-info-label">Current position</h4>
-																<h3 class="short-info-title">Founder, Web Developer</h3>
-															</div>
-	
-															<div class="short-info">
-																<h4 class="short-info-label">Previous position</h4>
-																<h3 class="short-info-title">Senior Developer</h3>
-															</div>
-															<div class="short-info">
-																<h4 class="short-info-label">Studied at</h4>
-																<h3 class="short-info-title">Harvard University</h3>
-															</div>
-	
-															<div class="short-info">
-																<h4 class="short-info-label">Lives in</h4>
-																<h3 class="short-info-title">Bucharest, Romania</h3>
-															</div>
-	
-															<div class="short-info">
-																<h4 class="short-info-label">Relationship</h4>
-																<h3 class="short-info-title">Single</h3>
-															</div>
+														<div class="stats-entry">
+															<span class="stats-count">1.3K</span> <span class="stats-label text-uppercase">Followers</span>
 														</div>
 													</div>
 												</div>
+											</div>
 										</div>
 									</div>
 
@@ -201,7 +117,7 @@
 												<section class="slice sct-color-2" style="padding-top: 0em; padding-bottom: 0em;!important">
 													<div class="container">
 														<div class="row">
-															<div class="col-md-8 col-lg-9 offset-lg-0">
+															<div class="col-md-8 col-lg-10 offset-lg-0">
 																<div class="tabs tabs--style-2 tabs--centered"
 																	role="tabpanel">
 																	<!-- Nav tabs -->
@@ -209,8 +125,7 @@
 																		role="tablist">
 																		<li class="nav-item" role="presentation"><a href="#tabTwoCentered-1" aria-controls="home"
 																			role="tab" data-toggle="tab"
-																			class="nav-link active text-center text-uppercase strong-500">Recent
-																				Posts</a></li>
+																			class="nav-link active text-center text-uppercase strong-500">Recently Updated Posts</a></li>
 																		<li class="nav-item" role="presentation"><a
 																			href="#tabTwoCentered-2" aria-controls="profile"
 																			role="tab" data-toggle="tab"
@@ -243,23 +158,20 @@
 					                                                <small>Not rated yet.</small>
 					                                              </c:if>
 					                                             <br />
-					                                               <a href="javascrip:void(0)" id="" style="color:#007aff">${ recent.username } - ${ recent.firstName} ${ recent.lastName }</a> 
+					                                               <a href="/byuser?uid=${recent.uid}&offset=0&repost=0" id="" style="color:#007aff">${ recent.username } - ${ recent.firstName} ${ recent.lastName }</a> 
 					                                               <small>${recent.timeLapse }</small>
 					                                               <span style="float:right"> <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.category}</a>
 					                                               <a href="/bycategorypage?category=${recent.category}&offset=0">${recent.subcategory}</a></span>
 					                                           </h3>
 					                          			       <p class="mb-4" style="margin-bottom:0px;!important">${recent.contents}</p>
 					                          			        <c:if test="${not empty recent.repostedBy}">
-					                          			         <h3 class="heading heading-6">
-																	  <a href="javascript:void(0)" style="color:#007aff">${ recent.repostedBy }</a>
-																	  </h3>
+					                          			         <h3 class="heading heading-6"><a href="javascript:void(0)" style="color:#007aff">${ recent.repostedBy }</a></h3>
 																	   <span style="color:#007aff"> reposted <strong><a href="/byuser?uid=${recent.repostOfId}&offset=0&repost=0" id="${recent.repostOfId}">${ recent.repostedOf}'s</a></strong> post <small> ${ recent.timeLapse } </small></span>
 																	   <p class="mb-4" style="margin-bottom:0px;!important">${recent.repostedPost}
 																	   <c:if test="${not empty recent.comments}">
 																	    <br /><small>with comment : </small><medium>${ recent.comments }</medium>
 																	   </c:if>
 																	</p>
-																	
 																</c:if>
 					                          			        
 																	<c:if test="${recent.imageUrl ne null}">

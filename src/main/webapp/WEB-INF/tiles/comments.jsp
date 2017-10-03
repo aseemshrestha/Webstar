@@ -18,8 +18,8 @@
 <c:set var="name" value="${fn:split(nameEmail,'###')[1]}" />
 <c:set var="email" value="${fn:split(nameEmail,'###')[0]}" />
 
-<jsp:include page="post.jsp" />
-<jsp:include page="comment.jsp" />
+<jsp:include page="_post.jsp" />
+<jsp:include page="_comment.jsp" />
 
 <div class="body-wrap" data-template-mode="cards">
 	<div id="st-container" class="st-container">
@@ -29,57 +29,17 @@
 					<div class="profile-user-image">
 						<img src="../img/prv/people/person-1.jpg" class="img-circle" />
 					</div>
-						<div class="profile-user-info">
-							<span class="profile-user-name"><c:out value='${name}' /></span>
-							<span class="profile-user-email"><c:out value='${email}' /></span>
-						</div>
+					<div class="profile-user-info">
+						<span class="profile-user-name"><c:out value='${name}' /></span>
+					</div>
 				</div>
 			</div>
-				<div class="st-menu-list mt-2">
-					<ul>
-						<li><a href="#"> <i class="ion-ios-bookmarks-outline"></i>Theme documentation</a></li>
-						<li><a href="#"> <i class="ion-ios-cart-outline"></i>Purchase Tribus</a></li>
-					</ul>
-				</div>
-				<h3 class="st-menu-title">Account</h3>
-				<div class="st-menu-list">
-					<ul>
-						<li><a href="#"> <i class="ion-ios-person-outline"></i>
-								User profile
-						</a></li>
-						<li><a href="#"> <i class="ion-ios-location-outline"></i>My addresses</a></li>
-						<li><a href="#"> <i class="ion-card"></i> My cards</a></li>
-						<li><a href="#"> <i class="ion-ios-unlocked-outline"></i>Password update</a></li>
-					</ul>
-				</div>
-	
-				<h3 class="st-menu-title">Support center</h3>
-				<div class="st-menu-list">
-					<ul>
-						<li><a href="#"> <i class="ion-ios-information-outline"></i>About Tribus</a></li>
-						<li><a href="#"> <i class="ion-ios-email-outline"></i>Contact &amp; support</a></li>
-						<li><a href="#"> <i class="fa fa-camera"></i> Getting started</a></li>
-					</ul>
-				</div>
 		</nav>
-
 		<div class="st-pusher">
 			<div class="st-content">
 				<div class="st-content-inner">
-					<!-- Top bar -->
-					<div class="top-navbar align-items-center">
-						<div class="container">
-							<div class="row align-items-center py-3">
-								<div class="col-4">
-									<form class="form-default form-inline my-2 my-md-0">
-										<input class="form-control mr-sm-2" type="text"placeholder="Search">
-										<button class="btn btn-base-1 my-2 my-sm-0" type="submit">Search</button>
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- Navbar -->
+				  <jsp:include page="_search.jsp" />
+					
 					<nav class="navbar navbar-toggleable-md  navbar--style-1 navbar-light bg-default  bg-default navbar--shadow navbar--uppercase">
 						<div class="container navbar-container">
 							<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar_default" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -107,6 +67,7 @@
 							</div>
 						</div>
 					</nav>
+					
 					<section class="slice sct-color-2" style="padding-top: 1em; padding-bottom: 1em;!important">
 						<div class="profile">
 							<div class="container">
